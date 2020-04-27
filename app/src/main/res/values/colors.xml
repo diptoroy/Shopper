@@ -6,4 +6,7 @@
 
     <color name="signbackColor">#77ffcdd2</color>
     <color name="signdesign">#0277bd</color>
+
+    <color name="white">#ffff</color>
+    <color name="lowWhite">#50ffffff</color>
 </resources>

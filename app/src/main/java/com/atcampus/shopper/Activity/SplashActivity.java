@@ -13,7 +13,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
         SystemClock.sleep(3500);
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
