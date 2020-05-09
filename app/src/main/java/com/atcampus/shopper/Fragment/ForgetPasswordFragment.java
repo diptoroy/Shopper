@@ -22,8 +22,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atcampus.shopper.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -92,7 +95,29 @@ public class ForgetPasswordFragment extends Fragment {
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                checkText.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
+                resetBtn.setEnabled(false);
+                resetBtn.setTextColor(Color.argb(50,255,255,255));
 
+                auth.sendPasswordResetEmail(userEmail.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(getActivity(),"Email sent successfully!",Toast.LENGTH_LONG).show();
+                                }else {
+//                                    progressBar.setVisibility(View.GONE);
+                                    String error = task.getException().getMessage();
+                                    Toast.makeText(getActivity(),error,Toast.LENGTH_LONG).show();
+//                                    checkText.setText(error);
+//                                    checkText.setVisibility(View.VISIBLE);
+
+                                }
+                                resetBtn.setEnabled(true);
+                                resetBtn.setTextColor(Color.rgb(255,255,255));
+                            }
+                        });
             }
         });
     }
