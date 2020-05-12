@@ -30,6 +30,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.atcampus.shopper.Activity.RegisterActivity.resetButtonBack;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -131,6 +133,7 @@ public class SigninFragment extends Fragment {
         forgotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetButtonBack = true;
                 setFragment(new ForgetPasswordFragment());
             }
         });
