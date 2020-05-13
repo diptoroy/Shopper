@@ -65,6 +65,7 @@ public class SigninFragment extends Fragment {
         password = view.findViewById(R.id.userPassword);
         signinBtn = view.findViewById(R.id.btnSignin);
         closeBtn = view.findViewById(R.id.closeBtn);
+
         forgotBtn = view.findViewById(R.id.forgatePassword);
         progressBar = view.findViewById(R.id.progressBar2);
 
