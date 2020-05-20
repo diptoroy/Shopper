@@ -2,9 +2,12 @@ package com.atcampus.shopper.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.atcampus.shopper.Fragment.AccountFragment;
@@ -15,9 +18,12 @@ import com.atcampus.shopper.Fragment.WishlistFragment;
 import com.atcampus.shopper.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.atcampus.shopper.R.menu.menu;
+
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +31,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Shopper");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new RewardFragment()).commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
