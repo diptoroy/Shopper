@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.atcampus.shopper.Fragment.AccountFragment;
 import com.atcampus.shopper.Fragment.CartFragment;
+import com.atcampus.shopper.Fragment.HomeFragment;
 import com.atcampus.shopper.Fragment.OrderFragment;
 import com.atcampus.shopper.Fragment.RewardFragment;
 import com.atcampus.shopper.Fragment.WishlistFragment;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new RewardFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
     }
 
     @Override
@@ -53,9 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
                     switch (item.getItemId()){
-                        case R.id.navigation_reward:
-                            selectedFragment = new RewardFragment();
+                        case R.id.navigation_home:
+                            selectedFragment = new HomeFragment();
                             break;
+//                        case R.id.navigation_reward:
+//                            selectedFragment = new RewardFragment();
+//                            break;
                         case R.id.navigation_favorite:
                             selectedFragment = new WishlistFragment();
                             break;
