@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,8 +19,11 @@ import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +41,9 @@ public class HomeFragment extends Fragment {
     private List<SliderModel> sliderModelList;
     private SliderAdapter sliderAdapter;
     private int currentSlider = 2;
+    private Timer timer;
+    final private long DELAY_TIME = 3000;
+    final private long PERIOD_TIME = 3000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,10 +86,40 @@ public class HomeFragment extends Fragment {
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round));
 
         sliderAdapter = new SliderAdapter(sliderModelList);
+        sliderPager.setAdapter(sliderAdapter);
         sliderPager.setClipToPadding(false);
         sliderPager.setPageMargin(20);
 
+        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentSlider = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                SliderLopper();
+            }
+        };
+        sliderPager.addOnPageChangeListener(onPageChangeListener);
+
+        startSlider();
+        sliderPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                SliderLopper();
+                stopSlider();
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    stopSlider();
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -94,5 +132,30 @@ public class HomeFragment extends Fragment {
             currentSlider = sliderModelList.size() - 3;
             sliderPager.setCurrentItem(currentSlider,false);
         }
+    }
+
+    private void startSlider(){
+        final Handler handler = new Handler();
+        final Runnable uptodate = new Runnable() {
+            @Override
+            public void run() {
+                if (currentSlider >= sliderModelList.size()){
+                    currentSlider = 1;
+                }
+                sliderPager.setCurrentItem(currentSlider++,true);
+            }
+        };
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(uptodate);
+            }
+        },DELAY_TIME,PERIOD_TIME);
+    }
+
+    private void stopSlider(){
+        timer.cancel();
     }
 }
