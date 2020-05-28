@@ -1,7 +1,9 @@
 package com.atcampus.shopper.Fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.SliderAdapter;
@@ -34,9 +37,11 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //category
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
 
+    //slider
     private ViewPager sliderPager;
     private List<SliderModel> sliderModelList;
     private SliderAdapter sliderAdapter;
@@ -44,6 +49,10 @@ public class HomeFragment extends Fragment {
     private Timer timer;
     final private long DELAY_TIME = 3000;
     final private long PERIOD_TIME = 3000;
+
+    //slider ads
+    private ImageView slider_ads;
+    private ConstraintLayout slider_ads_layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,22 +82,23 @@ public class HomeFragment extends Fragment {
         sliderPager = view.findViewById(R.id.slider_viewpager);
         sliderModelList = new ArrayList<>();
 
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
 
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
 
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
 
         sliderAdapter = new SliderAdapter(sliderModelList);
         sliderPager.setAdapter(sliderAdapter);
         sliderPager.setClipToPadding(false);
         sliderPager.setPageMargin(20);
+        sliderPager.setCurrentItem(currentSlider);
 
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
@@ -120,6 +130,13 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+
+        //slider ads
+        slider_ads = view.findViewById(R.id.slider_ads);
+        slider_ads_layout = view.findViewById(R.id.slider_ads_layout);
+
+        slider_ads.setImageResource(R.drawable.banner);
+        slider_ads_layout.setBackgroundColor(Color.parseColor("#FB9E8A"));
         return view;
     }
 
