@@ -14,11 +14,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
+import com.atcampus.shopper.Adapter.DealsAdapter;
 import com.atcampus.shopper.Adapter.SliderAdapter;
 import com.atcampus.shopper.Model.CategoryModel;
+import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
 
@@ -53,6 +57,14 @@ public class HomeFragment extends Fragment {
     //slider ads
     private ImageView slider_ads;
     private ConstraintLayout slider_ads_layout;
+
+    //deals
+    private TextView dealsText;
+    private Button dealsBtn;
+    private RecyclerView dealsRecyclerview;
+    private List<DealsModel> dealsModels;
+    private DealsAdapter dealsAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,6 +149,27 @@ public class HomeFragment extends Fragment {
 
         slider_ads.setImageResource(R.drawable.banner);
         slider_ads_layout.setBackgroundColor(Color.parseColor("#FB9E8A"));
+
+        //deals
+        dealsText = view.findViewById(R.id.deals_text);
+        dealsBtn = view.findViewById(R.id.deals_button);
+        dealsRecyclerview = view.findViewById(R.id.deals_recyclerview);
+        dealsModels = new ArrayList<>();
+
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+
+        dealsAdapter = new DealsAdapter(dealsModels);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        dealsRecyclerview.setLayoutManager(layoutManager1);
+
+        dealsRecyclerview.setAdapter(dealsAdapter);
+        dealsAdapter.notifyDataSetChanged();
         return view;
     }
 
