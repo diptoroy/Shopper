@@ -15,12 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.DealsAdapter;
 import com.atcampus.shopper.Adapter.SliderAdapter;
+import com.atcampus.shopper.Adapter.TrendingAdapter;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.SliderModel;
@@ -64,6 +66,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView dealsRecyclerview;
     private List<DealsModel> dealsModels;
     private DealsAdapter dealsAdapter;
+
+    //trending
+    private TextView trendingText;
+    private Button trendingBtn;
+    private GridView trendingGridView;
 
 
     @Override
@@ -170,6 +177,13 @@ public class HomeFragment extends Fragment {
 
         dealsRecyclerview.setAdapter(dealsAdapter);
         dealsAdapter.notifyDataSetChanged();
+
+        //trending
+        trendingText = view.findViewById(R.id.trending_text);
+        trendingBtn = view.findViewById(R.id.trending_button);
+        trendingGridView = view.findViewById(R.id.trending_recyclerview);
+
+        trendingGridView.setAdapter(new TrendingAdapter(dealsModels));
         return view;
     }
 
