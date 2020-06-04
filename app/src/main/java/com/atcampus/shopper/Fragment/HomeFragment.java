@@ -72,6 +72,9 @@ public class HomeFragment extends Fragment {
     private Button trendingBtn;
     private GridView trendingGridView;
 
+    //multiple recyclerview
+    private RecyclerView multipleRecyclerview;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,11 +91,14 @@ public class HomeFragment extends Fragment {
         List<CategoryModel> categoryModels = new ArrayList<CategoryModel>();
         categoryModels.add(new CategoryModel("image","All"));
         categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Electronics"));
-        categoryModels.add(new CategoryModel("image","Entertainment"));
-        categoryModels.add(new CategoryModel("image","Books"));
-        categoryModels.add(new CategoryModel("image","Sports"));
-        categoryModels.add(new CategoryModel("image","Cosmetics"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels.add(new CategoryModel("image","Dress"));
         categoryAdapter = new CategoryAdapter(categoryModels);
         categoryRecyclerView.setAdapter(categoryAdapter);
         categoryAdapter.notifyDataSetChanged();
@@ -184,6 +190,13 @@ public class HomeFragment extends Fragment {
         trendingGridView = view.findViewById(R.id.trending_recyclerview);
 
         trendingGridView.setAdapter(new TrendingAdapter(dealsModels));
+
+        //multiple recyclerview
+        multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
+        LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
+        multipleManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        multipleRecyclerview.setLayoutManager(multipleManager);
+
         return view;
     }
 
