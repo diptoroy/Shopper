@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MultipleRecyclerviewModel {
 
+    public static final int SLIDER = 0;
     private int type;
 
     //slider
