@@ -5,6 +5,8 @@ import java.util.List;
 public class MultipleRecyclerviewModel {
 
     public static final int SLIDER = 0;
+    public static final int SLIDER_ADS = 1;
+
     private int type;
 
     //slider
@@ -29,5 +31,31 @@ public class MultipleRecyclerviewModel {
 
     public void setSliderModelList(List<SliderModel> sliderModelList) {
         this.sliderModelList = sliderModelList;
+    }
+
+    //slider ads
+    private int resource;
+    private String backgroundColor;
+
+    public MultipleRecyclerviewModel(int type, int resource, String backgroundColor) {
+        this.type = type;
+        this.resource = resource;
+        this.backgroundColor = backgroundColor;
+    }
+
+    public int getResource() {
+        return resource;
+    }
+
+    public void setResource(int resource) {
+        this.resource = resource;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

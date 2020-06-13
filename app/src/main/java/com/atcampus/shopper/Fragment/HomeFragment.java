@@ -21,10 +21,12 @@ import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.DealsAdapter;
+import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
 import com.atcampus.shopper.Adapter.SliderAdapter;
 import com.atcampus.shopper.Adapter.TrendingAdapter;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.DealsModel;
+import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
 
@@ -196,6 +198,18 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
         multipleManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         multipleRecyclerview.setLayoutManager(multipleManager);
+
+        List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#000000"));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#ffff00"));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#ff0000"));
+
+        MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
+        multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
+        multipleRecyclerviewAdapter.notifyDataSetChanged();
 
         return view;
     }
