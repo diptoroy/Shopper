@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
@@ -36,6 +41,10 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 return MultipleRecyclerviewModel.SLIDER;
             case 1:
                 return MultipleRecyclerviewModel.SLIDER_ADS;
+            case 2:
+                return MultipleRecyclerviewModel.DEALS_DAY;
+            case 3:
+                return MultipleRecyclerviewModel.TRENDING;
             default:
                 return -1;
         }
@@ -51,6 +60,12 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             case MultipleRecyclerviewModel.SLIDER_ADS:
                 View sliderAds = LayoutInflater.from(parent.getContext()).inflate(R.layout.slider_ads, parent, false);
                 return new SliderAdsViewHolder(sliderAds);
+            case MultipleRecyclerviewModel.DEALS_DAY:
+                View dealsDay = LayoutInflater.from(parent.getContext()).inflate(R.layout.dealsday_layout, parent, false);
+                return new DealsDayViewHolder(dealsDay);
+            case MultipleRecyclerviewModel.TRENDING:
+                View trending = LayoutInflater.from(parent.getContext()).inflate(R.layout.trending_layout, parent, false);
+                return new TrendingViewHolder(trending);
             default:
                 return null;
         }
@@ -67,6 +82,16 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 int resource = multipleRecyclerviewModels.get(position).getResource();
                 String backgroundColor = multipleRecyclerviewModels.get(position).getBackgroundColor();
                 ((SliderAdsViewHolder)holder).setSliderAds(resource,backgroundColor);
+                break;
+            case MultipleRecyclerviewModel.DEALS_DAY:
+                String dealsday_title = multipleRecyclerviewModels.get(position).getTitle();
+                List<DealsModel> dealsModels = multipleRecyclerviewModels.get(position).getDealsModelList();
+                ((DealsDayViewHolder) holder).setDealsDayLayout(dealsModels,dealsday_title);
+                break;
+            case MultipleRecyclerviewModel.TRENDING:
+                String trending_title = multipleRecyclerviewModels.get(position).getTitle();
+                List<DealsModel> trendingModels = multipleRecyclerviewModels.get(position).getDealsModelList();
+                ((TrendingViewHolder) holder).setTrendingAdapter(trendingModels,trending_title);
                 break;
             default:
                 return;
@@ -173,8 +198,6 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
 
     }
 
-
-
     public class SliderAdsViewHolder extends RecyclerView.ViewHolder {
         private ImageView slider_ads;
         private ConstraintLayout slider_ads_layout;
@@ -188,6 +211,54 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         private void setSliderAds(int resource, String color) {
             slider_ads.setImageResource(resource);
             slider_ads_layout.setBackgroundColor(Color.parseColor(color));
+        }
+    }
+
+    public class DealsDayViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView dealsText;
+        private Button dealsBtn;
+        private RecyclerView dealsRecyclerview;
+
+        public DealsDayViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            dealsText = itemView.findViewById(R.id.deals_text);
+            dealsBtn = itemView.findViewById(R.id.deals_button);
+            dealsRecyclerview = itemView.findViewById(R.id.deals_recyclerview);
+        }
+        private void setDealsDayLayout(List<DealsModel> dealsModels,String title){
+            dealsText.setText(title);
+            if (dealsModels.size() > 8){
+                dealsBtn.setVisibility(View.VISIBLE);
+            }else {
+                dealsBtn.setVisibility(View.INVISIBLE);
+            }
+            DealsAdapter dealsAdapter = new DealsAdapter(dealsModels);
+            LinearLayoutManager layoutManager1 = new LinearLayoutManager(itemView.getContext());
+            layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+            dealsRecyclerview.setLayoutManager(layoutManager1);
+
+            dealsRecyclerview.setAdapter(dealsAdapter);
+            dealsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class TrendingViewHolder extends RecyclerView.ViewHolder{
+        private TextView trendingText;
+        private Button trendingBtn;
+        private GridView trendingGridView;
+        public TrendingViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            trendingText = itemView.findViewById(R.id.trending_text);
+            trendingBtn = itemView.findViewById(R.id.trending_button);
+            trendingGridView = itemView.findViewById(R.id.trending_recyclerview);
+        }
+
+        private void setTrendingAdapter(List<DealsModel> dealsModels,String title){
+            trendingText.setText(title);
+            trendingGridView.setAdapter(new TrendingAdapter(dealsModels));
         }
     }
 }

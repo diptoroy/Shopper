@@ -46,7 +46,11 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return dealsModelList.size();
+        if (dealsModelList.size() > 8){
+            return 8;
+        }else {
+            return dealsModelList.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

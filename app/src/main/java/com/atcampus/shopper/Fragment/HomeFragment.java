@@ -202,10 +202,9 @@ public class HomeFragment extends Fragment {
         List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
         multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
         multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#000000"));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#ffff00"));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#ff0000"));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"Deals",dealsModels));
+        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"Trending",dealsModels));
+
 
         MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
         multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
