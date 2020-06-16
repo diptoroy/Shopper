@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment {
         //multiple recyclerview
         multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
         LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
-        multipleManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
         multipleRecyclerview.setLayoutManager(multipleManager);
 
         List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
