@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.shopper.Activity.CategoryActivity;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.R;
 
@@ -34,7 +36,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         String image = categoryModelList.get(position).getCategoryImage();
         String name = categoryModelList.get(position).getCategory_Name();
-        holder.setCategoryName(name);
+        holder.setCategoryName(name,position);
     }
 
     @Override
@@ -57,8 +59,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         private void setCategoryImage(){
             //todo
         }
-        private void setCategoryName(String name){
+        private void setCategoryName(final String name,final int position){
             categoryName.setText(name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position != 0){
+                        Intent intentCategory = new Intent(itemView.getContext(), CategoryActivity.class);
+                        intentCategory.putExtra("CategoryName",name);
+                        itemView.getContext().startActivity(intentCategory);
+                    }
+                }
+            });
         }
     }
 }

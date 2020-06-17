@@ -48,6 +48,20 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.main_search){
+            return true;
+        }else if (id == R.id.main_notification){
+            return true;
+        }else if (id == R.id.main_cart){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
