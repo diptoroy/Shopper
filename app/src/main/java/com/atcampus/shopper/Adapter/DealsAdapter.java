@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.R;
 
@@ -60,13 +62,20 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         private TextView dealsSpec;
         private TextView dealsPrice;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             dealsImage = itemView.findViewById(R.id.dealsitem_image);
             dealsName = itemView.findViewById(R.id.dealsitem_name);
             dealsSpec = itemView.findViewById(R.id.dealsitem_spec);
             dealsPrice = itemView.findViewById(R.id.dealsitem_price);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetails = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                    itemView.getContext().startActivity(productDetails);
+                }
+            });
         }
 
         private void setDealsImage(int img){
