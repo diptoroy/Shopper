@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
+import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
 import com.atcampus.shopper.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -25,8 +26,8 @@ import java.util.List;
 public class ProductDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private ViewPager viewPager, descViewpager;
+    private TabLayout tabLayout, descTabLayout;
     private List<Integer> productImages;
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
@@ -46,23 +47,46 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.image_indicator);
 
         productImages = new ArrayList<>();
-        productImages.add(R.drawable.phone );
-        productImages.add(R.drawable.banner );
-        productImages.add(R.drawable.backpack );
-        productImages.add(R.drawable.bag );
+        productImages.add(R.drawable.phone);
+        productImages.add(R.drawable.banner);
+        productImages.add(R.drawable.backpack);
+        productImages.add(R.drawable.bag);
 
         ProductImagesViewpagerAdapter adapter = new ProductImagesViewpagerAdapter(productImages);
         viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager,true);
+        tabLayout.setupWithViewPager(viewPager, true);
+
+        //products Description
+        descViewpager = findViewById(R.id.products_description_viewpager);
+        descTabLayout = findViewById(R.id.products_description_tabs);
+
+        descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount()));
+        descViewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(descTabLayout));
+        descTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                descViewpager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         favoriteBtn = findViewById(R.id.favorite_btn);
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CHECK_FAVORITE_BTN){
+                if (CHECK_FAVORITE_BTN) {
                     CHECK_FAVORITE_BTN = false;
                     favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
-                }else {
+                } else {
                     CHECK_FAVORITE_BTN = true;
                     favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
                 }
@@ -73,19 +97,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.products_details_toolbar,menu);
+        inflater.inflate(R.menu.products_details_toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home){
+        if (id == android.R.id.home) {
             finish();
             return true;
-        }else if (id == R.id.main_search){
+        } else if (id == R.id.main_search) {
             return true;
-        }else if (id == R.id.main_cart){
+        } else if (id == R.id.main_cart) {
             return true;
         }
         return super.onOptionsItemSelected(item);
