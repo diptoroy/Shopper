@@ -13,7 +13,8 @@ public class ProductsDescriptionAdapter extends FragmentPagerAdapter {
     private int totalTabs;
 
     public ProductsDescriptionAdapter(@NonNull FragmentManager fm, int totalTabs) {
-        super(fm, totalTabs);
+        super(fm);
+        this.totalTabs = totalTabs;
     }
 
     @NonNull
