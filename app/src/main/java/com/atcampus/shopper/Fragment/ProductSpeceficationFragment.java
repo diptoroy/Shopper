@@ -42,11 +42,28 @@ public class ProductSpeceficationFragment extends Fragment {
         specRecyclerview.setLayoutManager(linearLayoutManager);
 
         productsSpeceficationModelList = new ArrayList<>();
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Size","4XL"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Brand","Armani"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Cotton","100%"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Value","$135"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Display",0));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+
+
 
         productsSpecAdapter = new ProductsSpecAdapter(productsSpeceficationModelList);
         specRecyclerview.setAdapter(productsSpecAdapter);

@@ -31,6 +31,8 @@
             <include layout="@layout/reward_layout"></include>
 
             <include layout="@layout/products_description"></include>
+
+            <include layout="@layout/products_title_spec"></include>
         </LinearLayout>
     </ScrollView>
 
