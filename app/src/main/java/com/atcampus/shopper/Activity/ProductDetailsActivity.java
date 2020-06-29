@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
 import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
@@ -31,6 +33,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private List<Integer> productImages;
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
+
+    //rating layout
+    private LinearLayout userratingContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //rating layout
+        userratingContainer =findViewById(R.id.user_rating_container);
+        for (int x = 0; x < userratingContainer.getChildCount(); x++){
+            final int starPosition = x;
+            userratingContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setRating(starPosition);
+                }
+            });
+        }
+    }
+
+    private void setRating(int starPosition){
+        for (int x = 0; x < userratingContainer.getChildCount(); x++){
+            ImageView starBtn = (ImageView) userratingContainer.getChildAt(x);
+            starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#F4BCBC")));
+            if (x <= starPosition){
+                starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#FFBF00")));
+            }
+        }
     }
 
     @Override

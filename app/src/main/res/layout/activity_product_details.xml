@@ -33,6 +33,8 @@
             <include layout="@layout/products_description"></include>
 
             <include layout="@layout/products_title_spec"></include>
+
+            <include layout="@layout/ratings_layout"></include>
         </LinearLayout>
     </ScrollView>
 
