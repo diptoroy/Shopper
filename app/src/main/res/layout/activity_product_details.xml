@@ -16,7 +16,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -37,5 +37,46 @@
             <include layout="@layout/ratings_layout"></include>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        
+        <LinearLayout
+            android:id="@+id/add_to_cart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ADD TO CART"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/buy_now"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="BUY NOW"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white"
+            android:background="#FF0000"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
