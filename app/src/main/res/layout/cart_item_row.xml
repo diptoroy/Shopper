@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:elevation="3dp">
+
+    <TextView
+        android:id="@+id/ofers_applied"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Offers applied"
+        android:textColor="#0800FF"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_price" />
 
     <ImageView
         android:id="@+id/cart_product_image"
@@ -23,8 +34,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Iphone 11 Max"
-        android:textSize="16sp"
         android:textColor="@color/black"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/cart_product_image"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,6 +55,119 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Free Cupone"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/cupon_icon"
         app:layout_constraintTop_toBottomOf="@+id/cart_product_name" />
+
+    <TextView
+        android:id="@+id/main_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="$149"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cupon_text" />
+
+    <TextView
+        android:id="@+id/cutted_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="$169"
+        app:layout_constraintBottom_toBottomOf="@+id/main_price"
+        app:layout_constraintEnd_toStartOf="@+id/main_price" />
+
+    <View
+        android:id="@+id/cut_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:backgroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/cutted_price"
+        app:layout_constraintEnd_toEndOf="@+id/cutted_price"
+        app:layout_constraintStart_toStartOf="@+id/cutted_price"
+        app:layout_constraintTop_toTopOf="@+id/cutted_price" />
+
+    <TextView
+        android:id="@+id/cuopens_applied"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Coupens Applied"
+        android:textColor="#0800FF"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ofers_applied" />
+
+    <TextView
+        android:id="@+id/product_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/editfield"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+        android:padding="3dp"
+        android:text="QTY : 1"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/cuopens_applied"
+        app:layout_constraintStart_toEndOf="@+id/cart_product_image"
+        app:layout_constraintTop_toBottomOf="@+id/cutted_price" />
+
+    <LinearLayout
+        android:id="@+id/products_cupon_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#ff3030"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cuopens_applied">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Click the button and get your coupen !"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:background="@drawable/border_button"
+            android:text="Coupen"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remove_item_btn"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/lowWhite"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/products_cupon_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_baseline_delete_24"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="Remove Item"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
