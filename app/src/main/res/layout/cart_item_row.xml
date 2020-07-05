@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="3dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:elevation="8dp">
 
     <TextView
         android:id="@+id/ofers_applied"
@@ -44,9 +46,9 @@
         android:id="@+id/cupon_icon"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cupon_text"
         app:layout_constraintStart_toStartOf="@+id/cart_product_name"
-        app:layout_constraintTop_toBottomOf="@+id/cart_product_name"
+        app:layout_constraintTop_toTopOf="@+id/cupon_text"
         app:srcCompat="@drawable/ic_baseline_local_offer_24" />
 
     <TextView

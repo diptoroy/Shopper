@@ -42,7 +42,7 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<CartItemModel> cartItemModels = new ArrayList<>();
-        cartItemModels.add(new CartItemModel(0,R.drawable.phone,"Iphone 11",2,"$149","$169",1,0,0));
+        cartItemModels.add(new CartItemModel(0,R.drawable.phone,"Iphone 11",2,"$149","$169",1,0,2));
         cartItemModels.add(new CartItemModel(1,"2","$175","$0","2","$350"));
 
         CartAdapter cartAdapter = new CartAdapter(cartItemModels);

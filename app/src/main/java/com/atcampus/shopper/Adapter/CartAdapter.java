@@ -116,9 +116,9 @@ public class CartAdapter extends RecyclerView.Adapter {
                 freeCoupens.setVisibility(View.VISIBLE);
                 freeCuopenIcon.setVisibility(View.VISIBLE);
                 if (cuopenNo == 1) {
-                    freeCoupens.setText("free" + cuopenNo + "Cupoen");
+                    freeCoupens.setText("free " + cuopenNo + " Coupen");
                 } else {
-                    freeCoupens.setText("free" + cuopenNo + "Cupoens");
+                    freeCoupens.setText("free " + cuopenNo + " Coupens");
                 }
             } else {
                 freeCoupens.setVisibility(View.INVISIBLE);
@@ -128,7 +128,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             cuttedPrice.setText(cPrice);
             if (offer > 0) {
                 offerApplied.setVisibility(View.VISIBLE);
-                offerApplied.setText(offer + "offer applied");
+                offerApplied.setText(offer + " offer applied");
             } else {
                 offerApplied.setVisibility(View.INVISIBLE);
             }

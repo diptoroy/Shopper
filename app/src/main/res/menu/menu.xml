@@ -13,9 +13,9 @@
         android:title="Notification"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/main_cart"
-        android:icon="@drawable/ic_shopping_cart_black_24dp"
-        android:title="Cart"
-        app:showAsAction="always"/>
+<!--    <item-->
+<!--        android:id="@+id/main_cart"-->
+<!--        android:icon="@drawable/ic_shopping_cart_black_24dp"-->
+<!--        android:title="Cart"-->
+<!--        app:showAsAction="always"/>-->
 </menu>

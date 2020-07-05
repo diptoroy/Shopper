@@ -25,6 +25,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorAccent"
+        android:elevation="8dp"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout

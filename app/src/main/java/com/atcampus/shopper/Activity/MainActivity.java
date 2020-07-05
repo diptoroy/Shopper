@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Shopper");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+        getSupportActionBar().setTitle("Shopper");
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).commit();
     }
 
     @Override
@@ -55,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else if (id == R.id.main_notification){
             return true;
-        }else if (id == R.id.main_cart){
-            return true;
         }
+//        else if (id == R.id.main_cart){
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
 
     }
@@ -69,21 +71,27 @@ public class MainActivity extends AppCompatActivity {
                     Fragment selectedFragment = null;
                     switch (item.getItemId()){
                         case R.id.navigation_home:
+                            getSupportActionBar().setTitle("Shopper");
                             selectedFragment = new HomeFragment();
                             break;
 //                        case R.id.navigation_reward:
 //                            selectedFragment = new RewardFragment();
 //                            break;
                         case R.id.navigation_favorite:
+                            getSupportActionBar().setTitle("My Wishlists");
                             selectedFragment = new WishlistFragment();
                             break;
                         case R.id.navigation_orders:
+                            getSupportActionBar().setTitle("My Orders");
                             selectedFragment = new OrderFragment();
                             break;
                         case R.id.navigation_cart:
+                            getSupportActionBar().setTitle("My Cart");
+                            invalidateOptionsMenu();
                             selectedFragment = new CartFragment();
                             break;
                         case R.id.navigation_account:
+                            getSupportActionBar().setTitle("My Account");
                             selectedFragment = new AccountFragment();
                             break;
                     }
