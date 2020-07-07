@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Shopper");
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).commit();
+//        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).commit();
     }
 
     @Override

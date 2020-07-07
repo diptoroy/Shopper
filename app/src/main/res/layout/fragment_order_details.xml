@@ -12,6 +12,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+        <include layout="@layout/order_details_layout"/>
+        <include layout="@layout/shipping_details_layout"/>
+        <include layout="@layout/total_amount"/>
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>
