@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.Image;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.shopper.Activity.OrderDetailsActivity;
 import com.atcampus.shopper.Model.OrderItemModel;
 import com.atcampus.shopper.R;
 
@@ -56,7 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         private TextView productTitle,productDeliveryDate;
         private LinearLayout userratingContainer;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             productImage = itemView.findViewById(R.id.order_product_image);
@@ -64,6 +66,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             productDeliveryDate = itemView.findViewById(R.id.order_delivery_date);
             deliveryIndicator = itemView.findViewById(R.id.order_indicator);
             userratingContainer =itemView.findViewById(R.id.user_rating_container);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent orderDetailsIntent = new Intent(itemView.getContext(), OrderDetailsActivity.class);
+                    itemView.getContext().startActivity(orderDetailsIntent);
+                }
+            });
         }
 
         private void setProductData(int img,String title,String date,int rating){
