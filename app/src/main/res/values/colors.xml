@@ -11,4 +11,5 @@
     <color name="lowWhite">#A0F0FA</color>
     <color name="black">#000000</color>
     <color name="rating">#F4BCBC</color>
+    <color name="red">#D30000</color>
 </resources>
