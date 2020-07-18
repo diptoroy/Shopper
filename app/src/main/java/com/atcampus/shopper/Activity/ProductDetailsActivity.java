@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -33,6 +35,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private List<Integer> productImages;
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
+    private Button buyNowBtn;
 
     //rating layout
     private LinearLayout userratingContainer;
@@ -50,6 +53,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         //product image slider
         viewPager = findViewById(R.id.product_images_viewpager);
         tabLayout = findViewById(R.id.image_indicator);
+        buyNowBtn = findViewById(R.id.buyNowBtn);
 
         productImages = new ArrayList<>();
         productImages.add(R.drawable.phone);
@@ -95,6 +99,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     CHECK_FAVORITE_BTN = true;
                     favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
                 }
+            }
+        });
+
+        buyNowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
+                startActivity(delivery);
             }
         });
 

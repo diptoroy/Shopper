@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.atcampus.shopper.Activity.DeliveryActivity;
 import com.atcampus.shopper.Adapter.CartAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
 import com.atcampus.shopper.R;
@@ -29,6 +32,7 @@ public class CartFragment extends Fragment {
     }
 
     private RecyclerView cartRecyclerView;
+    private Button continueBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +41,7 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
+        continueBtn = view.findViewById(R.id.continue_btn);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartRecyclerView.setLayoutManager(linearLayoutManager);
@@ -48,6 +53,14 @@ public class CartFragment extends Fragment {
         CartAdapter cartAdapter = new CartAdapter(cartItemModels);
         cartRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent delivery = new Intent(getContext(), DeliveryActivity.class);
+                getContext().startActivity(delivery);
+            }
+        });
         return view;
     }
 
