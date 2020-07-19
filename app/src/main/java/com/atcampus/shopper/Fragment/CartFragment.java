@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.atcampus.shopper.Activity.AddAddressActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
 import com.atcampus.shopper.Adapter.CartAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
@@ -57,7 +58,7 @@ public class CartFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent delivery = new Intent(getContext(), DeliveryActivity.class);
+                Intent delivery = new Intent(getContext(), AddAddressActivity.class);
                 getContext().startActivity(delivery);
             }
         });
