@@ -64,7 +64,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/slider_background"
-        android:elevation="8dp"
+        android:elevation="12dp"
         android:text="View all"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"

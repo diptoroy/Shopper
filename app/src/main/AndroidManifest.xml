@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.AddAddressActivity"></activity>
+        <activity android:name=".Activity.AddressesActivity"></activity>
+        <activity android:name=".Activity.AddAddressActivity" />
         <activity android:name=".Activity.DeliveryActivity" />
         <activity android:name=".Activity.OrderDetailsActivity" />
         <activity android:name=".Activity.ProductDetailsActivity" />
