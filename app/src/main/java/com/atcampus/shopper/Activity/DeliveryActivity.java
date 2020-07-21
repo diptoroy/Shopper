@@ -25,6 +25,8 @@ public class DeliveryActivity extends AppCompatActivity {
     private RecyclerView deliveryRecyclerView;
     private Button addAddressBtn;
 
+    public static final int SELECT_ADDRESS = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +56,8 @@ public class DeliveryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent delivery = new Intent(DeliveryActivity.this, AddressesActivity.class);
+                delivery.putExtra("MODE",SELECT_ADDRESS);
                 startActivity(delivery);
-                finish();
             }
         });
     }
