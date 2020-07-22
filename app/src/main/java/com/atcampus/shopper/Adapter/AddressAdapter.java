@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     private List<AddressModel> addressModels;
     private int MODE;
-    private int preSelected;
+    private int preSelected = -1;
 
     public AddressAdapter(List<AddressModel> addressModels, int MODE) {
         this.addressModels = addressModels;
@@ -57,6 +58,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
         private TextView userName,userAddress,userPinCode;
         private ImageView saveIcon;
+        private LinearLayout optionContainer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +67,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             userAddress = itemView.findViewById(R.id.address_text);
             userPinCode = itemView.findViewById(R.id.pincode_text);
             saveIcon = itemView.findViewById(R.id.save_icon);
+            optionContainer = itemView.findViewById(R.id.option_container);
         }
 
         public void setData(String name, String address, String pincode, Boolean isSelect, final int position){
@@ -93,7 +96,23 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 });
 
             }else if (MODE == MANAGE_ADDRESS){
-
+                optionContainer.setVisibility(View.GONE);
+                saveIcon.setImageResource(R.drawable.ic_baseline_more_vert_24);
+                saveIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        optionContainer.setVisibility(View.VISIBLE);
+                        refreshItem(preSelected,preSelected);
+                        preSelected = position;
+                    }
+                });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        refreshItem(preSelected,preSelected);
+                        preSelected = -1;
+                    }
+                });
             }
         }
     }
