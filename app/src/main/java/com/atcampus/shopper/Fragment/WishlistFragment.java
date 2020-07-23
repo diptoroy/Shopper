@@ -48,7 +48,7 @@ public class WishlistFragment extends Fragment {
         wishlistModelsList.add(new WishlistModel(R.drawable.phone,"Iphone 10",3,"4.0",16,"$799","$849","No Cash On Delivery Available."));
         wishlistModelsList.add(new WishlistModel(R.drawable.phone,"Iphone 12 ",0,"5.0",93,"$799","$849","Cash On Delivery Available."));
 
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelsList);
+        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelsList,true);
         wishListRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
         return view;

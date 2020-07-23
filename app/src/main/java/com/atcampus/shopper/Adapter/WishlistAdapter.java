@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.WishlistModel;
 import com.atcampus.shopper.R;
 
@@ -21,9 +23,11 @@ import java.util.List;
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
     private List<WishlistModel> wishlistModels;
+    private Boolean wishList;
 
-    public WishlistAdapter(List<WishlistModel> wishlistModels) {
+    public WishlistAdapter(List<WishlistModel> wishlistModels, Boolean wishList) {
         this.wishlistModels = wishlistModels;
+        this.wishList = wishList;
     }
 
     @NonNull
@@ -104,10 +108,24 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             productCuttedPrice.setText(cuttedPrice);
             productDeliverySystem.setText(deliSystem);
 
+            if (wishList){
+                deleteBtn.setVisibility(View.VISIBLE);
+            }else {
+                deleteBtn.setVisibility(View.GONE);
+            }
+
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(),"Delete Item",Toast.LENGTH_LONG).show();
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent wishList = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                    itemView.getContext().startActivity(wishList);
                 }
             });
 

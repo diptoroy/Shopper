@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.atcampus.shopper.Activity.ViewAllActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
@@ -231,6 +233,14 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             dealsText.setText(title);
             if (dealsModels.size() > 8){
                 dealsBtn.setVisibility(View.VISIBLE);
+                dealsBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        viewAllIntent.putExtra("viewCode",0);
+                        itemView.getContext().startActivity(viewAllIntent);
+                    }
+                });
             }else {
                 dealsBtn.setVisibility(View.INVISIBLE);
             }
@@ -259,6 +269,14 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         private void setTrendingAdapter(List<DealsModel> dealsModels,String title){
             trendingText.setText(title);
             trendingGridView.setAdapter(new TrendingAdapter(dealsModels));
+            trendingBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                    viewAllIntent.putExtra("viewCode",1);
+                    itemView.getContext().startActivity(viewAllIntent);
+                }
+            });
         }
     }
 }
