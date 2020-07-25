@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="3dp"
     android:layout_margin="8dp"
-    android:background="@drawable/slider_background">
+    android:background="@drawable/slider_background"
+    android:elevation="3dp">
 
     <TextView
         android:id="@+id/trending_text"
@@ -15,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Trending"
-        android:textStyle="bold"
-        android:textSize="16sp"
         android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/trending_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,26 +27,64 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/slider_background"
         android:text="See all"
-        android:textSize="15sp"
+        android:backgroundTint="#FF5757"
         android:textAllCaps="false"
-        android:textColor="#000000"
-        android:background="#E16565"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <GridView
-        android:id="@+id/trending_recyclerview"
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/trending_grid_layout"
         android:layout_width="0dp"
-        android:layout_height="326dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#EAEAEA"
-        android:horizontalSpacing="1dp"
-        android:numColumns="2"
-        android:verticalSpacing="1dp"
+        app:columnCount="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trending_button" />
+        app:layout_constraintTop_toBottomOf="@+id/trending_button">
+
+        <include
+            layout="@layout/deals_row"
+            app:layout_columnWeight="1" />
+
+        <include
+            layout="@layout/deals_row"
+            app:layout_columnWeight="1" />
+
+        <include
+            layout="@layout/deals_row"
+            app:layout_columnWeight="1" />
+
+        <include
+            layout="@layout/deals_row"
+            app:layout_columnWeight="1" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <View
+        android:id="@+id/divider9"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/signbackColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/trending_grid_layout" />
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/signbackColor"
+        app:layout_constraintBottom_toBottomOf="@+id/trending_grid_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/trending_grid_layout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

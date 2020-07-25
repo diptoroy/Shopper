@@ -43,6 +43,7 @@ public class ViewAllActivity extends AppCompatActivity {
         if (view_code == 0) {
             //RecyclerView
             viewAllRecyclerView = findViewById(R.id.view_All_Recycler_View);
+            viewAllRecyclerView.setVisibility(View.VISIBLE);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             viewAllRecyclerView.setLayoutManager(linearLayoutManager);

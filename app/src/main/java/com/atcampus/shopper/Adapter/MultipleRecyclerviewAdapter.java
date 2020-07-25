@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Activity.ViewAllActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
@@ -31,9 +33,11 @@ import java.util.TimerTask;
 public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
 
     private List<MultipleRecyclerviewModel> multipleRecyclerviewModels;
+    private RecyclerView.RecycledViewPool recycledViewPool;
 
     public MultipleRecyclerviewAdapter(List<MultipleRecyclerviewModel> multipleRecyclerviewModels) {
         this.multipleRecyclerviewModels = multipleRecyclerviewModels;
+        recycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
     @Override
@@ -228,6 +232,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             dealsText = itemView.findViewById(R.id.deals_text);
             dealsBtn = itemView.findViewById(R.id.deals_button);
             dealsRecyclerview = itemView.findViewById(R.id.deals_recyclerview);
+            dealsRecyclerview.setRecycledViewPool(recycledViewPool);
         }
         private void setDealsDayLayout(List<DealsModel> dealsModels,String title){
             dealsText.setText(title);
@@ -257,18 +262,37 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
     private class TrendingViewHolder extends RecyclerView.ViewHolder{
         private TextView trendingText;
         private Button trendingBtn;
-        private GridView trendingGridView;
+        private GridLayout trending_grid_layout;
         public TrendingViewHolder(@NonNull View itemView) {
             super(itemView);
 
             trendingText = itemView.findViewById(R.id.trending_text);
             trendingBtn = itemView.findViewById(R.id.trending_button);
-            trendingGridView = itemView.findViewById(R.id.trending_recyclerview);
+            trending_grid_layout = itemView.findViewById(R.id.trending_grid_layout);
         }
 
         private void setTrendingAdapter(List<DealsModel> dealsModels,String title){
             trendingText.setText(title);
-            trendingGridView.setAdapter(new TrendingAdapter(dealsModels));
+            for (int x = 1;x < 4;x++){
+                ImageView image = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_image);
+                TextView name = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_name);
+                TextView spec = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_spec);
+                TextView price = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_price);
+
+                image.setImageResource(dealsModels.get(x).getDealsImage());
+                name.setText(dealsModels.get(x).getDealsName());
+                spec.setText(dealsModels.get(x).getDealsSpec());
+                price.setText(dealsModels.get(x).getDealsPrice());
+
+                trending_grid_layout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
+                trending_grid_layout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent productIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        itemView.getContext().startActivity(productIntent);
+                    }
+                });
+            }
             trendingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

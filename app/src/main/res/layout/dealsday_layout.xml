@@ -28,10 +28,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="See all"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textAllCaps="false"
-        android:textColor="#000000"
-        android:background="#E16565"
+        android:background="@drawable/slider_background"
+        android:backgroundTint="#FF5757"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
