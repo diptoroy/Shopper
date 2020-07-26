@@ -85,17 +85,11 @@ public class HomeFragment extends Fragment {
         //Slider
         List<SliderModel>sliderModelList = new ArrayList<>();
 
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
         sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
 
         //deals
         List<DealsModel>dealsModels = new ArrayList<>();

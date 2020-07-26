@@ -26,6 +26,7 @@ import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,10 +114,11 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
     public class SliderViewHolder extends RecyclerView.ViewHolder {
 
         private ViewPager sliderPager;
-        private int currentSlider = 2;
+        private int currentSlider;
         private Timer timer;
         final private long DELAY_TIME = 3000;
         final private long PERIOD_TIME = 3000;
+        private List<SliderModel> arrangedList;
 
         public SliderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,7 +128,21 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         }
 
         private void setSliderViewpager(final List<SliderModel> sliderModelList){
-            SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
+            currentSlider = 2;
+            if (timer != null){
+                timer.cancel();
+            }
+
+            arrangedList = new ArrayList<>();
+            for (int x = 0;x < sliderModelList.size();x++){
+                arrangedList.add(x,sliderModelList.get(x));
+            }
+            arrangedList.add(0,sliderModelList.get(sliderModelList.size()-2));
+            arrangedList.add(1,sliderModelList.get(sliderModelList.size()-1));
+            arrangedList.add(sliderModelList.get(0));
+            arrangedList.add(sliderModelList.get(1));
+
+            SliderAdapter sliderAdapter = new SliderAdapter(arrangedList);
             sliderPager.setAdapter(sliderAdapter);
             sliderPager.setClipToPadding(false);
             sliderPager.setPageMargin(20);
@@ -146,21 +162,21 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onPageScrollStateChanged(int position) {
                     if (position == ViewPager.SCROLL_STATE_IDLE){
-                        SliderLopper(sliderModelList);
+                        SliderLopper(arrangedList);
                     }
 
                 }
             };
             sliderPager.addOnPageChangeListener(onPageChangeListener);
 
-            startSlider(sliderModelList);
+            startSlider(arrangedList);
             sliderPager.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    SliderLopper(sliderModelList);
+                    SliderLopper(arrangedList);
                     stopSlider();
                     if (event.getAction() == MotionEvent.ACTION_UP){
-                        startSlider(sliderModelList);
+                        startSlider(arrangedList);
                     }
                     return false;
                 }
