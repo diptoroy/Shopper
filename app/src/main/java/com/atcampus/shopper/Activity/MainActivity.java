@@ -6,10 +6,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.atcampus.shopper.Fragment.AccountFragment;
 import com.atcampus.shopper.Fragment.CartFragment;
@@ -20,6 +25,7 @@ import com.atcampus.shopper.Fragment.WishlistFragment;
 import com.atcampus.shopper.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
 import static com.atcampus.shopper.R.menu.menu;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,9 +92,37 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new OrderFragment();
                             break;
                         case R.id.navigation_cart:
-                            getSupportActionBar().setTitle("My Cart");
-                            invalidateOptionsMenu();
-                            selectedFragment = new CartFragment();
+
+                            final Dialog userAlertDialog = new Dialog(MainActivity.this);
+                            userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
+                            userAlertDialog.setCancelable(true);
+                            userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                            Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
+                            Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
+
+                            final Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+
+                            signInBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    userAlertDialog.dismiss();
+                                    setSignUpFragment = false;
+                                    startActivity(registerIntent);
+                                }
+                            });
+
+                            signUpBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    userAlertDialog.dismiss();
+                                    setSignUpFragment = true;
+                                    startActivity(registerIntent);
+                                }
+                            });
+                            userAlertDialog.show();
+//                            getSupportActionBar().setTitle("My Cart");
+//                            invalidateOptionsMenu();
+//                            selectedFragment = new CartFragment();
                             break;
                         case R.id.navigation_account:
                             getSupportActionBar().setTitle("My Account");

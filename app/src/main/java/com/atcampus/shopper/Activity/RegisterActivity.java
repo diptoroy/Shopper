@@ -9,12 +9,14 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import com.atcampus.shopper.Fragment.SigninFragment;
+import com.atcampus.shopper.Fragment.SignupFragment;
 import com.atcampus.shopper.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     public static boolean resetButtonBack = false;
+    public static boolean setSignUpFragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,13 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         frameLayout = findViewById(R.id.registerFrame);
-        setDefaultFragment(new SigninFragment());
+        if (setSignUpFragment){
+            setSignUpFragment = false;
+            setDefaultFragment(new SignupFragment());
+        }else {
+            setDefaultFragment(new SigninFragment());
+        }
+
     }
 
     @Override
