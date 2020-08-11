@@ -47,7 +47,7 @@ public class RewardFragment extends Fragment {
         rewardModelList.add(new RewardModel("Title for Reward 5","12-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
         rewardModelList.add(new RewardModel("Title for Reward 6","19-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
 
-        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList);
+        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList,false);
         rewardRecyclerView.setAdapter(rewardAdapter);
         rewardAdapter.notifyDataSetChanged();
         return view;

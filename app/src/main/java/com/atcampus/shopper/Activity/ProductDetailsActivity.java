@@ -3,9 +3,12 @@ package com.atcampus.shopper.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -14,12 +17,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
 import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
+import com.atcampus.shopper.Adapter.RewardAdapter;
+import com.atcampus.shopper.Model.RewardModel;
 import com.atcampus.shopper.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -35,7 +42,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private List<Integer> productImages;
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
-    private Button buyNowBtn;
+    private Button buyNowBtn,cueponBtn;
 
     //rating layout
     private LinearLayout userratingContainer;
@@ -54,6 +61,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.product_images_viewpager);
         tabLayout = findViewById(R.id.image_indicator);
         buyNowBtn = findViewById(R.id.buyNowBtn);
+        cueponBtn = findViewById(R.id.cuepon_btn);
 
         productImages = new ArrayList<>();
         productImages.add(R.drawable.phone);
@@ -107,6 +115,53 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
                 startActivity(delivery);
+            }
+        });
+
+        cueponBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog cueponDialog = new Dialog(ProductDetailsActivity.this);
+                cueponDialog.setContentView(R.layout.redeem_dialog_layout);
+                cueponDialog.setCancelable(true);
+                cueponDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                ImageView all_select_btn = cueponDialog.findViewById(R.id.all_select_btn);
+                final RecyclerView cueponRecyclerView = cueponDialog.findViewById(R.id.cuepon_recyclerView);
+                final LinearLayout selected_cuepon_container = cueponDialog.findViewById(R.id.selected_cuepon_container);
+                TextView originalPrice = cueponDialog.findViewById(R.id.original_price_text);
+                TextView cueponPrice = cueponDialog.findViewById(R.id.cuepon_price_text);
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailsActivity.this);
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                cueponRecyclerView.setLayoutManager(linearLayoutManager);
+
+                List<RewardModel> rewardModelList = new ArrayList<>();
+                rewardModelList.add(new RewardModel("Title for Reward 1","20-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+                rewardModelList.add(new RewardModel("Title for Reward 2","10-11-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+                rewardModelList.add(new RewardModel("Title for Reward 3","14-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+                rewardModelList.add(new RewardModel("Title for Reward 4","29-10-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+                rewardModelList.add(new RewardModel("Title for Reward 5","12-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+                rewardModelList.add(new RewardModel("Title for Reward 6","19-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+
+                RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList,false);
+                cueponRecyclerView.setAdapter(rewardAdapter);
+                rewardAdapter.notifyDataSetChanged();
+
+                all_select_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (cueponRecyclerView.getVisibility() == View.GONE){
+                            cueponRecyclerView.setVisibility(View.VISIBLE);
+                            selected_cuepon_container.setVisibility(View.GONE);
+                        }else {
+                            cueponRecyclerView.setVisibility(View.GONE);
+                            selected_cuepon_container.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+
             }
         });
 

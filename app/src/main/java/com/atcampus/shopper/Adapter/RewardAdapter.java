@@ -16,15 +16,22 @@ import java.util.List;
 public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder> {
 
     private List<RewardModel> rewardModels;
+    public Boolean miniRewardLayout = false;
 
-    public RewardAdapter(List<RewardModel> rewardModels) {
+    public RewardAdapter(List<RewardModel> rewardModels, Boolean miniRewardLayout) {
         this.rewardModels = rewardModels;
+        this.miniRewardLayout = miniRewardLayout;
     }
 
     @NonNull
     @Override
     public RewardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reward_layout,parent,false);
+        View view;
+        if (miniRewardLayout){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mini_reward_layout,parent,false);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reward_layout,parent,false);
+        }
         return new ViewHolder(view);
     }
 

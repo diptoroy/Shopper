@@ -173,6 +173,7 @@
             android:text="Click the button and get your coupen !"/>
 
         <Button
+            android:id="@+id/cuepon_btn"
             android:layout_width="75dp"
             android:layout_height="30dp"
             android:text="Coupen"
