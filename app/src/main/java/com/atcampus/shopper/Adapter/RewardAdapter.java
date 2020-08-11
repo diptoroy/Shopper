@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.RewardModel;
 import com.atcampus.shopper.R;
 
@@ -62,10 +63,22 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
             desc = itemView.findViewById(R.id.reward_details);
         }
 
-        private void setData(String rTitle,String rDate,String rDesc){
+        private void setData(final String rTitle, final String rDate, final String rDesc){
             title.setText(rTitle);
             date.setText(rDate);
             desc.setText(rDesc);
+
+            if(miniRewardLayout){
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ProductDetailsActivity.cueponTitle.setText(rTitle);
+                        ProductDetailsActivity.cueponBody.setText(rDesc);
+                        ProductDetailsActivity.cueponExpiry.setText(rDate);
+                        ProductDetailsActivity.showCueponDialogRecyclerView();
+                    }
+                });
+            }
         }
     }
 }

@@ -47,6 +47,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     //rating layout
     private LinearLayout userratingContainer;
 
+    //cuepon dialog
+    public static TextView cueponTitle,cueponBody,cueponExpiry;
+    public static RecyclerView cueponRecyclerView;
+    public static LinearLayout selected_cuepon_container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,50 +123,50 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        //cuepon dialog
+        final Dialog cueponDialog = new Dialog(ProductDetailsActivity.this);
+        cueponDialog.setContentView(R.layout.redeem_dialog_layout);
+        cueponDialog.setCancelable(true);
+        cueponDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ImageView all_select_btn = cueponDialog.findViewById(R.id.all_select_btn);
+        cueponRecyclerView = cueponDialog.findViewById(R.id.cuepon_recyclerView);
+        selected_cuepon_container = cueponDialog.findViewById(R.id.selected_cuepon_container);
+
+        cueponTitle = cueponDialog.findViewById(R.id.reward_title);
+        cueponBody = cueponDialog.findViewById(R.id.reward_details);
+        cueponExpiry = cueponDialog.findViewById(R.id.reward_date);
+
+        TextView originalPrice = cueponDialog.findViewById(R.id.original_price_text);
+        TextView cueponPrice = cueponDialog.findViewById(R.id.cuepon_price_text);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailsActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        cueponRecyclerView.setLayoutManager(linearLayoutManager);
+
+        List<RewardModel> rewardModelList = new ArrayList<>();
+        rewardModelList.add(new RewardModel("Title for Reward 1","20-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 2","10-11-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 3","14-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 4","29-10-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 5","12-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 6","19-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+
+        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList,false);
+        cueponRecyclerView.setAdapter(rewardAdapter);
+        rewardAdapter.notifyDataSetChanged();
+
+        all_select_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCueponDialogRecyclerView();
+            }
+        });
+
         cueponBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog cueponDialog = new Dialog(ProductDetailsActivity.this);
-                cueponDialog.setContentView(R.layout.redeem_dialog_layout);
-                cueponDialog.setCancelable(true);
-                cueponDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                ImageView all_select_btn = cueponDialog.findViewById(R.id.all_select_btn);
-                final RecyclerView cueponRecyclerView = cueponDialog.findViewById(R.id.cuepon_recyclerView);
-                final LinearLayout selected_cuepon_container = cueponDialog.findViewById(R.id.selected_cuepon_container);
-                TextView originalPrice = cueponDialog.findViewById(R.id.original_price_text);
-                TextView cueponPrice = cueponDialog.findViewById(R.id.cuepon_price_text);
-
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailsActivity.this);
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                cueponRecyclerView.setLayoutManager(linearLayoutManager);
-
-                List<RewardModel> rewardModelList = new ArrayList<>();
-                rewardModelList.add(new RewardModel("Title for Reward 1","20-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-                rewardModelList.add(new RewardModel("Title for Reward 2","10-11-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-                rewardModelList.add(new RewardModel("Title for Reward 3","14-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-                rewardModelList.add(new RewardModel("Title for Reward 4","29-10-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-                rewardModelList.add(new RewardModel("Title for Reward 5","12-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-                rewardModelList.add(new RewardModel("Title for Reward 6","19-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-
-                RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList,false);
-                cueponRecyclerView.setAdapter(rewardAdapter);
-                rewardAdapter.notifyDataSetChanged();
-
-                all_select_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (cueponRecyclerView.getVisibility() == View.GONE){
-                            cueponRecyclerView.setVisibility(View.VISIBLE);
-                            selected_cuepon_container.setVisibility(View.GONE);
-                        }else {
-                            cueponRecyclerView.setVisibility(View.GONE);
-                            selected_cuepon_container.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-
-
+                cueponDialog.show();
             }
         });
 
@@ -175,6 +180,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     setRating(starPosition);
                 }
             });
+        }
+    }
+
+    public static void showCueponDialogRecyclerView(){
+        if (cueponRecyclerView.getVisibility() == View.GONE){
+            cueponRecyclerView.setVisibility(View.VISIBLE);
+            selected_cuepon_container.setVisibility(View.GONE);
+        }else {
+            cueponRecyclerView.setVisibility(View.GONE);
+            selected_cuepon_container.setVisibility(View.VISIBLE);
         }
     }
 
