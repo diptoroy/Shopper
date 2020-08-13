@@ -14,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atcampus.shopper.Activity.CategoryActivity;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
@@ -37,6 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         String image = categoryModelList.get(position).getCategoryImage();
         String name = categoryModelList.get(position).getCategory_Name();
         holder.setCategoryName(name,position);
+        holder.setCategoryImage(image);
     }
 
     @Override
@@ -56,8 +61,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categoryName = itemView.findViewById(R.id.category_name);
 
         }
-        private void setCategoryImage(){
-            //todo
+        private void setCategoryImage(String cImageUrl){
+            if (!cImageUrl.equals("null")) {
+                Glide.with(itemView.getContext()).load(cImageUrl).apply(new RequestOptions().placeholder(R.drawable.all)).into(categoryImage);
+            }
         }
         private void setCategoryName(final String name,final int position){
             categoryName.setText(name);

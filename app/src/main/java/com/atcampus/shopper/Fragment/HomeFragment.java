@@ -3,6 +3,7 @@ package com.atcampus.shopper.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.DealsAdapter;
@@ -29,6 +31,11 @@ import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -48,11 +55,13 @@ public class HomeFragment extends Fragment {
     //category
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-
-
+    private List<CategoryModel> categoryModels;
 
     //multiple recyclerview
     private RecyclerView multipleRecyclerview;
+
+    //Firebase Firestore
+    private FirebaseFirestore firebaseFirestore;
 
 
     @Override
@@ -67,20 +76,29 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerView.setLayoutManager(layoutManager);
 
-        List<CategoryModel> categoryModels = new ArrayList<CategoryModel>();
-        categoryModels.add(new CategoryModel("image","All"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
-        categoryModels.add(new CategoryModel("image","Dress"));
+        categoryModels = new ArrayList<CategoryModel>();
         categoryAdapter = new CategoryAdapter(categoryModels);
         categoryRecyclerView.setAdapter(categoryAdapter);
-        categoryAdapter.notifyDataSetChanged();
+
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                categoryModels.add(new CategoryModel(documentSnapshot.get("icon").toString(),documentSnapshot.get("categoryName").toString()));
+                            }
+                            categoryAdapter.notifyDataSetChanged();
+                        }else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getContext(),error,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
 
         //Slider
         List<SliderModel>sliderModelList = new ArrayList<>();
