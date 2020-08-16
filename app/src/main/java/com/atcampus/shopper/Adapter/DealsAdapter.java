@@ -15,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull DealsAdapter.ViewHolder holder, int position) {
 
-        int img = dealsModelList.get(position).getDealsImage();
+        String img = dealsModelList.get(position).getDealsImage();
         String name = dealsModelList.get(position).getDealsName();
         String spec = dealsModelList.get(position).getDealsSpec();
         String price = dealsModelList.get(position).getDealsPrice();
@@ -79,8 +81,8 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
             });
         }
 
-        private void setDealsImage(int img){
-            dealsImage.setImageResource(img);
+        private void setDealsImage(String img){
+            Glide.with(itemView.getContext()).load(img).apply(new RequestOptions().placeholder(R.drawable.phone)).into(dealsImage);
         }
 
         private void setDealsName(String name){
@@ -92,7 +94,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         }
 
         private void setDealsPrice(String price){
-            dealsPrice.setText(price);
+            dealsPrice.setText("$"+price+"");
         }
     }
 }

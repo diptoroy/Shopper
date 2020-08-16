@@ -158,7 +158,16 @@ public class HomeFragment extends Fragment {
 //                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,documentSnapshot.get("ads_1").toString()
 //                                            ,documentSnapshot.get("ads_1_color").toString()));
                                 }else if ((long)documentSnapshot.get("view_type") == 2){
-
+                                    List<DealsModel> dealsModelList = new ArrayList<>();
+                                    long number_of_product = (long) documentSnapshot.get("number_of_product");
+                                    for (long i = 1 ;i < number_of_product + 1;i++){
+                                        dealsModelList.add(new DealsModel(documentSnapshot.get("product_id_"+i).toString()
+                                        ,documentSnapshot.get("product_image_"+i).toString()
+                                        ,documentSnapshot.get("product_title_"+i).toString()
+                                        ,documentSnapshot.get("product_subtitle_"+i).toString()
+                                        ,documentSnapshot.get("product_price_"+i).toString()));
+                                    }
+                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,documentSnapshot.get("layout_title").toString(),documentSnapshot.get("layout_color").toString(),dealsModelList));
                                 }else if ((long)documentSnapshot.get("view_type") == 3){
 
                                 }

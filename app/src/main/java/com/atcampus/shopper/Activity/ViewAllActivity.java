@@ -65,18 +65,6 @@ public class ViewAllActivity extends AppCompatActivity {
             viewAllGridView = findViewById(R.id.view_All_Grid_View);
             viewAllGridView.setVisibility(View.VISIBLE);
             List<DealsModel> dealsModels = new ArrayList<>();
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
-            dealsModels.add(new DealsModel(R.drawable.phone, "Iphone 11", "6GB/128GB", "TK 76000/-"));
 
             TrendingAdapter trendingAdapter = new TrendingAdapter(dealsModels);
             viewAllGridView.setAdapter(trendingAdapter);

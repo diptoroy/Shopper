@@ -60,7 +60,7 @@ public class TrendingAdapter extends BaseAdapter {
             TextView trendingSpec = view.findViewById(R.id.dealsitem_spec);
             TextView trendingPrice = view.findViewById(R.id.dealsitem_price);
 
-            trendingImage.setImageResource(trendingList.get(position).getDealsImage());
+//            trendingImage.setImageResource(trendingList.get(position).getDealsImage());
             trendingName.setText(trendingList.get(position).getDealsName());
             trendingSpec.setText(trendingList.get(position).getDealsSpec());
             trendingPrice.setText(trendingList.get(position).getDealsPrice());

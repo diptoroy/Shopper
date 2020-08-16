@@ -10,6 +10,7 @@ public class MultipleRecyclerviewModel {
     public static final int TRENDING = 3;
 
     private int type;
+    private String backgroundColor;
 
     //slider
     private List<SliderModel> sliderModelList;
@@ -37,7 +38,7 @@ public class MultipleRecyclerviewModel {
 
     //slider ads
     private String resource;
-    private String backgroundColor;
+
 
     public MultipleRecyclerviewModel(int type, String resource, String backgroundColor) {
         this.type = type;
@@ -65,9 +66,10 @@ public class MultipleRecyclerviewModel {
     private String title;
     private List<DealsModel> dealsModelList;
 
-    public MultipleRecyclerviewModel(int type, String title, List<DealsModel> dealsModelList) {
+    public MultipleRecyclerviewModel(int type, String title, String backgroundColor, List<DealsModel> dealsModelList) {
         this.type = type;
         this.title = title;
+        this.backgroundColor = backgroundColor;
         this.dealsModelList = dealsModelList;
     }
 

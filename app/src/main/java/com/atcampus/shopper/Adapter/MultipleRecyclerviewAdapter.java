@@ -1,6 +1,7 @@
 package com.atcampus.shopper.Adapter;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -95,7 +96,8 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             case MultipleRecyclerviewModel.DEALS_DAY:
                 String dealsday_title = multipleRecyclerviewModels.get(position).getTitle();
                 List<DealsModel> dealsModels = multipleRecyclerviewModels.get(position).getDealsModelList();
-                ((DealsDayViewHolder) holder).setDealsDayLayout(dealsModels,dealsday_title);
+                String dColor = multipleRecyclerviewModels.get(position).getBackgroundColor();
+                ((DealsDayViewHolder) holder).setDealsDayLayout(dealsModels,dealsday_title,dColor);
                 break;
             case MultipleRecyclerviewModel.TRENDING:
                 String trending_title = multipleRecyclerviewModels.get(position).getTitle();
@@ -243,6 +245,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         private TextView dealsText;
         private Button dealsBtn;
         private RecyclerView dealsRecyclerview;
+        private ConstraintLayout container;
 
         public DealsDayViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -250,9 +253,11 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             dealsText = itemView.findViewById(R.id.deals_text);
             dealsBtn = itemView.findViewById(R.id.deals_button);
             dealsRecyclerview = itemView.findViewById(R.id.deals_recyclerview);
+            container = itemView.findViewById(R.id.deals_container);
             dealsRecyclerview.setRecycledViewPool(recycledViewPool);
         }
-        private void setDealsDayLayout(List<DealsModel> dealsModels,String title){
+        private void setDealsDayLayout(List<DealsModel> dealsModels,String title,String color){
+            container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             dealsText.setText(title);
             if (dealsModels.size() > 8){
                 dealsBtn.setVisibility(View.VISIBLE);
@@ -297,7 +302,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 TextView spec = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_spec);
                 TextView price = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_price);
 
-                image.setImageResource(dealsModels.get(x).getDealsImage());
+//                image.setImageResource(dealsModels.get(x).getDealsImage());
                 name.setText(dealsModels.get(x).getDealsName());
                 spec.setText(dealsModels.get(x).getDealsSpec());
                 price.setText(dealsModels.get(x).getDealsPrice());
