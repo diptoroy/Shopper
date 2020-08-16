@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment {
 
     //multiple recyclerview
     private RecyclerView multipleRecyclerview;
+    private MultipleRecyclerviewAdapter multipleRecyclerviewAdapter;
 
     //Firebase Firestore
     private FirebaseFirestore firebaseFirestore;
@@ -100,30 +101,30 @@ public class HomeFragment extends Fragment {
 
 
 
-        //Slider
-        List<SliderModel>sliderModelList = new ArrayList<>();
-
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-
-        //deals
-        List<DealsModel>dealsModels = new ArrayList<>();
-
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        //Slider
+//        List<SliderModel>sliderModelList = new ArrayList<>();
+//
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//
+//        //deals
+//        List<DealsModel>dealsModels = new ArrayList<>();
+//
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
 
         //multiple recyclerview
         multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
@@ -131,16 +132,46 @@ public class HomeFragment extends Fragment {
         multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
         multipleRecyclerview.setLayoutManager(multipleManager);
 
-        List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#000000"));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"Deals",dealsModels));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"Trending",dealsModels));
-
-
-        MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
+        final List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
+        multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
         multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
-        multipleRecyclerviewAdapter.notifyDataSetChanged();
+
+        firebaseFirestore.collection("CATEGORIES")
+                .document("HOME")
+                .collection("BANNERSLIDER")
+                .orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+
+                                if ((long)documentSnapshot.get("view_type") == 0){
+                                    List<SliderModel> sliderModelList = new ArrayList<>();
+                                    long no_of_slider = (long) documentSnapshot.get("no_of_slider");
+                                    for (long i = 1 ;i < no_of_slider + 1;i++){
+                                        sliderModelList.add(new SliderModel(documentSnapshot.get("slider_"+i).toString()
+                                                ,documentSnapshot.get("slider_"+i+"_color").toString()));
+                                    }
+                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
+                                }else if ((long)documentSnapshot.get("view_type") == 1){
+//                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,documentSnapshot.get("ads_1").toString()
+//                                            ,documentSnapshot.get("ads_1_color").toString()));
+                                }else if ((long)documentSnapshot.get("view_type") == 2){
+
+                                }else if ((long)documentSnapshot.get("view_type") == 3){
+
+                                }
+                            }
+                            multipleRecyclerviewAdapter.notifyDataSetChanged();
+                        }else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getContext(),error,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
 
         return view;
     }

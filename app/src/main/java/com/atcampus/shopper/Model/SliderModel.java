@@ -2,19 +2,19 @@ package com.atcampus.shopper.Model;
 
 public class SliderModel {
 
-    private int slider;
+    private String slider;
     private String backgroundColor;
 
-    public SliderModel(int slider, String backgroundColor) {
+    public SliderModel(String slider, String backgroundColor) {
         this.slider = slider;
         this.backgroundColor = backgroundColor;
     }
 
-    public int getSlider() {
+    public String getSlider() {
         return slider;
     }
 
-    public void setSlider(int slider) {
+    public void setSlider(String slider) {
         this.slider = slider;
     }
 

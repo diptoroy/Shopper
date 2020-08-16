@@ -38,30 +38,30 @@ public class CategoryActivity extends AppCompatActivity {
 
         categoryRecyclerView = findViewById(R.id.category_recyclerview);
 
-        //Slider
-        List<SliderModel> sliderModelList = new ArrayList<>();
-
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-
-        //deals
-        List<DealsModel>dealsModels = new ArrayList<>();
-
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        //Slider
+//        List<SliderModel> sliderModelList = new ArrayList<>();
+//
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
+//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
+//
+//        //deals
+//        List<DealsModel>dealsModels = new ArrayList<>();
+//
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
+//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
 
         //multiple recyclerview
         LinearLayoutManager multipleManager = new LinearLayoutManager(this);
@@ -69,10 +69,6 @@ public class CategoryActivity extends AppCompatActivity {
         categoryRecyclerView.setLayoutManager(multipleManager);
 
         List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,R.drawable.banner,"#000000"));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"Deals",dealsModels));
-        multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"Trending",dealsModels));
 
 
         MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);

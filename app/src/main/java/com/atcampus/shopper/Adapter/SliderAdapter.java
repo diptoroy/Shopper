@@ -13,6 +13,8 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class SliderAdapter extends PagerAdapter {
         ConstraintLayout bannerLayout = view.findViewById(R.id.banner_layout);
         bannerLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModels.get(position).getBackgroundColor())));
         ImageView slider_img = view.findViewById(R.id.slider_image);
-        slider_img.setImageResource(sliderModels.get(position).getSlider());
+        Glide.with(container.getContext()).load(sliderModels.get(position).getSlider()).apply(new RequestOptions().placeholder(R.drawable.banner)).into(slider_img);
         container.addView(view,0);
         return view;
     }

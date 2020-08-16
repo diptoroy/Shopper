@@ -25,6 +25,8 @@ import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +88,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 ((SliderViewHolder) holder).setSliderViewpager(sliderModelList);
                 break;
             case MultipleRecyclerviewModel.SLIDER_ADS:
-                int resource = multipleRecyclerviewModels.get(position).getResource();
+                String resource = multipleRecyclerviewModels.get(position).getResource();
                 String backgroundColor = multipleRecyclerviewModels.get(position).getBackgroundColor();
                 ((SliderAdsViewHolder)holder).setSliderAds(resource,backgroundColor);
                 break;
@@ -230,8 +232,8 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             slider_ads_layout = itemView.findViewById(R.id.slider_ads_layout);
         }
 
-        private void setSliderAds(int resource, String color) {
-            slider_ads.setImageResource(resource);
+        private void setSliderAds(String resource, String color) {
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.banner)).into(slider_ads);
             slider_ads_layout.setBackgroundColor(Color.parseColor(color));
         }
     }
