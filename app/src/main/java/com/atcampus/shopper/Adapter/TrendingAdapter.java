@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -60,10 +62,10 @@ public class TrendingAdapter extends BaseAdapter {
             TextView trendingSpec = view.findViewById(R.id.dealsitem_spec);
             TextView trendingPrice = view.findViewById(R.id.dealsitem_price);
 
-//            trendingImage.setImageResource(trendingList.get(position).getDealsImage());
+            Glide.with(parent.getContext()).load(trendingList.get(position).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.phone)).into(trendingImage);
             trendingName.setText(trendingList.get(position).getDealsName());
             trendingSpec.setText(trendingList.get(position).getDealsSpec());
-            trendingPrice.setText(trendingList.get(position).getDealsPrice());
+            trendingPrice.setText("$"+trendingList.get(position).getDealsPrice()+"");
         }else{
             view = convertView;
         }

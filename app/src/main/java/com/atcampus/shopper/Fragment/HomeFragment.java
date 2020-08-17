@@ -1,6 +1,9 @@
 package com.atcampus.shopper.Fragment;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,6 +34,7 @@ import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +46,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.atcampus.shopper.Query.AllDBQuery.categoryModels;
+import static com.atcampus.shopper.Query.AllDBQuery.firebaseFirestore;
+import static com.atcampus.shopper.Query.AllDBQuery.loadCategories;
+import static com.atcampus.shopper.Query.AllDBQuery.loadView;
+import static com.atcampus.shopper.Query.AllDBQuery.multipleRecyclerviewModels;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,51 +65,23 @@ public class HomeFragment extends Fragment {
     //category
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-    private List<CategoryModel> categoryModels;
+
 
     //multiple recyclerview
     private RecyclerView multipleRecyclerview;
     private MultipleRecyclerviewAdapter multipleRecyclerviewAdapter;
 
-    //Firebase Firestore
-    private FirebaseFirestore firebaseFirestore;
+    ImageView noConnection;
 
+    ConnectivityManager connectivityManager;
+    NetworkInfo networkInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        ///Category
-        categoryRecyclerView = view.findViewById(R.id.category_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        categoryRecyclerView.setLayoutManager(layoutManager);
-
-        categoryModels = new ArrayList<CategoryModel>();
-        categoryAdapter = new CategoryAdapter(categoryModels);
-        categoryRecyclerView.setAdapter(categoryAdapter);
-
-
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                categoryModels.add(new CategoryModel(documentSnapshot.get("icon").toString(),documentSnapshot.get("categoryName").toString()));
-                            }
-                            categoryAdapter.notifyDataSetChanged();
-                        }else {
-                            String error = task.getException().getMessage();
-                            Toast.makeText(getContext(),error,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
+        noConnection = view.findViewById(R.id.noConnection);
 
 //        //Slider
 //        List<SliderModel>sliderModelList = new ArrayList<>();
@@ -127,61 +109,43 @@ public class HomeFragment extends Fragment {
 //        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
 
         //multiple recyclerview
-        multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
-        LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
-        multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
-        multipleRecyclerview.setLayoutManager(multipleManager);
 
-        final List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
-        multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
-        multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
+        connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected() == true) {
+            noConnection.setVisibility(View.GONE);
+            ///Category
+            categoryRecyclerView = view.findViewById(R.id.category_view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            categoryRecyclerView.setLayoutManager(layoutManager);
+            categoryAdapter = new CategoryAdapter(categoryModels);
+            categoryRecyclerView.setAdapter(categoryAdapter);
 
-        firebaseFirestore.collection("CATEGORIES")
-                .document("HOME")
-                .collection("BANNERSLIDER")
-                .orderBy("index").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+            if (categoryModels.size() == 0){
+                loadCategories(categoryAdapter,getContext());
+            }else {
+                categoryAdapter.notifyDataSetChanged();
+            }
 
-                                if ((long)documentSnapshot.get("view_type") == 0){
-                                    List<SliderModel> sliderModelList = new ArrayList<>();
-                                    long no_of_slider = (long) documentSnapshot.get("no_of_slider");
-                                    for (long i = 1 ;i < no_of_slider + 1;i++){
-                                        sliderModelList.add(new SliderModel(documentSnapshot.get("slider_"+i).toString()
-                                                ,documentSnapshot.get("slider_"+i+"_color").toString()));
-                                    }
-                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,sliderModelList));
-                                }else if ((long)documentSnapshot.get("view_type") == 1){
-//                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,documentSnapshot.get("ads_1").toString()
-//                                            ,documentSnapshot.get("ads_1_color").toString()));
-                                }else if ((long)documentSnapshot.get("view_type") == 2){
-                                    List<DealsModel> dealsModelList = new ArrayList<>();
-                                    long number_of_product = (long) documentSnapshot.get("number_of_product");
-                                    for (long i = 1 ;i < number_of_product + 1;i++){
-                                        dealsModelList.add(new DealsModel(documentSnapshot.get("product_id_"+i).toString()
-                                        ,documentSnapshot.get("product_image_"+i).toString()
-                                        ,documentSnapshot.get("product_title_"+i).toString()
-                                        ,documentSnapshot.get("product_subtitle_"+i).toString()
-                                        ,documentSnapshot.get("product_price_"+i).toString()));
-                                    }
-                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,documentSnapshot.get("layout_title").toString(),documentSnapshot.get("layout_color").toString(),dealsModelList));
-                                }else if ((long)documentSnapshot.get("view_type") == 3){
+            //all View
+            multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
+            LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
+            multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
+            multipleRecyclerview.setLayoutManager(multipleManager);
+            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
+            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
 
-                                }
-                            }
-                            multipleRecyclerviewAdapter.notifyDataSetChanged();
-                        }else {
-                            String error = task.getException().getMessage();
-                            Toast.makeText(getContext(),error,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            if (multipleRecyclerviewModels.size() == 0){
+                loadView(multipleRecyclerviewAdapter,getContext());
+            }else {
+                categoryAdapter.notifyDataSetChanged();
+            }
 
-
-
+        } else {
+            Glide.with(this).load(R.drawable.symbol).into(noConnection);
+            noConnection.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 

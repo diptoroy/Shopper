@@ -102,7 +102,8 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             case MultipleRecyclerviewModel.TRENDING:
                 String trending_title = multipleRecyclerviewModels.get(position).getTitle();
                 List<DealsModel> trendingModels = multipleRecyclerviewModels.get(position).getDealsModelList();
-                ((TrendingViewHolder) holder).setTrendingAdapter(trendingModels,trending_title);
+                String tColor = multipleRecyclerviewModels.get(position).getBackgroundColor();
+                ((TrendingViewHolder) holder).setTrendingAdapter(trendingModels,trending_title,tColor);
                 break;
             default:
                 return;
@@ -286,16 +287,19 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         private TextView trendingText;
         private Button trendingBtn;
         private GridLayout trending_grid_layout;
+        private ConstraintLayout trendingContainer;
         public TrendingViewHolder(@NonNull View itemView) {
             super(itemView);
 
             trendingText = itemView.findViewById(R.id.trending_text);
             trendingBtn = itemView.findViewById(R.id.trending_button);
             trending_grid_layout = itemView.findViewById(R.id.trending_grid_layout);
+            trendingContainer = itemView.findViewById(R.id.trending_container);
         }
 
-        private void setTrendingAdapter(List<DealsModel> dealsModels,String title){
+        private void setTrendingAdapter(final List<DealsModel> dealsModels, final String title, String tColor){
             trendingText.setText(title);
+            trendingContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(tColor)));
             for (int x = 1;x < 4;x++){
                 ImageView image = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_image);
                 TextView name = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_name);
@@ -303,9 +307,10 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 TextView price = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_price);
 
 //                image.setImageResource(dealsModels.get(x).getDealsImage());
+                Glide.with(itemView.getContext()).load(dealsModels.get(x).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.phone)).into(image);
                 name.setText(dealsModels.get(x).getDealsName());
                 spec.setText(dealsModels.get(x).getDealsSpec());
-                price.setText(dealsModels.get(x).getDealsPrice());
+                price.setText("$"+dealsModels.get(x).getDealsPrice()+"");
 
                 trending_grid_layout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
                 trending_grid_layout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
@@ -319,8 +324,10 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             trendingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ViewAllActivity.dealsModels = dealsModels;
                     Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
                     viewAllIntent.putExtra("viewCode",1);
+                    viewAllIntent.putExtra("title",title);
                     itemView.getContext().startActivity(viewAllIntent);
                 }
             });

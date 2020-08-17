@@ -26,6 +26,7 @@ public class ViewAllActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView viewAllRecyclerView;
     private GridView viewAllGridView;
+    public static List<DealsModel> dealsModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class ViewAllActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Deals");
+        getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         int view_code = getIntent().getIntExtra("viewCode", -1);
@@ -64,7 +65,7 @@ public class ViewAllActivity extends AppCompatActivity {
             //GridView
             viewAllGridView = findViewById(R.id.view_All_Grid_View);
             viewAllGridView.setVisibility(View.VISIBLE);
-            List<DealsModel> dealsModels = new ArrayList<>();
+
 
             TrendingAdapter trendingAdapter = new TrendingAdapter(dealsModels);
             viewAllGridView.setAdapter(trendingAdapter);
