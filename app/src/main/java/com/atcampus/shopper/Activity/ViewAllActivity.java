@@ -27,6 +27,7 @@ public class ViewAllActivity extends AppCompatActivity {
     private RecyclerView viewAllRecyclerView;
     private GridView viewAllGridView;
     public static List<DealsModel> dealsModels;
+    public static List<WishlistModel> wishlistModelsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,7 @@ public class ViewAllActivity extends AppCompatActivity {
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             viewAllRecyclerView.setLayoutManager(linearLayoutManager);
 
-            List<WishlistModel> wishlistModelsList = new ArrayList<>();
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 12 Max", 1, "4.5", 46, "$799", "$849", "Cash On Delivery Available."));
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 11", 2, "4.2", 34, "$699", "$749", "Cash On Delivery Available."));
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 12 Max", 0, "3.2", 56, "$599", "$649", "No Cash On Delivery Available."));
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 8", 0, "5.0", 49, "$799", "$849", "Cash On Delivery Available."));
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 10", 3, "4.0", 16, "$799", "$849", "No Cash On Delivery Available."));
-            wishlistModelsList.add(new WishlistModel(R.drawable.phone, "Iphone 12 ", 0, "5.0", 93, "$799", "$849", "Cash On Delivery Available."));
+
 
             WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelsList, false);
             viewAllRecyclerView.setAdapter(wishlistAdapter);

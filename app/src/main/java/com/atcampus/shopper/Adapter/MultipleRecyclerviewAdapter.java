@@ -25,6 +25,7 @@ import com.atcampus.shopper.Activity.ViewAllActivity;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
+import com.atcampus.shopper.Model.WishlistModel;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -96,8 +97,9 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             case MultipleRecyclerviewModel.DEALS_DAY:
                 String dealsday_title = multipleRecyclerviewModels.get(position).getTitle();
                 List<DealsModel> dealsModels = multipleRecyclerviewModels.get(position).getDealsModelList();
+                List<WishlistModel> wishlistModels = multipleRecyclerviewModels.get(position).getAllDeals();
                 String dColor = multipleRecyclerviewModels.get(position).getBackgroundColor();
-                ((DealsDayViewHolder) holder).setDealsDayLayout(dealsModels,dealsday_title,dColor);
+                ((DealsDayViewHolder) holder).setDealsDayLayout(dealsModels,dealsday_title,dColor,wishlistModels);
                 break;
             case MultipleRecyclerviewModel.TRENDING:
                 String trending_title = multipleRecyclerviewModels.get(position).getTitle();
@@ -257,7 +259,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
             container = itemView.findViewById(R.id.deals_container);
             dealsRecyclerview.setRecycledViewPool(recycledViewPool);
         }
-        private void setDealsDayLayout(List<DealsModel> dealsModels,String title,String color){
+        private void setDealsDayLayout(List<DealsModel> dealsModels, final String title, String color, final List<WishlistModel> allDeals){
             container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             dealsText.setText(title);
             if (dealsModels.size() > 8){
@@ -265,8 +267,10 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 dealsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ViewAllActivity.wishlistModelsList = allDeals;
                         Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
                         viewAllIntent.putExtra("viewCode",0);
+                        viewAllIntent.putExtra("title",title);
                         itemView.getContext().startActivity(viewAllIntent);
                     }
                 });

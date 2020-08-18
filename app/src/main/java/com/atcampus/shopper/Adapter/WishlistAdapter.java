@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.WishlistModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.w3c.dom.Text;
 
@@ -40,14 +42,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull WishlistAdapter.ViewHolder holder, int position) {
 
-        int resource = wishlistModels.get(position).getProductImage();
+        String resource = wishlistModels.get(position).getProductImage();
         String title = wishlistModels.get(position).getProductName();
-        int freeCueponNo = wishlistModels.get(position).getProductCuepon();
+        long freeCueponNo = wishlistModels.get(position).getProductCuepon();
         String rating = wishlistModels.get(position).getProductRating();
-        int totalRating = wishlistModels.get(position).getProductTotalRating();
+        String totalRating = wishlistModels.get(position).getProductTotalRating();
         String price = wishlistModels.get(position).getProductPrice();
         String cuttedPrice = wishlistModels.get(position).getProductCuttedPrice();
-        String deliSystem = wishlistModels.get(position).getProductDeliverySystem();
+        boolean deliSystem = wishlistModels.get(position).isCod();
 
         holder.setData(resource,title,freeCueponNo,rating,totalRating,price,cuttedPrice,deliSystem);
 
@@ -88,8 +90,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn = itemView.findViewById(R.id.delete_product);
         }
 
-        private void setData(int resource, String title, int freeCueponNo,String rating,int totalRating,String price,String cuttedPrice,String deliSystem) {
-            productImage.setImageResource(resource);
+        private void setData(String resource, String title, long freeCueponNo,String rating,String totalRating,String price,String cuttedPrice,boolean deliSystem) {
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.phone)).into(productImage);
             productName.setText(title);
             if (freeCueponNo != 0) {
                 productCueponIcon.setVisibility(View.VISIBLE);
@@ -103,10 +105,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 productCuepon.setVisibility(View.INVISIBLE);
             }
             productRating.setText(rating);
-            productTotalRating.setText(totalRating +"(rating)");
-            productPrice.setText(price);
-            productCuttedPrice.setText(cuttedPrice);
-            productDeliverySystem.setText(deliSystem);
+            productTotalRating.setText("("+totalRating+") rating");
+            productPrice.setText("$"+price+"");
+            productCuttedPrice.setText("$"+cuttedPrice+"");
+            if (deliSystem){
+                productDeliverySystem.setVisibility(View.VISIBLE);
+            }else {
+                productDeliverySystem.setVisibility(View.INVISIBLE);
+            }
+
 
             if (wishList){
                 deleteBtn.setVisibility(View.VISIBLE);

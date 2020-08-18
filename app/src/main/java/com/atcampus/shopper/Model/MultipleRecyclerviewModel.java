@@ -65,6 +65,23 @@ public class MultipleRecyclerviewModel {
     //deals day
     private String title;
     private List<DealsModel> dealsModelList;
+    private List<WishlistModel> allDeals;
+
+    public MultipleRecyclerviewModel(int type, String title, String backgroundColor, List<DealsModel> dealsModelList,List<WishlistModel> allDeals) {
+        this.type = type;
+        this.title = title;
+        this.backgroundColor = backgroundColor;
+        this.dealsModelList = dealsModelList;
+        this.allDeals = allDeals;
+    }
+
+    public List<WishlistModel> getAllDeals() {
+        return allDeals;
+    }
+
+    public void setAllDeals(List<WishlistModel> allDeals) {
+        this.allDeals = allDeals;
+    }
 
     public MultipleRecyclerviewModel(int type, String title, String backgroundColor, List<DealsModel> dealsModelList) {
         this.type = type;

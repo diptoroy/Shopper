@@ -2,16 +2,16 @@ package com.atcampus.shopper.Model;
 
 public class WishlistModel {
 
-    private int productImage;
+    private String productImage;
     private String productName;
-    private int productCuepon;
+    private long productCuepon;
     private String productRating;
-    private int productTotalRating;
+    private String productTotalRating;
     private String productPrice;
     private String productCuttedPrice;
-    private String productDeliverySystem;
+    private boolean cod;
 
-    public WishlistModel(int productImage, String productName, int productCuepon, String productRating, int productTotalRating, String productPrice, String productCuttedPrice, String productDeliverySystem) {
+    public WishlistModel(String productImage, String productName, long productCuepon, String productRating, String productTotalRating, String productPrice, String productCuttedPrice, boolean cod) {
         this.productImage = productImage;
         this.productName = productName;
         this.productCuepon = productCuepon;
@@ -19,14 +19,14 @@ public class WishlistModel {
         this.productTotalRating = productTotalRating;
         this.productPrice = productPrice;
         this.productCuttedPrice = productCuttedPrice;
-        this.productDeliverySystem = productDeliverySystem;
+        this.cod = cod;
     }
 
-    public int getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
@@ -38,11 +38,11 @@ public class WishlistModel {
         this.productName = productName;
     }
 
-    public int getProductCuepon() {
+    public long getProductCuepon() {
         return productCuepon;
     }
 
-    public void setProductCuepon(int productCuepon) {
+    public void setProductCuepon(long productCuepon) {
         this.productCuepon = productCuepon;
     }
 
@@ -54,11 +54,11 @@ public class WishlistModel {
         this.productRating = productRating;
     }
 
-    public int getProductTotalRating() {
+    public String getProductTotalRating() {
         return productTotalRating;
     }
 
-    public void setProductTotalRating(int productTotalRating) {
+    public void setProductTotalRating(String productTotalRating) {
         this.productTotalRating = productTotalRating;
     }
 
@@ -78,11 +78,11 @@ public class WishlistModel {
         this.productCuttedPrice = productCuttedPrice;
     }
 
-    public String getProductDeliverySystem() {
-        return productDeliverySystem;
+    public boolean isCod() {
+        return cod;
     }
 
-    public void setProductDeliverySystem(String productDeliverySystem) {
-        this.productDeliverySystem = productDeliverySystem;
+    public void setCod(boolean cod) {
+        this.cod = cod;
     }
 }
