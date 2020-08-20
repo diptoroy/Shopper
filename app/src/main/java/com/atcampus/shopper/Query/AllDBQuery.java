@@ -25,7 +25,9 @@ public class AllDBQuery {
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
-    public static List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
+//    public static List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
+    public static List<List<MultipleRecyclerviewModel>> allList = new ArrayList<>();
+    public static List<String> categoryName = new ArrayList<>();
 
     public static void loadCategories(final CategoryAdapter categoryAdapter, final Context context) {
 
@@ -46,9 +48,9 @@ public class AllDBQuery {
                 });
     }
 
-    public static void loadView(final MultipleRecyclerviewAdapter multipleRecyclerviewAdapter, final Context context) {
+    public static void loadView(final MultipleRecyclerviewAdapter multipleRecyclerviewAdapter, final Context context,final int index,String category) {
         firebaseFirestore.collection("CATEGORIES")
-                .document("HOME")
+                .document(category.toUpperCase())
                 .collection("BANNERSLIDER")
                 .orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -64,9 +66,9 @@ public class AllDBQuery {
                                         sliderModelList.add(new SliderModel(documentSnapshot.get("slider_" + i).toString()
                                                 , documentSnapshot.get("slider_" + i + "_color").toString()));
                                     }
-                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0, sliderModelList));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(0, sliderModelList));
                                 } else if ((long) documentSnapshot.get("view_type") == 1) {
-//                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,documentSnapshot.get("ads_1").toString()
+//                                    allList.get(index).add(new MultipleRecyclerviewModel(1,documentSnapshot.get("ads_1").toString()
 //                                            ,documentSnapshot.get("ads_1_color").toString()));
                                 } else if ((long) documentSnapshot.get("view_type") == 2) {
                                     List<WishlistModel> allDeals = new ArrayList<>();
@@ -88,7 +90,7 @@ public class AllDBQuery {
                                         ,documentSnapshot.get("cutted_price_" + i).toString()
                                         ,(boolean)documentSnapshot.get("cod_" + i)));
                                     }
-                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), dealsModelList,allDeals));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), dealsModelList,allDeals));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
                                     List<DealsModel> trendingModelList = new ArrayList<>();
                                     long number_of_product = (long) documentSnapshot.get("number_of_product");
@@ -99,7 +101,7 @@ public class AllDBQuery {
                                                 , documentSnapshot.get("product_subtitle_" + i).toString()
                                                 , documentSnapshot.get("product_price_" + i).toString()));
                                     }
-                                    multipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), trendingModelList));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), trendingModelList));
                                 }
                             }
                             multipleRecyclerviewAdapter.notifyDataSetChanged();

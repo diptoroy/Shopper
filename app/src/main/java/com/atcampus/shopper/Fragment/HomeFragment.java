@@ -1,57 +1,31 @@
 package com.atcampus.shopper.Fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
-import com.atcampus.shopper.Adapter.DealsAdapter;
 import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
-import com.atcampus.shopper.Adapter.SliderAdapter;
-import com.atcampus.shopper.Adapter.TrendingAdapter;
-import com.atcampus.shopper.Model.CategoryModel;
-import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
-import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
+import static com.atcampus.shopper.Query.AllDBQuery.allList;
 import static com.atcampus.shopper.Query.AllDBQuery.categoryModels;
-import static com.atcampus.shopper.Query.AllDBQuery.firebaseFirestore;
+import static com.atcampus.shopper.Query.AllDBQuery.categoryName;
 import static com.atcampus.shopper.Query.AllDBQuery.loadCategories;
 import static com.atcampus.shopper.Query.AllDBQuery.loadView;
-import static com.atcampus.shopper.Query.AllDBQuery.multipleRecyclerviewModels;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,15 +107,19 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager multipleManager = new LinearLayoutManager(getContext());
             multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
             multipleRecyclerview.setLayoutManager(multipleManager);
-            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
-            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
 
-            if (multipleRecyclerviewModels.size() == 0){
-                loadView(multipleRecyclerviewAdapter,getContext());
+
+            if (allList.size() == 0){
+                categoryName.add("Home");
+                allList.add(new ArrayList<MultipleRecyclerviewModel>());
+                multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(0));
+                loadView(multipleRecyclerviewAdapter,getContext(),0,"Home");
             }else {
+                multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(0));
                 categoryAdapter.notifyDataSetChanged();
             }
 
+            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
         } else {
             Glide.with(this).load(R.drawable.symbol).into(noConnection);
             noConnection.setVisibility(View.VISIBLE);

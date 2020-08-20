@@ -20,10 +20,15 @@ import com.atcampus.shopper.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.atcampus.shopper.Query.AllDBQuery.allList;
+import static com.atcampus.shopper.Query.AllDBQuery.categoryName;
+import static com.atcampus.shopper.Query.AllDBQuery.loadView;
+
 public class CategoryActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private RecyclerView categoryRecyclerView;
+    private MultipleRecyclerviewAdapter multipleRecyclerviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +73,23 @@ public class CategoryActivity extends AppCompatActivity {
         multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(multipleManager);
 
-        List<MultipleRecyclerviewModel> multipleRecyclerviewModels = new ArrayList<>();
+        int listPosition = 0;
+        for (int x = 0;x < categoryName.size(); x++){
+            if (categoryName.get(x).equals(title.toUpperCase())){
+                listPosition = x;
+            }
+        }
+
+        if (listPosition == 0){
+            categoryName.add(title.toUpperCase());
+            allList.add(new ArrayList<MultipleRecyclerviewModel>());
+            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(categoryName.size() - 1));
+            loadView(multipleRecyclerviewAdapter,this,categoryName.size() - 1,title);
+        }else {
+            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(listPosition));
+        }
 
 
-        MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(multipleRecyclerviewModels);
         categoryRecyclerView.setAdapter(multipleRecyclerviewAdapter);
         multipleRecyclerviewAdapter.notifyDataSetChanged();
     }
