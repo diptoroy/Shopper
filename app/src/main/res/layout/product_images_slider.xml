@@ -43,12 +43,14 @@
 
     <TextView
         android:id="@+id/products_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Product Name"
-        android:textSize="20sp"
         android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/product_cod"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_indicator" />
 
@@ -142,7 +144,7 @@
         app:srcCompat="@drawable/cod" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/cod_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Available"

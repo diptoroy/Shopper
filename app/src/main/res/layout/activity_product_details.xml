@@ -28,7 +28,7 @@
 
             <include layout="@layout/product_images_slider"></include>
 
-            <include layout="@layout/reward_layout"></include>
+            <include layout="@layout/reward_product_details"></include>
 
             <include layout="@layout/products_description"></include>
 

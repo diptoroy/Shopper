@@ -22,14 +22,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
 import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
 import com.atcampus.shopper.Adapter.RewardAdapter;
 import com.atcampus.shopper.Model.RewardModel;
 import com.atcampus.shopper.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +48,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
     private Button buyNowBtn,cueponBtn;
+    private TextView productName,averageRating,productsTotalRating,productsPrice,productsDiscountPrice,productCodText,rewardsTitle,rewardsBody;
+    private ImageView productCod;
 
     //rating layout
     private LinearLayout userratingContainer;
@@ -51,6 +58,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public static TextView cueponTitle,cueponBody,cueponExpiry;
     public static RecyclerView cueponRecyclerView;
     public static LinearLayout selected_cuepon_container;
+
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +77,56 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn = findViewById(R.id.buyNowBtn);
         cueponBtn = findViewById(R.id.cuepon_btn);
 
-        productImages = new ArrayList<>();
-        productImages.add(R.drawable.phone);
-        productImages.add(R.drawable.banner);
-        productImages.add(R.drawable.backpack);
-        productImages.add(R.drawable.bag);
+        productName = findViewById(R.id.products_name);
+        averageRating = findViewById(R.id.products_rating_text);
+        productsTotalRating = findViewById(R.id.products_total_rating);
+        productsPrice = findViewById(R.id.products_price);
+        productsDiscountPrice = findViewById(R.id.products_discount_price);
+        productCod = findViewById(R.id.product_cod);
+        productCodText = findViewById(R.id.cod_text);
+        rewardsTitle = findViewById(R.id.reward_title);
+        rewardsBody = findViewById(R.id.reward_details);
 
-        ProductImagesViewpagerAdapter adapter = new ProductImagesViewpagerAdapter(productImages);
-        viewPager.setAdapter(adapter);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        final List<String> productImages = new ArrayList<>();
+        firebaseFirestore.collection("PRODUCTS").document("9Mv0ZqBiqJP9XiKnWpg0")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    for (long x = 0; x <(long) documentSnapshot.get("no_of_product_image")+1; x++){
+                        productImages.add(documentSnapshot.get("product_image_"+x).toString());
+                    }
+                    ProductImagesViewpagerAdapter adapter = new ProductImagesViewpagerAdapter(productImages);
+                    viewPager.setAdapter(adapter);
+                    productName.setText(documentSnapshot.get("product_title").toString());
+                    averageRating.setText(documentSnapshot.get("average_rating").toString());
+                    productsTotalRating.setText("("+(long) documentSnapshot.get("total_rating")+")ratings");
+                    productsPrice.setText(documentSnapshot.get("$"+"product_price").toString());
+                    productsDiscountPrice.setText(documentSnapshot.get("$"+"cutted_price").toString());
+                    if ((boolean)documentSnapshot.get("cod")){
+                        productCod.setVisibility(View.VISIBLE);
+                        productCodText.setVisibility(View.VISIBLE);
+                    }else {
+                        productCod.setVisibility(View.INVISIBLE);
+                        productCodText.setVisibility(View.INVISIBLE);
+                    }
+                    rewardsTitle.setText((long)documentSnapshot.get("free_cuepon")+documentSnapshot.get("free_cuepon_title").toString());
+                    rewardsBody.setText(documentSnapshot.get("free_cuepon_body").toString());
+                    if ((boolean)documentSnapshot.get("use_tab_layout")){
+
+                    }else {
+
+                    }
+
+                }else{
+                    String error = task.getException().getMessage();
+                    Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         tabLayout.setupWithViewPager(viewPager, true);
 
         //products Description
