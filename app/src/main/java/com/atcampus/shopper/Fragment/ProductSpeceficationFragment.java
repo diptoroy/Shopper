@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.ProductsSpecAdapter;
 import com.atcampus.shopper.Model.ProductsSpeceficationModel;
 import com.atcampus.shopper.R;
@@ -28,7 +29,7 @@ public class ProductSpeceficationFragment extends Fragment {
 
     private RecyclerView specRecyclerview;
     private ProductsSpecAdapter productsSpecAdapter;
-    private List<ProductsSpeceficationModel> productsSpeceficationModelList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,31 +42,31 @@ public class ProductSpeceficationFragment extends Fragment {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         specRecyclerview.setLayoutManager(linearLayoutManager);
 
-        productsSpeceficationModelList = new ArrayList<>();
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Display",0));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
-        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList = new ArrayList<>();
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel("Display",0));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel("General",0));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
+//        productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,"Color","Black"));
 
 
 
-        productsSpecAdapter = new ProductsSpecAdapter(productsSpeceficationModelList);
+        productsSpecAdapter = new ProductsSpecAdapter(ProductDetailsActivity.productsSpeceficationModelList);
         specRecyclerview.setAdapter(productsSpecAdapter);
         productsSpecAdapter.notifyDataSetChanged();
         return view;

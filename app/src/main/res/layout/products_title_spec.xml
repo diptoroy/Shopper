@@ -11,11 +11,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/products_title"
+        android:id="@+id/products_title_body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Product Name"
-        android:padding="16dp"
+        android:padding="12dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,13 +23,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/products_detail_body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
-        android:padding="16dp"
+        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/products_title" />
+        app:layout_constraintTop_toBottomOf="@+id/products_title_body" />
 </androidx.constraintlayout.widget.ConstraintLayout>
