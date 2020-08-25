@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import com.atcampus.shopper.R;
 
-import static com.atcampus.shopper.Activity.ProductDetailsActivity.pDesc;
-import static com.atcampus.shopper.Activity.ProductDetailsActivity.pOtherDesc;
-import static com.atcampus.shopper.Activity.ProductDetailsActivity.tabSelected;
 
 public class ProductsDescriptionFragment extends Fragment {
 
@@ -24,6 +21,7 @@ public class ProductsDescriptionFragment extends Fragment {
     }
 
     private TextView productDescriptionText;
+    public String body;
 
 
     @Override
@@ -33,11 +31,12 @@ public class ProductsDescriptionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_products_description, container, false);
 
         productDescriptionText = view.findViewById(R.id.product_description_text);
-        if (tabSelected == 0) {
-            productDescriptionText.setText(pDesc);
-        }else {
-            productDescriptionText.setText(pOtherDesc);
-        }
+        productDescriptionText.setText(body);
+//        if (tabSelected == 0) {
+//            productDescriptionText.setText(pDesc);
+//        }else {
+//            productDescriptionText.setText(pOtherDesc);
+//        }
         return view;
     }
 }

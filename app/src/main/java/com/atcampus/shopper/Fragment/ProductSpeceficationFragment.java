@@ -29,6 +29,7 @@ public class ProductSpeceficationFragment extends Fragment {
 
     private RecyclerView specRecyclerview;
     private ProductsSpecAdapter productsSpecAdapter;
+    public List<ProductsSpeceficationModel> productsSpeceficationModelList;
 
 
     @Override
@@ -66,7 +67,7 @@ public class ProductSpeceficationFragment extends Fragment {
 
 
 
-        productsSpecAdapter = new ProductsSpecAdapter(ProductDetailsActivity.productsSpeceficationModelList);
+        productsSpecAdapter = new ProductsSpecAdapter(productsSpeceficationModelList);
         specRecyclerview.setAdapter(productsSpecAdapter);
         productsSpecAdapter.notifyDataSetChanged();
         return view;

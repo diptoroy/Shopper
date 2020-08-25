@@ -21,18 +21,18 @@
 
         <TextView
             android:id="@+id/products_feature_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="Product Feature"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/products_feature_value"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Product Feature Value" />
     </LinearLayout>
 

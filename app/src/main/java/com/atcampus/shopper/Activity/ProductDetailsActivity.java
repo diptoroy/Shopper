@@ -59,14 +59,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ViewPager viewPager, descViewpager;
     private TabLayout tabLayout, descTabLayout;
     private ConstraintLayout productDescriptionContainer,productTitleSpecContainer;
-    public static String pDesc,pOtherDesc;
-    public static int tabSelected = -1;
+    private String pDesc,pOtherDesc;
 
     //rating layout
     private LinearLayout userratingContainer;
     private TextView totalRating;
     private LinearLayout ratingsNumberContainer;
-    private TextView totalRatingText;
+    private TextView totalRatingText,averageRatingText;
     private LinearLayout ratingProgressContainer;
 
     //cuepon dialog
@@ -74,7 +73,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public static RecyclerView cueponRecyclerView;
     public static LinearLayout selected_cuepon_container;
 
-    public static List<ProductsSpeceficationModel> productsSpeceficationModelList = new ArrayList<>();
+    private List<ProductsSpeceficationModel> productsSpeceficationModelList = new ArrayList<>();
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -111,6 +110,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ratingsNumberContainer = findViewById(R.id.ratings_number_container);
         totalRatingText = findViewById(R.id.total_rating_text);
         ratingProgressContainer = findViewById(R.id.rating_progress_container);
+        averageRatingText = findViewById(R.id.rating_point);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         final List<String> productImages = new ArrayList<>();
@@ -120,7 +120,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    for (long x = 0; x <(long) documentSnapshot.get("no_of_product_image")+1; x++){
+                    for (long x = 1; x <(long) documentSnapshot.get("no_of_product_image")+1; x++){
                         productImages.add((String)documentSnapshot.get("product_image_"+x));
                     }
                     ProductImagesViewpagerAdapter adapter = new ProductImagesViewpagerAdapter(productImages);
@@ -128,8 +128,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     productName.setText((String)documentSnapshot.get("product_title"));
                     averageRating.setText((String)documentSnapshot.get("average_rating"));
                     productsTotalRating.setText("("+(long) documentSnapshot.get("total_rating")+")ratings");
-                    productsPrice.setText((String)documentSnapshot.get("$"+"product_price"));
-                    productsDiscountPrice.setText((String)documentSnapshot.get("$"+"cutted_price"));
+                    productsPrice.setText((String)"$"+documentSnapshot.get("product_price"));
+                    productsDiscountPrice.setText((String)"$"+documentSnapshot.get("cutted_price"));
                     if ((boolean)documentSnapshot.get("cod")){
                         productCod.setVisibility(View.VISIBLE);
                         productCodText.setVisibility(View.VISIBLE);
@@ -158,16 +158,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         pDetailBody.setText((String)documentSnapshot.get("product_desc"));
                     }
                     totalRating.setText((long)documentSnapshot.get("total_rating")+" ratings");
-                    for (int r = 1; r < 6; r++){
+                    for (int r = 0; r < 5; r++){
                         TextView rating = (TextView) ratingsNumberContainer.getChildAt(r);
-                        rating.setText(String.valueOf((long)documentSnapshot.get((6-r)+"_star")));
+                        rating.setText(String.valueOf((long)documentSnapshot.get((5-r)+"_star")));
 
                         ProgressBar progressBar = (ProgressBar) ratingProgressContainer.getChildAt(r);
                         int maxProgress = Integer.parseInt(String.valueOf((long)documentSnapshot.get("total_rating")));
                         progressBar.setMax(maxProgress);
-                        progressBar.setProgress(Integer.parseInt(String.valueOf((long)documentSnapshot.get((6-r)+"_star"))));
+                        progressBar.setProgress(Integer.parseInt(String.valueOf((long)documentSnapshot.get((5-r)+"_star"))));
                     }
                     totalRatingText.setText(String.valueOf((long)documentSnapshot.get("total_rating")));
+                    averageRatingText.setText((String)documentSnapshot.get("average_rating"));
+                    descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount(),pDesc,pOtherDesc,productsSpeceficationModelList));
                 }else{
                     String error = task.getException().getMessage();
                     Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
@@ -181,12 +183,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         descViewpager = findViewById(R.id.products_description_viewpager);
         descTabLayout = findViewById(R.id.products_description_tabs);
 
-        descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount()));
+
         descViewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(descTabLayout));
         descTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tabSelected = tab.getPosition();
                 descViewpager.setCurrentItem(tab.getPosition());
             }
 
