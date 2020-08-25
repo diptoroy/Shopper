@@ -15,6 +15,7 @@ import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
+import com.atcampus.shopper.Model.WishlistModel;
 import com.atcampus.shopper.R;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class CategoryActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView categoryRecyclerView;
     private MultipleRecyclerviewAdapter multipleRecyclerviewAdapter;
+    private List<MultipleRecyclerviewModel> fakeMultipleRecyclerviewModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,37 +43,34 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Multiple RecyclerView
+        List<SliderModel> fakeSliderModel = new ArrayList<>();
+        fakeSliderModel.add(new SliderModel("null","#ffffff"));
+        fakeSliderModel.add(new SliderModel("null","#ffffff"));
+        fakeSliderModel.add(new SliderModel("null","#ffffff"));
+
+        List<DealsModel> fakeDealsModel = new ArrayList<>();
+        fakeDealsModel.add(new DealsModel("","","","",""));
+        fakeDealsModel.add(new DealsModel("","","","",""));
+        fakeDealsModel.add(new DealsModel("","","","",""));
+        fakeDealsModel.add(new DealsModel("","","","",""));
+        fakeDealsModel.add(new DealsModel("","","","",""));
+
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,fakeSliderModel));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,"","#ffffff"));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"","#ffffff",fakeDealsModel,new ArrayList<WishlistModel>()));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"","#ffffff",fakeDealsModel));
+
+
         categoryRecyclerView = findViewById(R.id.category_recyclerview);
 
-//        //Slider
-//        List<SliderModel> sliderModelList = new ArrayList<>();
-//
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-//
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-//
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#FB9E8A"));
-//        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher_round,"#FB9E8A"));
-//
-//        //deals
-//        List<DealsModel>dealsModels = new ArrayList<>();
-//
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
-//        dealsModels.add(new DealsModel(R.drawable.phone,"Iphone 11","6GB/128GB","TK 76000/-"));
 
         //multiple recyclerview
         LinearLayoutManager multipleManager = new LinearLayoutManager(this);
         multipleManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(multipleManager);
+        multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(fakeMultipleRecyclerviewModels);
+
 
         int listPosition = 0;
         for (int x = 0;x < categoryName.size(); x++){
@@ -83,12 +82,10 @@ public class CategoryActivity extends AppCompatActivity {
         if (listPosition == 0){
             categoryName.add(title.toUpperCase());
             allList.add(new ArrayList<MultipleRecyclerviewModel>());
-            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(categoryName.size() - 1));
-            loadView(multipleRecyclerviewAdapter,this,categoryName.size() - 1,title);
+            loadView(categoryRecyclerView,this,categoryName.size() - 1,title);
         }else {
             multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(listPosition));
         }
-
 
         categoryRecyclerView.setAdapter(multipleRecyclerviewAdapter);
         multipleRecyclerviewAdapter.notifyDataSetChanged();

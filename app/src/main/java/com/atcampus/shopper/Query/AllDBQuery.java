@@ -4,9 +4,12 @@ import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
+import com.atcampus.shopper.Fragment.HomeFragment;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
@@ -29,7 +32,7 @@ public class AllDBQuery {
     public static List<List<MultipleRecyclerviewModel>> allList = new ArrayList<>();
     public static List<String> categoryName = new ArrayList<>();
 
-    public static void loadCategories(final CategoryAdapter categoryAdapter, final Context context) {
+    public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
 
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -39,6 +42,8 @@ public class AllDBQuery {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                 categoryModels.add(new CategoryModel(documentSnapshot.get("icon").toString(), documentSnapshot.get("categoryName").toString()));
                             }
+                            CategoryAdapter categoryAdapter = new CategoryAdapter(categoryModels);
+                            categoryRecyclerView.setAdapter(categoryAdapter);
                             categoryAdapter.notifyDataSetChanged();
                         } else {
                             String error = task.getException().getMessage();
@@ -48,7 +53,7 @@ public class AllDBQuery {
                 });
     }
 
-    public static void loadView(final MultipleRecyclerviewAdapter multipleRecyclerviewAdapter, final Context context,final int index,String category) {
+    public static void loadView(final RecyclerView multipleRecyclerview, final Context context, final int index, String category) {
         firebaseFirestore.collection("CATEGORIES")
                 .document(category.toUpperCase())
                 .collection("BANNERSLIDER")
@@ -104,7 +109,10 @@ public class AllDBQuery {
                                     allList.get(index).add(new MultipleRecyclerviewModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), trendingModelList));
                                 }
                             }
+                            MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(index));
+                            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
                             multipleRecyclerviewAdapter.notifyDataSetChanged();
+                            HomeFragment.swipeRefreshLayout.setRefreshing(false);
                         } else {
                             String error = task.getException().getMessage();
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
