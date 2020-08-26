@@ -43,10 +43,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         String spec = dealsModelList.get(position).getDealsSpec();
         String price = dealsModelList.get(position).getDealsPrice();
 
-        holder.setDealsImage(img);
-        holder.setDealsName(name);
-        holder.setDealsSpec(spec);
-        holder.setDealsPrice(price);
+        holder.setDealsData(img,name,spec,price);
     }
 
     @Override
@@ -72,29 +69,26 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
             dealsName = itemView.findViewById(R.id.dealsitem_name);
             dealsSpec = itemView.findViewById(R.id.dealsitem_spec);
             dealsPrice = itemView.findViewById(R.id.dealsitem_price);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent productDetails = new Intent(itemView.getContext(), ProductDetailsActivity.class);
-                    itemView.getContext().startActivity(productDetails);
-                }
-            });
+
         }
 
-        private void setDealsImage(String img){
-            Glide.with(itemView.getContext()).load(img).apply(new RequestOptions().placeholder(R.drawable.phone)).into(dealsImage);
-        }
-
-        private void setDealsName(String name){
+        private void setDealsData(String img,String name,String spec,String price){
+            Glide.with(itemView.getContext()).load(img).apply(new RequestOptions().placeholder(R.drawable.photo)).into(dealsImage);
             dealsName.setText(name);
-        }
-
-        private void setDealsSpec(String spec){
             dealsSpec.setText(spec);
+            dealsPrice.setText("$"+price+"");
+
+            if (!name.equals("")) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent productDetails = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        itemView.getContext().startActivity(productDetails);
+                    }
+                });
+            }
         }
 
-        private void setDealsPrice(String price){
-            dealsPrice.setText("$"+price+"");
-        }
+
     }
 }

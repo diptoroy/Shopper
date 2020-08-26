@@ -76,15 +76,15 @@ public class HomeFragment extends Fragment {
 
 
         fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
-        fakeCategoryModels.add(new CategoryModel("null",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
+        fakeCategoryModels.add(new CategoryModel("",""));
 
         categoryAdapter = new CategoryAdapter(fakeCategoryModels);
-        categoryRecyclerView.setAdapter(categoryAdapter);
+
 
         //Multiple RecyclerView
         multipleRecyclerview = view.findViewById(R.id.multiple_recyclerview);
@@ -93,9 +93,9 @@ public class HomeFragment extends Fragment {
         multipleRecyclerview.setLayoutManager(multipleManager);
 
         List<SliderModel> fakeSliderModel = new ArrayList<>();
-        fakeSliderModel.add(new SliderModel("null","#ffffff"));
-        fakeSliderModel.add(new SliderModel("null","#ffffff"));
-        fakeSliderModel.add(new SliderModel("null","#ffffff"));
+        fakeSliderModel.add(new SliderModel("null","#dfdfdf"));
+        fakeSliderModel.add(new SliderModel("null","#dfdfdf"));
+        fakeSliderModel.add(new SliderModel("null","#dfdfdf"));
 
         List<DealsModel> fakeDealsModel = new ArrayList<>();
         fakeDealsModel.add(new DealsModel("","","","",""));
@@ -105,12 +105,12 @@ public class HomeFragment extends Fragment {
         fakeDealsModel.add(new DealsModel("","","","",""));
 
         fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(0,fakeSliderModel));
-        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,"","#ffffff"));
-        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"","#ffffff",fakeDealsModel,new ArrayList<WishlistModel>()));
-        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"","#ffffff",fakeDealsModel));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(1,"","#dfdfdf"));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(2,"","#dfdfdf",fakeDealsModel,new ArrayList<WishlistModel>()));
+        fakeMultipleRecyclerviewModels.add(new MultipleRecyclerviewModel(3,"","#dfdfdf",fakeDealsModel));
 
         multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(fakeMultipleRecyclerviewModels);
-        multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
+
 
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -120,9 +120,10 @@ public class HomeFragment extends Fragment {
             if (categoryModels.size() == 0){
                 loadCategories(categoryRecyclerView,getContext());
             }else {
+                categoryAdapter = new CategoryAdapter(categoryModels);
                 categoryAdapter.notifyDataSetChanged();
             }
-
+            categoryRecyclerView.setAdapter(categoryAdapter);
             if (allList.size() == 0){
                 categoryName.add("Home");
                 allList.add(new ArrayList<MultipleRecyclerviewModel>());
@@ -131,6 +132,7 @@ public class HomeFragment extends Fragment {
                 multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(0));
                 categoryAdapter.notifyDataSetChanged();
             }
+            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
         } else {
             Glide.with(this).load(R.drawable.symbol).into(noConnection);
             noConnection.setVisibility(View.VISIBLE);
@@ -149,6 +151,8 @@ public class HomeFragment extends Fragment {
                 if (networkInfo != null && networkInfo.isConnected() == true) {
                     noConnection.setVisibility(View.GONE);
                     loadCategories(categoryRecyclerView,getContext());
+                    categoryAdapter = new CategoryAdapter(fakeCategoryModels);
+                    multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(fakeMultipleRecyclerviewModels);
                     categoryRecyclerView.setAdapter(categoryAdapter);
                     multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
 

@@ -62,7 +62,7 @@ public class TrendingAdapter extends BaseAdapter {
             TextView trendingSpec = view.findViewById(R.id.dealsitem_spec);
             TextView trendingPrice = view.findViewById(R.id.dealsitem_price);
 
-            Glide.with(parent.getContext()).load(trendingList.get(position).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.phone)).into(trendingImage);
+            Glide.with(parent.getContext()).load(trendingList.get(position).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.photo)).into(trendingImage);
             trendingName.setText(trendingList.get(position).getDealsName());
             trendingSpec.setText(trendingList.get(position).getDealsSpec());
             trendingPrice.setText("$"+trendingList.get(position).getDealsPrice()+"");

@@ -5,6 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_margin="4dp"
+    android:background="@drawable/slider_background"
     android:elevation="3dp">
 
     <ImageView
@@ -18,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/phone" />
+        app:srcCompat="@drawable/photo" />
 
     <TextView
         android:id="@+id/dealsitem_name"

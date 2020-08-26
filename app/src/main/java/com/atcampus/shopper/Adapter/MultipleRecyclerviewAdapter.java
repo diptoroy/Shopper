@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
 
     private List<MultipleRecyclerviewModel> multipleRecyclerviewModels;
     private RecyclerView.RecycledViewPool recycledViewPool;
+    int lastPosition = -1;
 
     public MultipleRecyclerviewAdapter(List<MultipleRecyclerviewModel> multipleRecyclerviewModels) {
         this.multipleRecyclerviewModels = multipleRecyclerviewModels;
@@ -111,6 +114,11 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
                 return;
         }
 
+        if (lastPosition < position){
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.fade_in);
+            holder.itemView.setAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
@@ -238,7 +246,7 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         }
 
         private void setSliderAds(String resource, String color) {
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.banner)).into(slider_ads);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.photo)).into(slider_ads);
             slider_ads_layout.setBackgroundColor(Color.parseColor(color));
         }
     }
@@ -304,37 +312,41 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
         private void setTrendingAdapter(final List<DealsModel> dealsModels, final String title, String tColor){
             trendingText.setText(title);
             trendingContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(tColor)));
-            for (int x = 1;x < 4;x++){
+            for (int x = 0;x < 4;x++){
                 ImageView image = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_image);
                 TextView name = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_name);
                 TextView spec = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_spec);
                 TextView price = trending_grid_layout.getChildAt(x).findViewById(R.id.dealsitem_price);
 
 //                image.setImageResource(dealsModels.get(x).getDealsImage());
-                Glide.with(itemView.getContext()).load(dealsModels.get(x).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.phone)).into(image);
+                Glide.with(itemView.getContext()).load(dealsModels.get(x).getDealsImage()).apply(new RequestOptions().placeholder(R.drawable.photo)).into(image);
                 name.setText(dealsModels.get(x).getDealsName());
                 spec.setText(dealsModels.get(x).getDealsSpec());
                 price.setText("$"+dealsModels.get(x).getDealsPrice()+"");
 
                 trending_grid_layout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
-                trending_grid_layout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                if (!title.equals("")) {
+                    trending_grid_layout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent productIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                            itemView.getContext().startActivity(productIntent);
+                        }
+                    });
+                }
+            }
+            if (!title.equals("")) {
+                trendingBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent productIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
-                        itemView.getContext().startActivity(productIntent);
+                        ViewAllActivity.dealsModels = dealsModels;
+                        Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        viewAllIntent.putExtra("viewCode", 1);
+                        viewAllIntent.putExtra("title", title);
+                        itemView.getContext().startActivity(viewAllIntent);
                     }
                 });
             }
-            trendingBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ViewAllActivity.dealsModels = dealsModels;
-                    Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
-                    viewAllIntent.putExtra("viewCode",1);
-                    viewAllIntent.putExtra("title",title);
-                    itemView.getContext().startActivity(viewAllIntent);
-                }
-            });
         }
     }
 }
