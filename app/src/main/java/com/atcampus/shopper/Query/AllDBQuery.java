@@ -17,6 +17,8 @@ import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.Model.WishlistModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllDBQuery {
+
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
@@ -40,7 +45,7 @@ public class AllDBQuery {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                categoryModels.add(new CategoryModel(documentSnapshot.get("icon").toString(), documentSnapshot.get("categoryName").toString()));
+                                categoryModels.add(new CategoryModel((String)documentSnapshot.get("icon"), (String)documentSnapshot.get("categoryName")));
                             }
                             CategoryAdapter categoryAdapter = new CategoryAdapter(categoryModels);
                             categoryRecyclerView.setAdapter(categoryAdapter);
@@ -68,8 +73,8 @@ public class AllDBQuery {
                                     List<SliderModel> sliderModelList = new ArrayList<>();
                                     long no_of_slider = (long) documentSnapshot.get("no_of_slider");
                                     for (long i = 1; i < no_of_slider + 1; i++) {
-                                        sliderModelList.add(new SliderModel(documentSnapshot.get("slider_" + i).toString()
-                                                , documentSnapshot.get("slider_" + i + "_color").toString()));
+                                        sliderModelList.add(new SliderModel((String)documentSnapshot.get("slider_" + i)
+                                                , (String)documentSnapshot.get("slider_" + i + "_color")));
                                     }
                                     allList.get(index).add(new MultipleRecyclerviewModel(0, sliderModelList));
                                 } else if ((long) documentSnapshot.get("view_type") == 1) {
@@ -80,33 +85,35 @@ public class AllDBQuery {
                                     List<DealsModel> dealsModelList = new ArrayList<>();
                                     long number_of_product = (long) documentSnapshot.get("number_of_product");
                                     for (long i = 1; i < number_of_product + 1; i++) {
-                                        dealsModelList.add(new DealsModel(documentSnapshot.get("product_id_" + i).toString()
-                                                , documentSnapshot.get("product_image_" + i).toString()
-                                                , documentSnapshot.get("product_title_" + i).toString()
-                                                , documentSnapshot.get("product_subtitle_" + i).toString()
-                                                , documentSnapshot.get("product_price_" + i).toString()));
+                                        dealsModelList.add(new DealsModel((String)documentSnapshot.get("product_id_" + i)
+                                                , (String)documentSnapshot.get("product_image_" + i)
+                                                , (String)documentSnapshot.get("product_title_" + i)
+                                                , (String)documentSnapshot.get("product_subtitle_" + i)
+                                                ,(String)documentSnapshot.get("product_price_" + i)));
 
-                                        allDeals.add(new WishlistModel(documentSnapshot.get("product_image_"+i).toString()
-                                        ,documentSnapshot.get("product_full_title_" + i).toString()
+
+
+                                        allDeals.add(new WishlistModel((String)documentSnapshot.get("product_image_"+i)
+                                        ,(String)documentSnapshot.get("product_full_title_" + i)
                                         ,(long)documentSnapshot.get("free_coupen_" + i)
-                                        ,documentSnapshot.get("average_rating_" + i).toString()
+                                        ,(String)documentSnapshot.get("average_rating_" + i)
                                         ,(String) documentSnapshot.get("total_rating_" + i)
-                                        ,documentSnapshot.get("product_price_" + i).toString()
-                                        ,documentSnapshot.get("cutted_price_" + i).toString()
+                                        ,(String)documentSnapshot.get("product_price_" + i)
+                                        ,(String)documentSnapshot.get("cutted_price_" + i)
                                         ,(boolean)documentSnapshot.get("cod_" + i)));
                                     }
-                                    allList.get(index).add(new MultipleRecyclerviewModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), dealsModelList,allDeals));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(2, (String)documentSnapshot.get("layout_title"), (String)documentSnapshot.get("layout_color"), dealsModelList,allDeals));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
                                     List<DealsModel> trendingModelList = new ArrayList<>();
                                     long number_of_product = (long) documentSnapshot.get("number_of_product");
                                     for (long i = 1; i < number_of_product + 1; i++) {
-                                        trendingModelList.add(new DealsModel(documentSnapshot.get("product_id_" + i).toString()
-                                                , documentSnapshot.get("product_image_" + i).toString()
-                                                , documentSnapshot.get("product_title_" + i).toString()
-                                                , documentSnapshot.get("product_subtitle_" + i).toString()
-                                                , documentSnapshot.get("product_price_" + i).toString()));
+                                        trendingModelList.add(new DealsModel((String)documentSnapshot.get("product_id_" + i)
+                                                , (String)documentSnapshot.get("product_image_" + i)
+                                                , (String)documentSnapshot.get("product_title_" + i)
+                                                , (String)documentSnapshot.get("product_subtitle_" + i)
+                                                , (String)documentSnapshot.get("product_price_" + i)));
                                     }
-                                    allList.get(index).add(new MultipleRecyclerviewModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_color").toString(), trendingModelList));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(3, (String)documentSnapshot.get("layout_title"), (String)documentSnapshot.get("layout_color"), trendingModelList));
                                 }
                             }
                             MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(index));

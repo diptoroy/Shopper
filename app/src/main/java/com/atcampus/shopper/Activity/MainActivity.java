@@ -25,18 +25,22 @@ import com.atcampus.shopper.Fragment.CartFragment;
 import com.atcampus.shopper.Fragment.HomeFragment;
 import com.atcampus.shopper.Fragment.OrderFragment;
 import com.atcampus.shopper.Fragment.RewardFragment;
+import com.atcampus.shopper.Fragment.SigninFragment;
+import com.atcampus.shopper.Fragment.SignupFragment;
 import com.atcampus.shopper.Fragment.WishlistFragment;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
+import static com.atcampus.shopper.Query.AllDBQuery.currentUser;
 import static com.atcampus.shopper.R.menu.menu;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
+    Dialog userAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,42 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+
+
+        if (currentUser == null ){
+            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(false);
+        }else {
+            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(true);
+        }
+
+        userAlertDialog = new Dialog(MainActivity.this);
+        userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
+        userAlertDialog.setCancelable(true);
+        userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
+        Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
+
+        final Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SigninFragment.disableCloseBtn = true;
+                userAlertDialog.dismiss();
+                setSignUpFragment = false;
+                startActivity(registerIntent);
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignupFragment.disableCloseBtn = true;
+                userAlertDialog.dismiss();
+                setSignUpFragment = true;
+                startActivity(registerIntent);
+            }
+        });
 
 
     }
@@ -83,62 +123,92 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-                    switch (item.getItemId()){
-                        case R.id.navigation_home:
+//                    switch (item.getItemId()){
+//                        case R.id.navigation_home:
+//                            getSupportActionBar().setTitle("Shopper");
+//                            selectedFragment = new HomeFragment();
+//                            break;
+////                        case R.id.navigation_reward:
+////                            selectedFragment = new RewardFragment();
+////                            break;
+//                        case R.id.navigation_favorite:
+//                            getSupportActionBar().setTitle("My Wishlists");
+//                            selectedFragment = new WishlistFragment();
+//                            break;
+//                        case R.id.navigation_orders:
+//                            getSupportActionBar().setTitle("My Orders");
+//                            selectedFragment = new OrderFragment();
+//                            break;
+//                        case R.id.navigation_cart:
+//
+//                            final Dialog userAlertDialog = new Dialog(MainActivity.this);
+//                            userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
+//                            userAlertDialog.setCancelable(true);
+//                            userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+//                            Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
+//                            Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
+//
+//                            final Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+//
+//                            signInBtn.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    userAlertDialog.dismiss();
+//                                    setSignUpFragment = false;
+//                                    startActivity(registerIntent);
+//                                }
+//                            });
+//
+//                            signUpBtn.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    userAlertDialog.dismiss();
+//                                    setSignUpFragment = true;
+//                                    startActivity(registerIntent);
+//                                }
+//                            });
+//                            userAlertDialog.show();
+////                            getSupportActionBar().setTitle("My Cart");
+////                            invalidateOptionsMenu();
+////                            selectedFragment = new CartFragment();
+//                            break;
+//                        case R.id.navigation_account:
+//                            getSupportActionBar().setTitle("My Account");
+//                            selectedFragment = new AccountFragment();
+//                            break;
+//                    }
+                    if (currentUser != null) {
+                        int id = item.getItemId();
+                        if (id == R.id.navigation_home) {
                             getSupportActionBar().setTitle("Shopper");
                             selectedFragment = new HomeFragment();
-                            break;
-//                        case R.id.navigation_reward:
-//                            selectedFragment = new RewardFragment();
-//                            break;
-                        case R.id.navigation_favorite:
+                        } else if (id == R.id.navigation_favorite) {
                             getSupportActionBar().setTitle("My Wishlists");
                             selectedFragment = new WishlistFragment();
-                            break;
-                        case R.id.navigation_orders:
+                        } else if (id == R.id.navigation_orders) {
                             getSupportActionBar().setTitle("My Orders");
                             selectedFragment = new OrderFragment();
-                            break;
-                        case R.id.navigation_cart:
-
-                            final Dialog userAlertDialog = new Dialog(MainActivity.this);
-                            userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
-                            userAlertDialog.setCancelable(true);
-                            userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                            Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
-                            Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
-
-                            final Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
-
-                            signInBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    userAlertDialog.dismiss();
-                                    setSignUpFragment = false;
-                                    startActivity(registerIntent);
-                                }
-                            });
-
-                            signUpBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    userAlertDialog.dismiss();
-                                    setSignUpFragment = true;
-                                    startActivity(registerIntent);
-                                }
-                            });
-                            userAlertDialog.show();
-//                            getSupportActionBar().setTitle("My Cart");
-//                            invalidateOptionsMenu();
-//                            selectedFragment = new CartFragment();
-                            break;
-                        case R.id.navigation_account:
+                        } else if (id == R.id.navigation_cart) {
+                            if (currentUser == null) {
+                                userAlertDialog.show();
+                            } else {
+                                getSupportActionBar().setTitle("My Cart");
+                                invalidateOptionsMenu();
+                                selectedFragment = new CartFragment();
+                            }
+                        } else if (id == R.id.navigation_account) {
                             getSupportActionBar().setTitle("My Account");
                             selectedFragment = new AccountFragment();
-                            break;
+                        }
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                        return true;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-                    return true;
+                    else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                        userAlertDialog.show();
+                        return false;
+                    }
+
 
 
                 }

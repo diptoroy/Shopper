@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment {
 
     private ConnectivityManager connectivityManager;
     private NetworkInfo networkInfo;
+    private Button retryBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +70,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.colorPrimary),getContext().getResources().getColor(R.color.colorPrimary),getContext().getResources().getColor(R.color.colorPrimary));
         noConnection = view.findViewById(R.id.noConnection);
+        retryBtn = view.findViewById(R.id.retryBtn);
 
         //Category
         categoryRecyclerView = view.findViewById(R.id.category_view);
@@ -116,6 +120,9 @@ public class HomeFragment extends Fragment {
         networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() == true) {
             noConnection.setVisibility(View.GONE);
+            retryBtn.setVisibility(View.GONE);
+            categoryRecyclerView.setVisibility(View.VISIBLE);
+            multipleRecyclerview.setVisibility(View.VISIBLE);
             ///Category
             if (categoryModels.size() == 0){
                 loadCategories(categoryRecyclerView,getContext());
@@ -134,38 +141,60 @@ public class HomeFragment extends Fragment {
             }
             multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
         } else {
+            categoryRecyclerView.setVisibility(View.GONE);
+            multipleRecyclerview.setVisibility(View.GONE);
             Glide.with(this).load(R.drawable.symbol).into(noConnection);
             noConnection.setVisibility(View.VISIBLE);
+            retryBtn.setVisibility(View.VISIBLE);
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 swipeRefreshLayout.setRefreshing(true);
+                reloadPage();
 
-                categoryModels.clear();
-                allList.clear();
-                categoryName.clear();
+            }
+        });
 
-                if (networkInfo != null && networkInfo.isConnected() == true) {
-                    noConnection.setVisibility(View.GONE);
-                    loadCategories(categoryRecyclerView,getContext());
-                    categoryAdapter = new CategoryAdapter(fakeCategoryModels);
-                    multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(fakeMultipleRecyclerviewModels);
-                    categoryRecyclerView.setAdapter(categoryAdapter);
-                    multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
-
-                    categoryName.add("Home");
-                    allList.add(new ArrayList<MultipleRecyclerviewModel>());
-                    loadView(multipleRecyclerview,getContext(),0,"Home");
-                }else {
-                    Glide.with(getContext()).load(R.drawable.symbol).into(noConnection);
-                    noConnection.setVisibility(View.VISIBLE);
-                }
+        retryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reloadPage();
             }
         });
         return view;
+    }
+
+    private void reloadPage(){
+        networkInfo = connectivityManager.getActiveNetworkInfo();
+        categoryModels.clear();
+        allList.clear();
+        categoryName.clear();
+
+        if (networkInfo != null && networkInfo.isConnected() == true) {
+            categoryRecyclerView.setVisibility(View.VISIBLE);
+            multipleRecyclerview.setVisibility(View.VISIBLE);
+            noConnection.setVisibility(View.GONE);
+            retryBtn.setVisibility(View.GONE);
+            loadCategories(categoryRecyclerView,getContext());
+            categoryAdapter = new CategoryAdapter(fakeCategoryModels);
+            multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(fakeMultipleRecyclerviewModels);
+            categoryRecyclerView.setAdapter(categoryAdapter);
+            multipleRecyclerview.setAdapter(multipleRecyclerviewAdapter);
+
+            categoryName.add("Home");
+            allList.add(new ArrayList<MultipleRecyclerviewModel>());
+            loadView(multipleRecyclerview,getContext(),0,"Home");
+        }else {
+            Toast.makeText(getContext(),"No Connection!",Toast.LENGTH_SHORT).show();
+            categoryRecyclerView.setVisibility(View.GONE);
+            multipleRecyclerview.setVisibility(View.GONE);
+            Glide.with(getContext()).load(R.drawable.symbol).into(noConnection);
+            noConnection.setVisibility(View.VISIBLE);
+            retryBtn.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
 }

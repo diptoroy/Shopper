@@ -31,6 +31,8 @@ import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
 import com.atcampus.shopper.Adapter.RewardAdapter;
 import com.atcampus.shopper.Fragment.ProductSpeceficationFragment;
 import com.atcampus.shopper.Fragment.ProductsDescriptionFragment;
+import com.atcampus.shopper.Fragment.SigninFragment;
+import com.atcampus.shopper.Fragment.SignupFragment;
 import com.atcampus.shopper.Model.ProductsSpeceficationModel;
 import com.atcampus.shopper.Model.RewardModel;
 import com.atcampus.shopper.R;
@@ -40,9 +42,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import static com.atcampus.shopper.Query.AllDBQuery.currentUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -54,6 +59,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView productName,averageRating,productsTotalRating,productsPrice,productsDiscountPrice,productCodText,rewardsTitle,rewardsBody;
     private TextView pTitleBody,pDetailBody;
     private ImageView productCod;
+    private LinearLayout addToCartBtn;
+    private LinearLayout productsCuponLayout;
 
     //product details
     private ViewPager viewPager, descViewpager;
@@ -77,6 +84,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
 
+    Dialog userAlertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +95,38 @@ public class ProductDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //dialog
+        userAlertDialog = new Dialog(ProductDetailsActivity.this);
+        userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
+        userAlertDialog.setCancelable(true);
+        userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
+        Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
+
+        final Intent registerIntent = new Intent(ProductDetailsActivity.this,RegisterActivity.class);
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SigninFragment.disableCloseBtn = true;
+                SignupFragment.disableCloseBtn = true;
+                userAlertDialog.dismiss();
+                setSignUpFragment = false;
+                startActivity(registerIntent);
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SigninFragment.disableCloseBtn = true;
+                SignupFragment.disableCloseBtn = true;
+                userAlertDialog.dismiss();
+                setSignUpFragment = true;
+                startActivity(registerIntent);
+            }
+        });
 
         //product image slider
         viewPager = findViewById(R.id.product_images_viewpager);
@@ -111,6 +152,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         totalRatingText = findViewById(R.id.total_rating_text);
         ratingProgressContainer = findViewById(R.id.rating_progress_container);
         averageRatingText = findViewById(R.id.rating_point);
+        addToCartBtn = findViewById(R.id.add_to_cart);
+        productsCuponLayout = findViewById(R.id.products_cupon_layout);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         final List<String> productImages = new ArrayList<>();
@@ -206,12 +249,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CHECK_FAVORITE_BTN) {
-                    CHECK_FAVORITE_BTN = false;
-                    favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
+                if (currentUser == null) {
+                    userAlertDialog.show();
                 } else {
-                    CHECK_FAVORITE_BTN = true;
-                    favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                    if (CHECK_FAVORITE_BTN) {
+                        CHECK_FAVORITE_BTN = false;
+                        favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
+                    } else {
+                        CHECK_FAVORITE_BTN = true;
+                        favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                    }
                 }
             }
         });
@@ -219,8 +266,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
-                startActivity(delivery);
+                if (currentUser == null){
+                    userAlertDialog.show();
+                }else {
+                    Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
+                    startActivity(delivery);
+                }
+
+            }
+        });
+
+        addToCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser == null){
+                    userAlertDialog.show();
+                }else {
+
+                }
             }
         });
 
@@ -271,6 +334,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        if (currentUser == null){
+            productsCuponLayout.setVisibility(View.GONE);
+        }
+
         //rating layout
         userratingContainer =findViewById(R.id.user_rating_container);
         for (int x = 0; x < userratingContainer.getChildCount(); x++){
@@ -278,7 +345,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             userratingContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setRating(starPosition);
+                    if (currentUser == null){
+                        userAlertDialog.show();
+                    }else {
+                        setRating(starPosition);
+                    }
+
                 }
             });
         }

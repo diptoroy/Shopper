@@ -35,6 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.atcampus.shopper.Fragment.SigninFragment.disableCloseBtn;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -53,6 +55,8 @@ public class SignupFragment extends Fragment {
     private ProgressBar progressBar;
 
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
+
+    public static boolean disableCloseBtn = false;
 
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseFirestore;
@@ -75,6 +79,12 @@ public class SignupFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        if (disableCloseBtn){
+            closeBtn.setVisibility(View.GONE);
+        }else {
+            closeBtn.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -254,8 +264,12 @@ public class SignupFragment extends Fragment {
     }
 
     private  void mainIntent(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        if (disableCloseBtn){
+            disableCloseBtn = false;
+        }else {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        }
         getActivity().finish();
     }
 }
