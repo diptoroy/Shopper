@@ -42,8 +42,9 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         String name = dealsModelList.get(position).getDealsName();
         String spec = dealsModelList.get(position).getDealsSpec();
         String price = dealsModelList.get(position).getDealsPrice();
+        String pId = dealsModelList.get(position).getDealsID();
 
-        holder.setDealsData(img,name,spec,price);
+        holder.setDealsData(img,name,spec,price,pId);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
 
         }
 
-        private void setDealsData(String img,String name,String spec,String price){
+        private void setDealsData(final String productId, String img, String name, String spec, String price){
             Glide.with(itemView.getContext()).load(img).apply(new RequestOptions().placeholder(R.drawable.photo)).into(dealsImage);
             dealsName.setText(name);
             dealsSpec.setText(spec);
@@ -83,6 +84,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         Intent productDetails = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        productDetails.putExtra("PRODUCT_ID",productId);
                         itemView.getContext().startActivity(productDetails);
                     }
                 });

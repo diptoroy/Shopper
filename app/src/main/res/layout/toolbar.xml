@@ -6,6 +6,7 @@
     android:background="@color/colorPrimary"
     android:elevation="4dp"
     app:titleTextColor="@color/white"
+    app:layout_scrollFlags="scroll|enterAlways|snap"
     android:theme="@style/ToolbarTheme"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 

@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.atcampus.shopper.Fragment.AccountFragment;
+import com.atcampus.shopper.Fragment.BlankFragment;
 import com.atcampus.shopper.Fragment.CartFragment;
 import com.atcampus.shopper.Fragment.HomeFragment;
 import com.atcampus.shopper.Fragment.OrderFragment;
@@ -177,19 +178,30 @@ public class MainActivity extends AppCompatActivity {
 //                            selectedFragment = new AccountFragment();
 //                            break;
 //                    }
-                    if (currentUser != null) {
+//                    if (currentUser != null) {
                         int id = item.getItemId();
                         if (id == R.id.navigation_home) {
                             getSupportActionBar().setTitle("Shopper");
                             selectedFragment = new HomeFragment();
                         } else if (id == R.id.navigation_favorite) {
-                            getSupportActionBar().setTitle("My Wishlists");
-                            selectedFragment = new WishlistFragment();
+                            if (currentUser == null) {
+                                selectedFragment = new BlankFragment();
+                                userAlertDialog.show();
+                            } else {
+                                getSupportActionBar().setTitle("My Wishlists");
+                                selectedFragment = new WishlistFragment();
+                            }
                         } else if (id == R.id.navigation_orders) {
-                            getSupportActionBar().setTitle("My Orders");
-                            selectedFragment = new OrderFragment();
+                            if (currentUser == null) {
+                                selectedFragment = new BlankFragment();
+                                userAlertDialog.show();
+                            } else {
+                                getSupportActionBar().setTitle("My Orders");
+                                selectedFragment = new OrderFragment();
+                            }
                         } else if (id == R.id.navigation_cart) {
                             if (currentUser == null) {
+                                selectedFragment = new BlankFragment();
                                 userAlertDialog.show();
                             } else {
                                 getSupportActionBar().setTitle("My Cart");
@@ -197,17 +209,22 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = new CartFragment();
                             }
                         } else if (id == R.id.navigation_account) {
-                            getSupportActionBar().setTitle("My Account");
-                            selectedFragment = new AccountFragment();
+                            if (currentUser == null) {
+                                selectedFragment = new BlankFragment();
+                                userAlertDialog.show();
+                            } else {
+                                getSupportActionBar().setTitle("My Account");
+                                selectedFragment = new AccountFragment();
+                            }
                         }
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
                         return true;
-                    }
-                    else {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-                        userAlertDialog.show();
-                        return false;
-                    }
+//                    }
+//                    else {
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+//                        userAlertDialog.show();
+//                        return false;
+//                    }
 
 
 

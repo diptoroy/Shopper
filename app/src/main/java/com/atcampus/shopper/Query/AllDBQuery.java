@@ -91,8 +91,6 @@ public class AllDBQuery {
                                                 , (String)documentSnapshot.get("product_subtitle_" + i)
                                                 ,(String)documentSnapshot.get("product_price_" + i)));
 
-
-
                                         allDeals.add(new WishlistModel((String)documentSnapshot.get("product_image_"+i)
                                         ,(String)documentSnapshot.get("product_full_title_" + i)
                                         ,(long)documentSnapshot.get("free_coupen_" + i)

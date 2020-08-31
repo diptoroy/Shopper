@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ public class TrendingAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return trendingList.size();
     }
 
     @Override
@@ -40,8 +41,9 @@ public class TrendingAdapter extends BaseAdapter {
         return 0;
     }
 
+
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         final View view;
 
         if (convertView == null){
@@ -53,6 +55,7 @@ public class TrendingAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent productDetails = new Intent(parent.getContext(), ProductDetailsActivity.class);
+                    productDetails.putExtra("PRODUCT_ID",trendingList.get(position).getDealsID());
                     parent.getContext().startActivity(productDetails);
                 }
             });

@@ -157,7 +157,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         final List<String> productImages = new ArrayList<>();
-        firebaseFirestore.collection("PRODUCTS").document("9Mv0ZqBiqJP9XiKnWpg0")
+        firebaseFirestore.collection("PRODUCTS").document(getIntent().getStringExtra("PRODUCT_ID"))
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -336,6 +336,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         if (currentUser == null){
             productsCuponLayout.setVisibility(View.GONE);
+        }else {
+            productsCuponLayout.setVisibility(View.VISIBLE);
         }
 
         //rating layout

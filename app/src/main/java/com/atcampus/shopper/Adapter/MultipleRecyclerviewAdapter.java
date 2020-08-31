@@ -326,10 +326,12 @@ public class MultipleRecyclerviewAdapter extends RecyclerView.Adapter {
 
                 trending_grid_layout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
                 if (!title.equals("")) {
+                    final int finalX = x;
                     trending_grid_layout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent productIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                            productIntent.putExtra("PRODUCT_ID",dealsModels.get(finalX).getDealsID());
                             itemView.getContext().startActivity(productIntent);
                         }
                     });
