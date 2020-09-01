@@ -49,7 +49,7 @@ public class SignupFragment extends Fragment {
     private TextView signinBtn;
     private FrameLayout parentFrameLayout;
 
-    private EditText name,email,password,confirmPassword;
+    private EditText name, email, password, confirmPassword;
     private Button signUpBtn;
     private ImageButton closeBtn;
     private ProgressBar progressBar;
@@ -80,9 +80,9 @@ public class SignupFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        if (disableCloseBtn){
+        if (disableCloseBtn) {
             closeBtn.setVisibility(View.GONE);
-        }else {
+        } else {
             closeBtn.setVisibility(View.VISIBLE);
         }
 
@@ -182,91 +182,104 @@ public class SignupFragment extends Fragment {
 
     private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_out_from_right);
-        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_left, R.anim.slide_out_from_right);
+        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
 
 
-    public void checkUserData(){
-        if (!TextUtils.isEmpty(email.getText())){
-            if (!TextUtils.isEmpty(name.getText())){
-                if (!TextUtils.isEmpty(password.getText()) && password.length() >= 8){
-                    if (!TextUtils.isEmpty(confirmPassword.getText())){
+    public void checkUserData() {
+        if (!TextUtils.isEmpty(email.getText())) {
+            if (!TextUtils.isEmpty(name.getText())) {
+                if (!TextUtils.isEmpty(password.getText()) && password.length() >= 8) {
+                    if (!TextUtils.isEmpty(confirmPassword.getText())) {
                         signUpBtn.setEnabled(true);
-                        signUpBtn.setTextColor(Color.rgb(255,255,255));
+                        signUpBtn.setTextColor(Color.rgb(255, 255, 255));
                     }
-                }else{
+                } else {
                     signUpBtn.setEnabled(false);
-                    signUpBtn.setTextColor(Color.argb(50,255,255,255));
+                    signUpBtn.setTextColor(Color.argb(50, 255, 255, 255));
                 }
-            }else{
+            } else {
                 signUpBtn.setEnabled(false);
-                signUpBtn.setTextColor(Color.argb(50,255,255,255));
+                signUpBtn.setTextColor(Color.argb(50, 255, 255, 255));
             }
-        }else{
+        } else {
             signUpBtn.setEnabled(false);
-            signUpBtn.setTextColor(Color.argb(50,255,255,255));
+            signUpBtn.setTextColor(Color.argb(50, 255, 255, 255));
         }
     }
 
     private void checkEmailPassword() {
 
-        if (email.getText().toString().matches(emailPattern)){
-            if (password.getText().toString().equals(confirmPassword.getText().toString())){
+        if (email.getText().toString().matches(emailPattern)) {
+            if (password.getText().toString().equals(confirmPassword.getText().toString())) {
 
                 progressBar.setVisibility(View.VISIBLE);
                 signUpBtn.setEnabled(false);
-                signUpBtn.setTextColor(Color.argb(50,255,255,255));
+                signUpBtn.setTextColor(Color.argb(50, 255, 255, 255));
 
-                auth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString())
+                auth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
 
-                                    Map<Object,String> userData = new HashMap<>();
-                                    userData.put("name",name.getText().toString());
-                                    userData.put("email",email.getText().toString());
+                                    Map<Object, String> userData = new HashMap<>();
+                                    userData.put("name", name.getText().toString());
+                                    userData.put("email", email.getText().toString());
 
-                                    firebaseFirestore.collection("USERS")
-                                            .add(userData)
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    firebaseFirestore.collection("USERS").document(auth.getUid())
+                                            .set(userData)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                    if (task.isSuccessful()){
-                                                        mainIntent();
-                                                    }else {
-                                                        progressBar.setVisibility(View.INVISIBLE);
-                                                        signUpBtn.setEnabled(true);
-                                                        signUpBtn.setTextColor(Color.rgb(255,255,255));
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Map<String, Object> listSize = new HashMap<>();
+                                                        listSize.put("list_size", (long) 0);
+                                                        firebaseFirestore.collection("USERS").document(auth.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                                                                .set(listSize).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    mainIntent();
+                                                                } else {
+                                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                                    signUpBtn.setEnabled(true);
+                                                                    signUpBtn.setTextColor(Color.rgb(255, 255, 255));
+                                                                    String error = task.getException().getMessage();
+                                                                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
                                                         String error = task.getException().getMessage();
-                                                        Toast.makeText(getActivity(),error,Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
                                                     }
                                                 }
                                             });
 
-                                }else {
+                                } else {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     signUpBtn.setEnabled(true);
-                                    signUpBtn.setTextColor(Color.rgb(255,255,255));
+                                    signUpBtn.setTextColor(Color.rgb(255, 255, 255));
                                     String error = task.getException().getMessage();
-                                    Toast.makeText(getActivity(),error,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-            }else {
+            } else {
                 confirmPassword.setError("Password doesn't match!");
             }
-        }else{
+        } else {
             email.setError("Invalid Email!");
         }
     }
 
-    private  void mainIntent(){
-        if (disableCloseBtn){
+    private void mainIntent() {
+        if (disableCloseBtn) {
             disableCloseBtn = false;
-        }else {
+        } else {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
         }

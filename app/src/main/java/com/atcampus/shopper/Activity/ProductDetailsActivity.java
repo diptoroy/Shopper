@@ -35,6 +35,7 @@ import com.atcampus.shopper.Fragment.SigninFragment;
 import com.atcampus.shopper.Fragment.SignupFragment;
 import com.atcampus.shopper.Model.ProductsSpeceficationModel;
 import com.atcampus.shopper.Model.RewardModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,10 +43,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import static com.atcampus.shopper.Query.AllDBQuery.currentUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
 
@@ -55,9 +59,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private List<Integer> productImages;
     private FloatingActionButton favoriteBtn;
     private static boolean CHECK_FAVORITE_BTN = false;
-    private Button buyNowBtn,cueponBtn;
-    private TextView productName,averageRating,productsTotalRating,productsPrice,productsDiscountPrice,productCodText,rewardsTitle,rewardsBody;
-    private TextView pTitleBody,pDetailBody;
+    private Button buyNowBtn, cueponBtn;
+    private TextView productName, averageRating, productsTotalRating, productsPrice, productsDiscountPrice, productCodText, rewardsTitle, rewardsBody;
+    private TextView pTitleBody, pDetailBody;
     private ImageView productCod;
     private LinearLayout addToCartBtn;
     private LinearLayout productsCuponLayout;
@@ -65,24 +69,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
     //product details
     private ViewPager viewPager, descViewpager;
     private TabLayout tabLayout, descTabLayout;
-    private ConstraintLayout productDescriptionContainer,productTitleSpecContainer;
-    private String pDesc,pOtherDesc;
+    private ConstraintLayout productDescriptionContainer, productTitleSpecContainer;
+    private String pDesc, pOtherDesc;
 
     //rating layout
     private LinearLayout userratingContainer;
     private TextView totalRating;
     private LinearLayout ratingsNumberContainer;
-    private TextView totalRatingText,averageRatingText;
+    private TextView totalRatingText, averageRatingText;
     private LinearLayout ratingProgressContainer;
 
     //cuepon dialog
-    public static TextView cueponTitle,cueponBody,cueponExpiry;
+    public static TextView cueponTitle, cueponBody, cueponExpiry;
     public static RecyclerView cueponRecyclerView;
     public static LinearLayout selected_cuepon_container;
 
     private List<ProductsSpeceficationModel> productsSpeceficationModelList = new ArrayList<>();
 
     private FirebaseFirestore firebaseFirestore;
+
+    private String productID;
 
     Dialog userAlertDialog;
 
@@ -100,11 +106,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         userAlertDialog = new Dialog(ProductDetailsActivity.this);
         userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
         userAlertDialog.setCancelable(true);
-        userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        userAlertDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button signInBtn = userAlertDialog.findViewById(R.id.sign_in_btn);
         Button signUpBtn = userAlertDialog.findViewById(R.id.sign_up_btn);
 
-        final Intent registerIntent = new Intent(ProductDetailsActivity.this,RegisterActivity.class);
+        final Intent registerIntent = new Intent(ProductDetailsActivity.this, RegisterActivity.class);
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,67 +161,77 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn = findViewById(R.id.add_to_cart);
         productsCuponLayout = findViewById(R.id.products_cupon_layout);
 
+        productID = getIntent().getStringExtra("PRODUCT_ID");
         firebaseFirestore = FirebaseFirestore.getInstance();
         final List<String> productImages = new ArrayList<>();
-        firebaseFirestore.collection("PRODUCTS").document(getIntent().getStringExtra("PRODUCT_ID"))
+        firebaseFirestore.collection("PRODUCTS").document(productID)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    for (long x = 1; x <(long) documentSnapshot.get("no_of_product_image")+1; x++){
-                        productImages.add((String)documentSnapshot.get("product_image_"+x));
+                    for (long x = 1; x < (long) documentSnapshot.get("no_of_product_image") + 1; x++) {
+                        productImages.add((String) documentSnapshot.get("product_image_" + x));
                     }
                     ProductImagesViewpagerAdapter adapter = new ProductImagesViewpagerAdapter(productImages);
                     viewPager.setAdapter(adapter);
-                    productName.setText((String)documentSnapshot.get("product_title"));
-                    averageRating.setText((String)documentSnapshot.get("average_rating"));
-                    productsTotalRating.setText("("+(long) documentSnapshot.get("total_rating")+")ratings");
-                    productsPrice.setText((String)"$"+documentSnapshot.get("product_price"));
-                    productsDiscountPrice.setText((String)"$"+documentSnapshot.get("cutted_price"));
-                    if ((boolean)documentSnapshot.get("cod")){
+                    productName.setText((String) documentSnapshot.get("product_title"));
+                    averageRating.setText((String) documentSnapshot.get("average_rating"));
+                    productsTotalRating.setText("(" + (long) documentSnapshot.get("total_rating") + ")ratings");
+                    productsPrice.setText((String) "$" + documentSnapshot.get("product_price"));
+                    productsDiscountPrice.setText((String) "$" + documentSnapshot.get("cutted_price"));
+                    if ((boolean) documentSnapshot.get("cod")) {
                         productCod.setVisibility(View.VISIBLE);
                         productCodText.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         productCod.setVisibility(View.INVISIBLE);
                         productCodText.setVisibility(View.INVISIBLE);
                     }
-                    rewardsTitle.setText((String)documentSnapshot.get("free_cuepon")+(String)documentSnapshot.get("free_cuepon_title"));
-                    rewardsBody.setText((String)documentSnapshot.get("free_cuepon_body"));
-                    if ((boolean)documentSnapshot.get("use_tab_layout")){
+                    rewardsTitle.setText((String) documentSnapshot.get("free_cuepon") + (String) documentSnapshot.get("free_cuepon_title"));
+                    rewardsBody.setText((String) documentSnapshot.get("free_cuepon_body"));
+                    if ((boolean) documentSnapshot.get("use_tab_layout")) {
                         productDescriptionContainer.setVisibility(View.VISIBLE);
                         productTitleSpecContainer.setVisibility(View.GONE);
-                        pDesc = (String)documentSnapshot.get("product_desc");
-                        pOtherDesc = (String)documentSnapshot.get("product_other_desc");
+                        pDesc = (String) documentSnapshot.get("product_desc");
+                        pOtherDesc = (String) documentSnapshot.get("product_other_desc");
 
-                        for (long x =1; x < (long)documentSnapshot.get("total_spec_title")+1; x++){
-                            productsSpeceficationModelList.add(new ProductsSpeceficationModel((String)documentSnapshot.get("spec_title_"+x),0));
-                            for (long y = 1; y < (long)documentSnapshot.get("spec_title_"+x+"_field")+1 ; y++){
-                                productsSpeceficationModelList.add(new ProductsSpeceficationModel(1,(String)documentSnapshot.get("spec_title_"+x+"_field_"+y+"_name"),(String) documentSnapshot.get("spec_title_"+x+"_field_"+y+"_value")));
+                        for (long x = 1; x < (long) documentSnapshot.get("total_spec_title") + 1; x++) {
+                            productsSpeceficationModelList.add(new ProductsSpeceficationModel((String) documentSnapshot.get("spec_title_" + x), 0));
+                            for (long y = 1; y < (long) documentSnapshot.get("spec_title_" + x + "_field") + 1; y++) {
+                                productsSpeceficationModelList.add(new ProductsSpeceficationModel(1, (String) documentSnapshot.get("spec_title_" + x + "_field_" + y + "_name"), (String) documentSnapshot.get("spec_title_" + x + "_field_" + y + "_value")));
                             }
                         }
-                    }else {
+                    } else {
                         productDescriptionContainer.setVisibility(View.GONE);
                         productTitleSpecContainer.setVisibility(View.VISIBLE);
                         //pTitleBody.setText(documentSnapshot.get("product_title").toString());
-                        pDetailBody.setText((String)documentSnapshot.get("product_desc"));
+                        pDetailBody.setText((String) documentSnapshot.get("product_desc"));
                     }
-                    totalRating.setText((long)documentSnapshot.get("total_rating")+" ratings");
-                    for (int r = 0; r < 5; r++){
+                    totalRating.setText((long) documentSnapshot.get("total_rating") + " ratings");
+                    for (int r = 0; r < 5; r++) {
                         TextView rating = (TextView) ratingsNumberContainer.getChildAt(r);
-                        rating.setText(String.valueOf((long)documentSnapshot.get((5-r)+"_star")));
+                        rating.setText(String.valueOf((long) documentSnapshot.get((5 - r) + "_star")));
 
                         ProgressBar progressBar = (ProgressBar) ratingProgressContainer.getChildAt(r);
-                        int maxProgress = Integer.parseInt(String.valueOf((long)documentSnapshot.get("total_rating")));
+                        int maxProgress = Integer.parseInt(String.valueOf((long) documentSnapshot.get("total_rating")));
                         progressBar.setMax(maxProgress);
-                        progressBar.setProgress(Integer.parseInt(String.valueOf((long)documentSnapshot.get((5-r)+"_star"))));
+                        progressBar.setProgress(Integer.parseInt(String.valueOf((long) documentSnapshot.get((5 - r) + "_star"))));
                     }
-                    totalRatingText.setText(String.valueOf((long)documentSnapshot.get("total_rating")));
-                    averageRatingText.setText((String)documentSnapshot.get("average_rating"));
-                    descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount(),pDesc,pOtherDesc,productsSpeceficationModelList));
-                }else{
+                    totalRatingText.setText(String.valueOf((long) documentSnapshot.get("total_rating")));
+                    averageRatingText.setText((String) documentSnapshot.get("average_rating"));
+                    descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount(), pDesc, pOtherDesc, productsSpeceficationModelList));
+
+                    if (AllDBQuery.wishList.size() == 0) {
+                        AllDBQuery.loadWishlist(ProductDetailsActivity.this);
+                    }
+                    if (AllDBQuery.wishList.contains(productID)) {
+                        CHECK_FAVORITE_BTN = true;
+                    } else {
+                        CHECK_FAVORITE_BTN = false;
+                    }
+                } else {
                     String error = task.getException().getMessage();
-                    Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -252,12 +268,42 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if (currentUser == null) {
                     userAlertDialog.show();
                 } else {
+
                     if (CHECK_FAVORITE_BTN) {
                         CHECK_FAVORITE_BTN = false;
                         favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
                     } else {
-                        CHECK_FAVORITE_BTN = true;
-                        favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                        Map<String, Object> addProduct = new HashMap<>();
+                        addProduct.put("product_id_" + String.valueOf(AllDBQuery.wishList.size()), productID);
+                        firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                                .set(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Map<String, Object> updateProduct = new HashMap<>();
+                                    updateProduct.put("list_size", (long) (AllDBQuery.wishList.size() + 1));
+                                    firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                                            .set(updateProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                CHECK_FAVORITE_BTN = true;
+                                                favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                                                AllDBQuery.wishList.add(productID);
+                                            } else {
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    String error = task.getException().getMessage();
+                                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                     }
                 }
             }
@@ -266,9 +312,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser == null){
+                if (currentUser == null) {
                     userAlertDialog.show();
-                }else {
+                } else {
                     Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
                     startActivity(delivery);
                 }
@@ -279,9 +325,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser == null){
+                if (currentUser == null) {
                     userAlertDialog.show();
-                }else {
+                } else {
 
                 }
             }
@@ -291,7 +337,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         final Dialog cueponDialog = new Dialog(ProductDetailsActivity.this);
         cueponDialog.setContentView(R.layout.redeem_dialog_layout);
         cueponDialog.setCancelable(true);
-        cueponDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        cueponDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         ImageView all_select_btn = cueponDialog.findViewById(R.id.all_select_btn);
         cueponRecyclerView = cueponDialog.findViewById(R.id.cuepon_recyclerView);
@@ -309,14 +355,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cueponRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<RewardModel> rewardModelList = new ArrayList<>();
-        rewardModelList.add(new RewardModel("Title for Reward 1","20-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-        rewardModelList.add(new RewardModel("Title for Reward 2","10-11-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-        rewardModelList.add(new RewardModel("Title for Reward 3","14-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-        rewardModelList.add(new RewardModel("Title for Reward 4","29-10-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-        rewardModelList.add(new RewardModel("Title for Reward 5","12-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
-        rewardModelList.add(new RewardModel("Title for Reward 6","19-12-2020","Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 1", "20-12-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 2", "10-11-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 3", "14-12-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 4", "29-10-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 5", "12-12-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
+        rewardModelList.add(new RewardModel("Title for Reward 6", "19-12-2020", "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."));
 
-        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList,false);
+        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList, false);
         cueponRecyclerView.setAdapter(rewardAdapter);
         rewardAdapter.notifyDataSetChanged();
 
@@ -334,22 +380,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (currentUser == null){
+        if (currentUser == null) {
             productsCuponLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             productsCuponLayout.setVisibility(View.VISIBLE);
         }
 
         //rating layout
-        userratingContainer =findViewById(R.id.user_rating_container);
-        for (int x = 0; x < userratingContainer.getChildCount(); x++){
+        userratingContainer = findViewById(R.id.user_rating_container);
+        for (int x = 0; x < userratingContainer.getChildCount(); x++) {
             final int starPosition = x;
             userratingContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (currentUser == null){
+                    if (currentUser == null) {
                         userAlertDialog.show();
-                    }else {
+                    } else {
                         setRating(starPosition);
                     }
 
@@ -358,21 +404,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
     }
 
-    public static void showCueponDialogRecyclerView(){
-        if (cueponRecyclerView.getVisibility() == View.GONE){
+    public static void showCueponDialogRecyclerView() {
+        if (cueponRecyclerView.getVisibility() == View.GONE) {
             cueponRecyclerView.setVisibility(View.VISIBLE);
             selected_cuepon_container.setVisibility(View.GONE);
-        }else {
+        } else {
             cueponRecyclerView.setVisibility(View.GONE);
             selected_cuepon_container.setVisibility(View.VISIBLE);
         }
     }
 
-    private void setRating(int starPosition){
-        for (int x = 0; x < userratingContainer.getChildCount(); x++){
+    private void setRating(int starPosition) {
+        for (int x = 0; x < userratingContainer.getChildCount(); x++) {
             ImageView starBtn = (ImageView) userratingContainer.getChildAt(x);
             starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#F4BCBC")));
-            if (x <= starPosition){
+            if (x <= starPosition) {
                 starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#FFBF00")));
             }
         }
