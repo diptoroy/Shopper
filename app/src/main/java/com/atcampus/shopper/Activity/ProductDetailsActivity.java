@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -87,6 +88,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private List<ProductsSpeceficationModel> productsSpeceficationModelList = new ArrayList<>();
 
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
     private String productID;
 
@@ -161,7 +163,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn = findViewById(R.id.add_to_cart);
         productsCuponLayout = findViewById(R.id.products_cupon_layout);
 
-        productID = getIntent().getStringExtra("PRODUCT_ID");
+        productID = getIntent().getStringExtra("PRODUCT_ID").toString().replace("/","-");
         firebaseFirestore = FirebaseFirestore.getInstance();
         final List<String> productImages = new ArrayList<>();
         firebaseFirestore.collection("PRODUCTS").document(productID)

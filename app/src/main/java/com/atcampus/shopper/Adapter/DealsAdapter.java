@@ -44,7 +44,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.ViewHolder> 
         String price = dealsModelList.get(position).getDealsPrice();
         String pId = dealsModelList.get(position).getDealsID();
 
-        holder.setDealsData(img,name,spec,price,pId);
+        holder.setDealsData(pId,img,name,spec,price);
     }
 
     @Override
