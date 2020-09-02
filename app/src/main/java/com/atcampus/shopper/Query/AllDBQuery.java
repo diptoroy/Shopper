@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Query;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -28,9 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllDBQuery {
-
-    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
@@ -127,8 +125,8 @@ public class AllDBQuery {
                 });
     }
 
-    public static void loadWishlist(final Context context){
-        firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+    public static void loadWishlist(final Context context, final Dialog dialog){
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -140,6 +138,7 @@ public class AllDBQuery {
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
         });
     }

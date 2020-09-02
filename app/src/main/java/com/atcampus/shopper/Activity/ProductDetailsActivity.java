@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
 import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
 import com.atcampus.shopper.Adapter.RewardAdapter;
+import com.atcampus.shopper.Fragment.CartFragment;
 import com.atcampus.shopper.Fragment.ProductSpeceficationFragment;
 import com.atcampus.shopper.Fragment.ProductsDescriptionFragment;
 import com.atcampus.shopper.Fragment.SigninFragment;
@@ -42,10 +43,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static com.atcampus.shopper.Query.AllDBQuery.currentUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,10 +90,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
 
     private String productID;
 
-    Dialog userAlertDialog;
+    private Dialog userAlertDialog;
+    private Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 startActivity(registerIntent);
             }
         });
+
+        //loading dialog
+        loadingDialog = new Dialog(ProductDetailsActivity.this);
+        loadingDialog.setContentView(R.layout.loading_progressbar);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
 
         //product image slider
         viewPager = findViewById(R.id.product_images_viewpager);
@@ -223,15 +234,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     averageRatingText.setText((String) documentSnapshot.get("average_rating"));
                     descViewpager.setAdapter(new ProductsDescriptionAdapter(getSupportFragmentManager(), descTabLayout.getTabCount(), pDesc, pOtherDesc, productsSpeceficationModelList));
 
-                    if (AllDBQuery.wishList.size() == 0) {
-                        AllDBQuery.loadWishlist(ProductDetailsActivity.this);
+                    if (currentUser != null) {
+                        if (AllDBQuery.wishList.size() == 0) {
+                            AllDBQuery.loadWishlist(ProductDetailsActivity.this, loadingDialog);
+                        } else {
+                            loadingDialog.dismiss();
+                        }
+                    }else {
+                        loadingDialog.dismiss();
                     }
+
                     if (AllDBQuery.wishList.contains(productID)) {
                         CHECK_FAVORITE_BTN = true;
+                        favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
                     } else {
                         CHECK_FAVORITE_BTN = false;
                     }
                 } else {
+                    loadingDialog.dismiss();
                     String error = task.getException().getMessage();
                     Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                 }
@@ -276,7 +296,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
                     } else {
                         Map<String, Object> addProduct = new HashMap<>();
-                        addProduct.put("product_id_" + String.valueOf(AllDBQuery.wishList.size()), productID);
+                        addProduct.put("product_id_" +String.valueOf(AllDBQuery.wishList.size()), productID);
                         firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
                                 .set(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -285,13 +305,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     Map<String, Object> updateProduct = new HashMap<>();
                                     updateProduct.put("list_size", (long) (AllDBQuery.wishList.size() + 1));
                                     firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
-                                            .set(updateProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            .update(updateProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 CHECK_FAVORITE_BTN = true;
                                                 favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
                                                 AllDBQuery.wishList.add(productID);
+                                                Toast.makeText(ProductDetailsActivity.this,"Added to wishlist successfully",Toast.LENGTH_SHORT).show();
                                             } else {
                                                 String error = task.getException().getMessage();
                                                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
@@ -330,7 +351,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if (currentUser == null) {
                     userAlertDialog.show();
                 } else {
-
+                    //todo
                 }
             }
         });
@@ -382,11 +403,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (currentUser == null) {
-            productsCuponLayout.setVisibility(View.GONE);
-        } else {
-            productsCuponLayout.setVisibility(View.VISIBLE);
-        }
+
 
         //rating layout
         userratingContainer = findViewById(R.id.user_rating_container);
@@ -403,6 +420,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            productsCuponLayout.setVisibility(View.GONE);
+        } else {
+            productsCuponLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -442,7 +470,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
         } else if (id == R.id.main_search) {
             return true;
         } else if (id == R.id.main_cart) {
-            return true;
+            if (currentUser == null){
+                userAlertDialog.show();
+            }else {
+                Intent cartIntent = new Intent(ProductDetailsActivity.this, RegisterActivity.class);
+                startActivity(cartIntent);
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
 

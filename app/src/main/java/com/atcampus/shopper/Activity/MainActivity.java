@@ -32,9 +32,10 @@ import com.atcampus.shopper.Fragment.WishlistFragment;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
-import static com.atcampus.shopper.Query.AllDBQuery.currentUser;
 import static com.atcampus.shopper.R.menu.menu;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
     Dialog userAlertDialog;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
 
 
-        if (currentUser == null ){
-            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(false);
-        }else {
-            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(true);
-        }
+
 
         userAlertDialog = new Dialog(MainActivity.this);
         userAlertDialog.setContentView(R.layout.user_sign_in_dialog);
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SigninFragment.disableCloseBtn = true;
+                SignupFragment.disableCloseBtn = true;
                 userAlertDialog.dismiss();
                 setSignUpFragment = false;
                 startActivity(registerIntent);
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SigninFragment.disableCloseBtn = true;
                 SignupFragment.disableCloseBtn = true;
                 userAlertDialog.dismiss();
                 setSignUpFragment = true;
@@ -94,6 +94,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null ){
+            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(false);
+        }else {
+            bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(true);
+        }
     }
 
     @Override
