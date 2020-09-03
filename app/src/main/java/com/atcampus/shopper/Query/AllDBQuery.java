@@ -2,15 +2,19 @@ package com.atcampus.shopper.Query;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
 import com.atcampus.shopper.Fragment.HomeFragment;
+import com.atcampus.shopper.Fragment.WishlistFragment;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
@@ -26,7 +30,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AllDBQuery {
 
@@ -35,6 +41,7 @@ public class AllDBQuery {
     public static List<List<MultipleRecyclerviewModel>> allList = new ArrayList<>();
     public static List<String> categoryName = new ArrayList<>();
     public static List<String> wishList = new ArrayList<>();
+    public static List<WishlistModel> wishlistModels = new ArrayList<>();
 
     public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
 
@@ -125,7 +132,7 @@ public class AllDBQuery {
                 });
     }
 
-    public static void loadWishlist(final Context context, final Dialog dialog){
+    public static void loadWishlist(final Context context, final Dialog dialog, final boolean loadProductData){
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -133,12 +140,66 @@ public class AllDBQuery {
                 if (task.isSuccessful()) {
                     for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
                         wishList.add((String) task.getResult().get("product_id_"+x));
+
+                        if (loadProductData) {
+                            firebaseFirestore.collection("PRODUCTS").document((String) task.getResult().get("product_id_" + x))
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        wishlistModels.add(new WishlistModel((String) task.getResult().get("product_image_1")
+                                                , (String) task.getResult().get("product_title")
+                                                , (long) task.getResult().get("free_cuepon")
+                                                , (String) task.getResult().get("average_rating")
+                                                , (String) task.getResult().get("total_rating")
+                                                , (String) task.getResult().get("product_price")
+                                                , (String) task.getResult().get("cutted_price")
+                                                , (boolean) task.getResult().get("cod")));
+
+                                        WishlistFragment.wishlistAdapter.notifyDataSetChanged();
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
                     }
                 }else {
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
+            }
+        });
+    }
+
+    public static void removeWishlist(final int index, final Context context){
+        wishList.remove(index);
+        Map<String,Object> updatewishList = new HashMap<>();
+
+        for (int x = 0; x < wishList.size(); x++){
+            updatewishList.put("product_id_"+x,wishList.get(x));
+        }
+        updatewishList.put("list_size",(long)wishList.size());
+
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                .set(updatewishList).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    if (wishlistModels.size() != 0){
+                        wishlistModels.remove(index);
+                        WishlistFragment.wishlistAdapter.notifyDataSetChanged();
+                    }
+                    ProductDetailsActivity.CHECK_FAVORITE_BTN = false;
+                    Toast.makeText(context,"Remove Successfully",Toast.LENGTH_SHORT).show();
+                }else {
+                    ProductDetailsActivity.favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                ProductDetailsActivity.favoriteBtn.setEnabled(true);
             }
         });
     }
