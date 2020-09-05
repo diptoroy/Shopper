@@ -7,12 +7,12 @@ public class WishlistModel {
     private String productName;
     private long productCuepon;
     private String productRating;
-    private String productTotalRating;
+    private long productTotalRating;
     private String productPrice;
     private String productCuttedPrice;
     private boolean cod;
 
-    public WishlistModel(String productId,String productImage, String productName, long productCuepon, String productRating, String productTotalRating, String productPrice, String productCuttedPrice, boolean cod) {
+    public WishlistModel(String productId,String productImage, String productName, long productCuepon, String productRating, long productTotalRating, String productPrice, String productCuttedPrice, boolean cod) {
         this.productId = productId;
         this.productImage = productImage;
         this.productName = productName;
@@ -64,11 +64,11 @@ public class WishlistModel {
         this.productRating = productRating;
     }
 
-    public String getProductTotalRating() {
+    public long getProductTotalRating() {
         return productTotalRating;
     }
 
-    public void setProductTotalRating(String productTotalRating) {
+    public void setProductTotalRating(long productTotalRating) {
         this.productTotalRating = productTotalRating;
     }
 

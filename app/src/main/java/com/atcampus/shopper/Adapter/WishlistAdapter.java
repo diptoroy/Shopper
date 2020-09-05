@@ -51,7 +51,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         String title = wishlistModels.get(position).getProductName();
         long freeCueponNo = wishlistModels.get(position).getProductCuepon();
         String rating = wishlistModels.get(position).getProductRating();
-        String totalRating = wishlistModels.get(position).getProductTotalRating();
+        long totalRating = wishlistModels.get(position).getProductTotalRating();
         String price = wishlistModels.get(position).getProductPrice();
         String cuttedPrice = wishlistModels.get(position).getProductCuttedPrice();
         boolean deliSystem = wishlistModels.get(position).isCod();
@@ -101,7 +101,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn = itemView.findViewById(R.id.delete_product);
         }
 
-        private void setData(final String pId, String resource, String title, long freeCueponNo, String rating, String totalRating, String price, String cuttedPrice, final boolean deliSystem, final int index) {
+        private void setData(final String pId, String resource, String title, long freeCueponNo, String rating, long totalRating, String price, String cuttedPrice, final boolean deliSystem, final int index) {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.photo)).into(productImage);
             productName.setText(title);
             if (freeCueponNo != 0) {
@@ -116,7 +116,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 productCuepon.setVisibility(View.INVISIBLE);
             }
             productRating.setText(rating);
-            productTotalRating.setText("("+totalRating+") rating");
+            productTotalRating.setText("("+totalRating+") ratings");
             productPrice.setText("$"+price+"");
             productCuttedPrice.setText("$"+cuttedPrice+"");
             if (deliSystem){

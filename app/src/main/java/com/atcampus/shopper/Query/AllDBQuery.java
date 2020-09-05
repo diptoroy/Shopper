@@ -47,7 +47,7 @@ public class AllDBQuery {
     public static List<String> wishList = new ArrayList<>();
     public static List<WishlistModel> wishlistModels = new ArrayList<>();
     public static List<String> ratedId = new ArrayList<>();
-    public static List<String> userRating = new ArrayList<>();
+    public static List<Long> userRating = new ArrayList<>();
 
     public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
         categoryModels.clear();
@@ -108,7 +108,7 @@ public class AllDBQuery {
                                                 , (String) documentSnapshot.get("product_full_title_" + i)
                                                 , (long) documentSnapshot.get("free_coupen_" + i)
                                                 , (String) documentSnapshot.get("average_rating_" + i)
-                                                , (String) documentSnapshot.get("total_rating_" + i)
+                                                , (long) documentSnapshot.get("total_rating_" + i)
                                                 , (String) documentSnapshot.get("product_price_" + i)
                                                 , (String) documentSnapshot.get("cutted_price_" + i)
                                                 , (boolean) documentSnapshot.get("cod_" + i)));
@@ -174,7 +174,7 @@ public class AllDBQuery {
                                                 , (String) task.getResult().get("product_title")
                                                 , (long) task.getResult().get("free_cuepon")
                                                 , (String) task.getResult().get("average_rating")
-                                                , (String) task.getResult().get("total_rating")
+                                                , (long) task.getResult().get("total_rating")
                                                 , (String) task.getResult().get("product_price")
                                                 , (String) task.getResult().get("cutted_price")
                                                 , (boolean) task.getResult().get("cod")));
@@ -243,7 +243,7 @@ public class AllDBQuery {
                 if (task.isSuccessful()){
                    for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
                        ratedId.add((String) task.getResult().get("product_id_"+x));
-                       userRating.add((String) task.getResult().get("average_rating_"+x));
+                       userRating.add((long) task.getResult().get("rating_"+x));
 
                        if (task.getResult().get("product_id_"+x).toString().equals(productID) && ProductDetailsActivity.userratingContainer != null){
                            ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((String)task.getResult().get("average_rating_"+x)))-1;
