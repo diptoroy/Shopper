@@ -2,6 +2,7 @@ package com.atcampus.shopper.Model;
 
 public class WishlistModel {
 
+    private String productId;
     private String productImage;
     private String productName;
     private long productCuepon;
@@ -11,7 +12,8 @@ public class WishlistModel {
     private String productCuttedPrice;
     private boolean cod;
 
-    public WishlistModel(String productImage, String productName, long productCuepon, String productRating, String productTotalRating, String productPrice, String productCuttedPrice, boolean cod) {
+    public WishlistModel(String productId,String productImage, String productName, long productCuepon, String productRating, String productTotalRating, String productPrice, String productCuttedPrice, boolean cod) {
+        this.productId = productId;
         this.productImage = productImage;
         this.productName = productName;
         this.productCuepon = productCuepon;
@@ -20,6 +22,14 @@ public class WishlistModel {
         this.productPrice = productPrice;
         this.productCuttedPrice = productCuttedPrice;
         this.cod = cod;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductImage() {

@@ -26,7 +26,7 @@ public class ProductImagesViewpagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView productImages = new ImageView(container.getContext());
 //        productImages.setImageResource(productsImagesList.get(position));
-        Glide.with(container.getContext()).load(productsImagesList.get(position)).apply(new RequestOptions().placeholder(R.drawable.phone)).into(productImages);
+        Glide.with(container.getContext()).load(productsImagesList.get(position)).apply(new RequestOptions().placeholder(R.drawable.photo)).into(productImages);
         container.addView(productImages,0);
         return productImages;
     }

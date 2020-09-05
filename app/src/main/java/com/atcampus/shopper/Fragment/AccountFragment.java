@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.atcampus.shopper.Activity.AddressesActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
 import com.atcampus.shopper.Activity.RegisterActivity;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -55,6 +56,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+                AllDBQuery.clearData();
                 Intent registerIntent = new Intent(getContext(), RegisterActivity.class);
                 startActivity(registerIntent);
                 getActivity().finish();

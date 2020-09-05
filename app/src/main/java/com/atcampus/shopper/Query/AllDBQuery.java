@@ -34,24 +34,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.atcampus.shopper.Activity.ProductDetailsActivity.productID;
+import static com.atcampus.shopper.Activity.ProductDetailsActivity.running_query_list;
+
 public class AllDBQuery {
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
     public static List<CategoryModel> categoryModels = new ArrayList<>();
     public static List<List<MultipleRecyclerviewModel>> allList = new ArrayList<>();
     public static List<String> categoryName = new ArrayList<>();
     public static List<String> wishList = new ArrayList<>();
     public static List<WishlistModel> wishlistModels = new ArrayList<>();
+    public static List<String> ratedId = new ArrayList<>();
+    public static List<String> userRating = new ArrayList<>();
 
     public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
-
+        categoryModels.clear();
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                categoryModels.add(new CategoryModel((String)documentSnapshot.get("icon"), (String)documentSnapshot.get("categoryName")));
+                                categoryModels.add(new CategoryModel((String) documentSnapshot.get("icon"), (String) documentSnapshot.get("categoryName")));
                             }
                             CategoryAdapter categoryAdapter = new CategoryAdapter(categoryModels);
                             categoryRecyclerView.setAdapter(categoryAdapter);
@@ -79,8 +85,8 @@ public class AllDBQuery {
                                     List<SliderModel> sliderModelList = new ArrayList<>();
                                     long no_of_slider = (long) documentSnapshot.get("no_of_slider");
                                     for (long i = 1; i < no_of_slider + 1; i++) {
-                                        sliderModelList.add(new SliderModel((String)documentSnapshot.get("slider_" + i)
-                                                , (String)documentSnapshot.get("slider_" + i + "_color")));
+                                        sliderModelList.add(new SliderModel((String) documentSnapshot.get("slider_" + i)
+                                                , (String) documentSnapshot.get("slider_" + i + "_color")));
                                     }
                                     allList.get(index).add(new MultipleRecyclerviewModel(0, sliderModelList));
                                 } else if ((long) documentSnapshot.get("view_type") == 1) {
@@ -91,33 +97,34 @@ public class AllDBQuery {
                                     List<DealsModel> dealsModelList = new ArrayList<>();
                                     long number_of_product = (long) documentSnapshot.get("number_of_product");
                                     for (long i = 1; i < number_of_product + 1; i++) {
-                                        dealsModelList.add(new DealsModel((String)documentSnapshot.get("product_id_" + i)
-                                                , (String)documentSnapshot.get("product_image_" + i)
-                                                , (String)documentSnapshot.get("product_title_" + i)
-                                                , (String)documentSnapshot.get("product_subtitle_" + i)
-                                                ,(String)documentSnapshot.get("product_price_" + i)));
+                                        dealsModelList.add(new DealsModel((String) documentSnapshot.get("product_id_" + i)
+                                                , (String) documentSnapshot.get("product_image_" + i)
+                                                , (String) documentSnapshot.get("product_title_" + i)
+                                                , (String) documentSnapshot.get("product_subtitle_" + i)
+                                                , (String) documentSnapshot.get("product_price_" + i)));
 
-                                        allDeals.add(new WishlistModel((String)documentSnapshot.get("product_image_"+i)
-                                        ,(String)documentSnapshot.get("product_full_title_" + i)
-                                        ,(long)documentSnapshot.get("free_coupen_" + i)
-                                        ,(String)documentSnapshot.get("average_rating_" + i)
-                                        ,(String) documentSnapshot.get("total_rating_" + i)
-                                        ,(String)documentSnapshot.get("product_price_" + i)
-                                        ,(String)documentSnapshot.get("cutted_price_" + i)
-                                        ,(boolean)documentSnapshot.get("cod_" + i)));
+                                        allDeals.add(new WishlistModel((String) documentSnapshot.get("product_id_" + i)
+                                                ,(String) documentSnapshot.get("product_image_" + i)
+                                                , (String) documentSnapshot.get("product_full_title_" + i)
+                                                , (long) documentSnapshot.get("free_coupen_" + i)
+                                                , (String) documentSnapshot.get("average_rating_" + i)
+                                                , (String) documentSnapshot.get("total_rating_" + i)
+                                                , (String) documentSnapshot.get("product_price_" + i)
+                                                , (String) documentSnapshot.get("cutted_price_" + i)
+                                                , (boolean) documentSnapshot.get("cod_" + i)));
                                     }
-                                    allList.get(index).add(new MultipleRecyclerviewModel(2, (String)documentSnapshot.get("layout_title"), (String)documentSnapshot.get("layout_color"), dealsModelList,allDeals));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(2, (String) documentSnapshot.get("layout_title"), (String) documentSnapshot.get("layout_color"), dealsModelList, allDeals));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
                                     List<DealsModel> trendingModelList = new ArrayList<>();
                                     long number_of_product = (long) documentSnapshot.get("number_of_product");
                                     for (long i = 1; i < number_of_product + 1; i++) {
-                                        trendingModelList.add(new DealsModel((String)documentSnapshot.get("product_id_" + i)
-                                                , (String)documentSnapshot.get("product_image_" + i)
-                                                , (String)documentSnapshot.get("product_title_" + i)
-                                                , (String)documentSnapshot.get("product_subtitle_" + i)
-                                                , (String)documentSnapshot.get("product_price_" + i)));
+                                        trendingModelList.add(new DealsModel((String) documentSnapshot.get("product_id_" + i)
+                                                , (String) documentSnapshot.get("product_image_" + i)
+                                                , (String) documentSnapshot.get("product_title_" + i)
+                                                , (String) documentSnapshot.get("product_subtitle_" + i)
+                                                , (String) documentSnapshot.get("product_price_" + i)));
                                     }
-                                    allList.get(index).add(new MultipleRecyclerviewModel(3, (String)documentSnapshot.get("layout_title"), (String)documentSnapshot.get("layout_color"), trendingModelList));
+                                    allList.get(index).add(new MultipleRecyclerviewModel(3, (String) documentSnapshot.get("layout_title"), (String) documentSnapshot.get("layout_color"), trendingModelList));
                                 }
                             }
                             MultipleRecyclerviewAdapter multipleRecyclerviewAdapter = new MultipleRecyclerviewAdapter(allList.get(index));
@@ -132,22 +139,38 @@ public class AllDBQuery {
                 });
     }
 
-    public static void loadWishlist(final Context context, final Dialog dialog, final boolean loadProductData){
+    public static void loadWishlist(final Context context, final Dialog dialog, final boolean loadProductData) {
+        wishList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
-                        wishList.add((String) task.getResult().get("product_id_"+x));
+                    for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                        wishList.add((String) task.getResult().get("product_id_" + x));
+
+                        if (AllDBQuery.wishList.contains(ProductDetailsActivity.productID)) {
+                            ProductDetailsActivity.CHECK_FAVORITE_BTN = true;
+                            if (ProductDetailsActivity.favoriteBtn != null) {
+                                ProductDetailsActivity.favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                            }
+                        } else {
+                            if (ProductDetailsActivity.favoriteBtn != null) {
+                                ProductDetailsActivity.favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9f9f9f")));
+                            }
+                            ProductDetailsActivity.CHECK_FAVORITE_BTN = false;
+                        }
 
                         if (loadProductData) {
-                            firebaseFirestore.collection("PRODUCTS").document((String) task.getResult().get("product_id_" + x))
+                            wishlistModels.clear();
+                            final String pId = (String) task.getResult().get("product_id_" + x);
+                            firebaseFirestore.collection("PRODUCTS").document(pId)
                                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        wishlistModels.add(new WishlistModel((String) task.getResult().get("product_image_1")
+                                        wishlistModels.add(new WishlistModel(pId
+                                                ,(String) task.getResult().get("product_image_1")
                                                 , (String) task.getResult().get("product_title")
                                                 , (long) task.getResult().get("free_cuepon")
                                                 , (String) task.getResult().get("average_rating")
@@ -165,7 +188,7 @@ public class AllDBQuery {
                             });
                         }
                     }
-                }else {
+                } else {
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
@@ -174,33 +197,76 @@ public class AllDBQuery {
         });
     }
 
-    public static void removeWishlist(final int index, final Context context){
+    public static void removeWishlist(final int index, final Context context) {
         wishList.remove(index);
-        Map<String,Object> updatewishList = new HashMap<>();
+        Map<String, Object> updatewishList = new HashMap<>();
 
-        for (int x = 0; x < wishList.size(); x++){
-            updatewishList.put("product_id_"+x,wishList.get(x));
+        for (int x = 0; x < wishList.size(); x++) {
+            updatewishList.put("product_id_" + x, wishList.get(x));
         }
-        updatewishList.put("list_size",(long)wishList.size());
+        updatewishList.put("list_size", (long) wishList.size());
 
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .set(updatewishList).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    if (wishlistModels.size() != 0){
+                if (task.isSuccessful()) {
+                    if (wishlistModels.size() != 0) {
                         wishlistModels.remove(index);
                         WishlistFragment.wishlistAdapter.notifyDataSetChanged();
                     }
                     ProductDetailsActivity.CHECK_FAVORITE_BTN = false;
-                    Toast.makeText(context,"Remove Successfully",Toast.LENGTH_SHORT).show();
-                }else {
-                    ProductDetailsActivity.favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                    Toast.makeText(context, "Remove Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (ProductDetailsActivity.favoriteBtn != null) {
+                        ProductDetailsActivity.favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
+                    }
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-                ProductDetailsActivity.favoriteBtn.setEnabled(true);
+//                if (ProductDetailsActivity.favoriteBtn != null) {
+//                    ProductDetailsActivity.favoriteBtn.setEnabled(true);
+//                }
+                ProductDetailsActivity.running_query_list = false;
             }
         });
+    }
+
+    public static void loadRating(final Context context){
+        ratedId.clear();
+        userRating.clear();
+
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_RATING")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                   for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
+                       ratedId.add((String) task.getResult().get("product_id_"+x));
+                       userRating.add((String) task.getResult().get("average_rating_"+x));
+
+                       if (task.getResult().get("product_id_"+x).toString().equals(productID) && ProductDetailsActivity.userratingContainer != null){
+                           ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((String)task.getResult().get("average_rating_"+x)))-1;
+                           ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
+                       }
+                   }
+
+                }else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+    }
+
+    public static void clearData() {
+        categoryModels.clear();
+        ;
+        categoryName.clear();
+        allList.clear();
+        wishList.clear();
+        wishlistModels.clear();
     }
 }

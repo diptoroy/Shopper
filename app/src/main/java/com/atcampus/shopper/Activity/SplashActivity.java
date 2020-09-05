@@ -21,26 +21,27 @@ public class SplashActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        SystemClock.sleep(3000);
-        Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
-        startActivity(loginIntent);
-        finish();
+
+//        SystemClock.sleep(3000);
+//        Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
+//        startActivity(loginIntent);
+//        finish();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        FirebaseUser currentUser = auth.getCurrentUser();
-//
-//        if (currentUser == null){
-//            Intent registerIntent = new Intent(SplashActivity.this,RegisterActivity.class);
-//            startActivity(registerIntent);
-//            finish();
-//        }else{
-//            Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
-//            startActivity(mainIntent);
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser == null){
+            Intent registerIntent = new Intent(SplashActivity.this,RegisterActivity.class);
+            startActivity(registerIntent);
+            finish();
+        }else{
+            Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
+            startActivity(mainIntent);
+            finish();
+        }
+    }
 }
