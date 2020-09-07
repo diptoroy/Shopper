@@ -103,15 +103,17 @@ public class AllDBQuery {
                                                 , (String) documentSnapshot.get("product_subtitle_" + i)
                                                 , (String) documentSnapshot.get("product_price_" + i)));
 
-                                        allDeals.add(new WishlistModel((String) documentSnapshot.get("product_id_" + i)
-                                                ,(String) documentSnapshot.get("product_image_" + i)
-                                                , (String) documentSnapshot.get("product_full_title_" + i)
-                                                , (long) documentSnapshot.get("free_coupen_" + i)
-                                                , (String) documentSnapshot.get("average_rating_" + i)
-                                                , (long) documentSnapshot.get("total_rating_" + i)
-                                                , (String) documentSnapshot.get("product_price_" + i)
-                                                , (String) documentSnapshot.get("cutted_price_" + i)
-                                                , (boolean) documentSnapshot.get("cod_" + i)));
+                                            allDeals.add(new WishlistModel((String) documentSnapshot.get("product_id_" + i)
+                                                    , (String) documentSnapshot.get("product_image_" + i)
+                                                    , (String) documentSnapshot.get("product_full_title_" + i)
+                                                    , (long) documentSnapshot.get("free_coupen_" + i)
+                                                    , (String) documentSnapshot.get("average_rating_" + i)
+                                                    , (long) documentSnapshot.get("total_rating_" + i)
+                                                    , (String) documentSnapshot.get("product_price_" + i)
+                                                    , (String) documentSnapshot.get("cutted_price_" + i)
+                                                    , (boolean) documentSnapshot.get("cod_" + i)));
+
+
                                     }
                                     allList.get(index).add(new MultipleRecyclerviewModel(2, (String) documentSnapshot.get("layout_title"), (String) documentSnapshot.get("layout_color"), dealsModelList, allDeals));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
@@ -233,32 +235,36 @@ public class AllDBQuery {
     }
 
     public static void loadRating(final Context context){
-        ratedId.clear();
-        userRating.clear();
+        if (!ProductDetailsActivity.running_rating_list) {
+            ProductDetailsActivity.running_rating_list = true;
+            ratedId.clear();
+            userRating.clear();
+            firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_RATING")
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                            ratedId.add((String) task.getResult().get("product_id_" + x));
+                            userRating.add((long) task.getResult().get("average_rating_" + x));
 
-        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_RATING")
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                   for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
-                       ratedId.add((String) task.getResult().get("product_id_"+x));
-                       userRating.add((long) task.getResult().get("rating_"+x));
+                            if (task.getResult().get("product_id_" + x).toString().equals(ProductDetailsActivity.productID)) {
+                                ProductDetailsActivity.initialRating = (Integer.parseInt(String.valueOf((long) task.getResult().get("average_rating_" + x)))) - 1;
+                                if (ProductDetailsActivity.userratingContainer != null) {
+                                    ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
+                                }
+                                }
+                        }
 
-                       if (task.getResult().get("product_id_"+x).toString().equals(productID) && ProductDetailsActivity.userratingContainer != null){
-                           ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((String)task.getResult().get("average_rating_"+x)))-1;
-                           ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
-                       }
-                   }
+                    } else {
 
-                }else {
-                    String error = task.getException().getMessage();
-                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                        String error = task.getException().getMessage();
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                    }
+                    ProductDetailsActivity.running_rating_list = false;
                 }
-
-            }
-        });
-
+            });
+        }
     }
 
     public static void clearData() {
