@@ -46,8 +46,11 @@ public class AllDBQuery {
     public static List<String> categoryName = new ArrayList<>();
     public static List<String> wishList = new ArrayList<>();
     public static List<WishlistModel> wishlistModels = new ArrayList<>();
-    public static List<String> ratedId = new ArrayList<>();
-    public static List<Long> userRating = new ArrayList<>();
+//    public static List<String> ratedId = new ArrayList<>();
+//    public static List<Long> userRating = new ArrayList<>();
+
+    public static List<String> myRatedIds = new ArrayList<>();
+    public static List<Long> myRating = new ArrayList<>();
 
     public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
         categoryModels.clear();
@@ -237,23 +240,36 @@ public class AllDBQuery {
     public static void loadRating(final Context context){
         if (!ProductDetailsActivity.running_rating_list) {
             ProductDetailsActivity.running_rating_list = true;
-            ratedId.clear();
-            userRating.clear();
+//            ratedId.clear();
+//            userRating.clear();
+
+            myRatedIds.clear();
+            myRating.clear();
             firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_RATING")
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
-                            ratedId.add((String) task.getResult().get("product_id_" + x));
-                            userRating.add((long) task.getResult().get("average_rating_" + x));
+//                            ratedId.add((String) task.getResult().get("product_id_" + x));
+//                            userRating.add((long) task.getResult().get("rating_" + x));
+//
+//                            if (task.getResult().get("product_id_" + x).toString().equals(ProductDetailsActivity.productID)) {
+//                                ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x))) - 1;
+//                                if (ProductDetailsActivity.userratingContainer != null) {
+//                                    ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
+//                                }
+//                                }
 
+                            myRatedIds.add(task.getResult().get("product_id_" + x).toString());
+                            myRating.add((long) task.getResult().get("rating_" + x));
                             if (task.getResult().get("product_id_" + x).toString().equals(ProductDetailsActivity.productID)) {
-                                ProductDetailsActivity.initialRating = (Integer.parseInt(String.valueOf((long) task.getResult().get("average_rating_" + x)))) - 1;
-                                if (ProductDetailsActivity.userratingContainer != null) {
+                                ProductDetailsActivity.initialRating = (Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x)))) - 1;
+
+                                if (ProductDetailsActivity.rateNowContainer != null) {
                                     ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
                                 }
-                                }
+                            }
                         }
 
                     } else {
@@ -269,7 +285,6 @@ public class AllDBQuery {
 
     public static void clearData() {
         categoryModels.clear();
-        ;
         categoryName.clear();
         allList.clear();
         wishList.clear();

@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:elevation="3dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:elevation="3dp">
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Rating"
-        android:textColor="@color/black"
+        android:text="Ratings"
         android:textSize="18sp"
+        android:textColor="#000000"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,50 +34,50 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9">
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <TextView
-            android:id="@+id/rating_point"
+            android:id="@+id/average_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="3.5"
-            android:textColor="@color/black"
+            android:text="4.5"
+            android:textColor="#000000"
             android:textSize="36sp"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/rating_image"
+            android:id="@+id/average_rating_star"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:tint="#000000"
             app:srcCompat="@drawable/ic_baseline_star_24" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/total_rating"
+        android:id="@+id/total_ratings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="37 ratings"
-        android:textColor="@color/black"
+        android:text="27 ratings"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <LinearLayout
-        android:id="@+id/rating_progress_container"
+        android:id="@+id/ratings_progressbar_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/total_rating">
+        app:layout_constraintTop_toBottomOf="@+id/total_ratings">
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -84,8 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:max="100"
-            android:progress="85"
+            android:progress="50"
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
@@ -95,19 +98,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:max="100"
-            android:progress="70"
+            android:progress="50"
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
-            android:id="@+id/progressBa3"
+            android:id="@+id/progressBar3"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:max="100"
-            android:progress="65"
+            android:progress="50"
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
@@ -117,8 +122,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:max="100"
-            android:progress="45"
+            android:progress="50"
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
@@ -128,19 +134,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:max="100"
-            android:progress="20"
+            android:progress="50"
             android:progressTint="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/rating_progress_container"
-        app:layout_constraintEnd_toStartOf="@+id/rating_progress_container"
-        app:layout_constraintTop_toTopOf="@+id/rating_progress_container">
+        app:layout_constraintBottom_toBottomOf="@+id/ratings_progressbar_container"
+        app:layout_constraintEnd_toStartOf="@+id/ratings_progressbar_container"
+        app:layout_constraintTop_toBottomOf="@+id/total_ratings">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,72 +158,23 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="4dp"
-                android:tint="@color/black"
-                app:srcCompat="@drawable/ic_baseline_star_24" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="4dp"
-                android:tint="@color/black"
-                app:srcCompat="@drawable/ic_baseline_star_24" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textColor="#000000"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView6"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_marginStart="4dp"
-                android:tint="@color/black"
+                android:tint="#000000"
                 app:srcCompat="@drawable/ic_baseline_star_24" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -225,20 +184,20 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2"
-                android:textColor="@color/black"
-                android:textSize="10sp"
+                android:text="4"
+                android:textColor="#000000"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView7"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_marginStart="4dp"
-                android:tint="@color/black"
+                android:tint="#000000"
                 app:srcCompat="@drawable/ic_baseline_star_24" />
         </LinearLayout>
 
@@ -250,118 +209,166 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:textColor="@color/black"
-                android:textSize="10sp"
+                android:text="3"
+                android:textColor="#000000"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView8"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_marginStart="4dp"
-                android:tint="@color/black"
+                android:tint="#000000"
                 app:srcCompat="@drawable/ic_baseline_star_24" />
-
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="4dp"
+                android:tint="#000000"
+                app:srcCompat="@drawable/ic_baseline_star_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="4dp"
+                android:tint="#000000"
+                app:srcCompat="@drawable/ic_baseline_star_24" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ratings_number_container"
+        android:id="@+id/ratings_numbers_container"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rating_progress_container"
-        app:layout_constraintStart_toEndOf="@+id/rating_progress_container"
-        app:layout_constraintTop_toTopOf="@+id/rating_progress_container">
+        app:layout_constraintBottom_toBottomOf="@+id/ratings_progressbar_container"
+        app:layout_constraintStart_toEndOf="@+id/ratings_progressbar_container"
+        app:layout_constraintTop_toBottomOf="@+id/total_ratings">
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/textView13"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="14"
+            android:text="12"
             android:textAlignment="center"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="9"
+            android:text="12"
             android:textAlignment="center"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="8"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView17"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="5"
             android:textAlignment="center"
             android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="2"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView24"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="7"
-            android:textAlignment="center"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/divider3"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@+id/ratings_number_container"
-        app:layout_constraintStart_toStartOf="@+id/ratings_number_container"
-        app:layout_constraintTop_toBottomOf="@+id/ratings_number_container" />
+        app:layout_constraintEnd_toEndOf="@+id/ratings_numbers_container"
+        app:layout_constraintStart_toStartOf="@+id/ratings_numbers_container"
+        app:layout_constraintTop_toBottomOf="@+id/ratings_numbers_container" />
 
     <TextView
-        android:id="@+id/total_rating_text"
+        android:id="@+id/total_ratings_figure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="37"
+        android:text="27"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/ratings_number_container"
-        app:layout_constraintStart_toStartOf="@+id/ratings_number_container"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+        app:layout_constraintEnd_toEndOf="@+id/ratings_numbers_container"
+        app:layout_constraintStart_toEndOf="@+id/ratings_progressbar_container"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/tv_your_ratings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Your rating"
+        android:text="Your Ratings"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_rating_text" />
+        app:layout_constraintTop_toBottomOf="@+id/total_ratings_figure" />
 
     <LinearLayout
-        android:id="@+id/user_rating_container"
+        android:id="@+id/rate_now_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -372,27 +379,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView26">
-
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:tint="@color/rating"
-            app:srcCompat="@drawable/ic_baseline_star_24" />
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:tint="@color/rating"
-            app:srcCompat="@drawable/ic_baseline_star_24" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_your_ratings">
 
         <ImageView
             android:id="@+id/imageView11"
@@ -401,7 +388,17 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="@color/rating"
+            android:tint="#bebebe"
+            app:srcCompat="@drawable/ic_baseline_star_24" />
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:tint="#bebebe"
             app:srcCompat="@drawable/ic_baseline_star_24" />
 
         <ImageView
@@ -411,8 +408,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-
-            android:tint="@color/rating"
+            android:tint="#bebebe"
             app:srcCompat="@drawable/ic_baseline_star_24" />
 
         <ImageView
@@ -422,8 +418,447 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="@color/rating"
+            android:tint="#bebebe"
+            app:srcCompat="@drawable/ic_baseline_star_24" />
+
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:tint="#bebebe"
             app:srcCompat="@drawable/ic_baseline_star_24" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_marginTop="8dp"-->
+<!--    android:layout_marginBottom="8dp"-->
+<!--    android:elevation="3dp">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView9"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="Rating"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView9">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/rating_point"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="3.5"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="36sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/rating_image"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--    </LinearLayout>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/total_rating"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="37 ratings"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="12sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/rating_progress_container"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/linearLayout3"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/total_rating">-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar1"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="85"-->
+<!--            android:progressTint="@color/colorPrimary" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar2"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="70"-->
+<!--            android:progressTint="@color/colorPrimary" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBa3"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="65"-->
+<!--            android:progressTint="@color/colorPrimary" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar4"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="45"-->
+<!--            android:progressTint="@color/colorPrimary" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar5"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:max="100"-->
+<!--            android:progress="20"-->
+<!--            android:progressTint="@color/colorPrimary" />-->
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/rating_progress_container"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/rating_progress_container"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/rating_progress_container">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView14"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="5"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView4"-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:tint="@color/black"-->
+<!--                app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView15"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="4"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView5"-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:tint="@color/black"-->
+<!--                app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView16"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="3"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView6"-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:tint="@color/black"-->
+<!--                app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView17"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="2"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView7"-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:tint="@color/black"-->
+<!--                app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView18"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="1"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView8"-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:tint="@color/black"-->
+<!--                app:srcCompat="@drawable/ic_baseline_star_24" />-->
+
+<!--        </LinearLayout>-->
+
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ratings_number_container"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:paddingLeft="8dp"-->
+<!--        android:paddingRight="8dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/rating_progress_container"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/rating_progress_container"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/rating_progress_container">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView20"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="14"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView21"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="9"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView22"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="5"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView23"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="2"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView24"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="7"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="12sp" />-->
+<!--    </LinearLayout>-->
+
+<!--    <View-->
+<!--        android:id="@+id/divider2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:background="?android:attr/listDivider"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/ratings_number_container"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/ratings_number_container"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ratings_number_container" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/total_rating_text"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:text="37"-->
+<!--        android:textSize="12sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/ratings_number_container"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/ratings_number_container"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/divider2" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView26"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:text="Your rating"-->
+<!--        android:textSize="12sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/total_rating_text" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/user_rating_container"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView26">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView9"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:tint="@color/rating"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView10"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:tint="@color/rating"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView11"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:tint="@color/rating"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView12"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+
+<!--            android:tint="@color/rating"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView13"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:tint="@color/rating"-->
+<!--            app:srcCompat="@drawable/ic_baseline_star_24" />-->
+<!--    </LinearLayout>-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
