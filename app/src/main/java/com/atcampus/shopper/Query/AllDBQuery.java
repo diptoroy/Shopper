@@ -240,8 +240,6 @@ public class AllDBQuery {
     public static void loadRating(final Context context){
         if (!ProductDetailsActivity.running_rating_list) {
             ProductDetailsActivity.running_rating_list = true;
-//            ratedId.clear();
-//            userRating.clear();
 
             myRatedIds.clear();
             myRating.clear();
@@ -251,15 +249,7 @@ public class AllDBQuery {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
-//                            ratedId.add((String) task.getResult().get("product_id_" + x));
-//                            userRating.add((long) task.getResult().get("rating_" + x));
-//
-//                            if (task.getResult().get("product_id_" + x).toString().equals(ProductDetailsActivity.productID)) {
-//                                ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x))) - 1;
-//                                if (ProductDetailsActivity.userratingContainer != null) {
-//                                    ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
-//                                }
-//                                }
+
 
                             myRatedIds.add(task.getResult().get("product_id_" + x).toString());
                             myRating.add((long) task.getResult().get("rating_" + x));
