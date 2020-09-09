@@ -1,5 +1,6 @@
 package com.atcampus.shopper.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,15 +18,14 @@ import android.widget.Button;
 import com.atcampus.shopper.Activity.AddAddressActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
 import com.atcampus.shopper.Adapter.CartAdapter;
+import com.atcampus.shopper.Adapter.WishlistAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CartFragment extends Fragment {
 
     public CartFragment() {
@@ -34,6 +34,9 @@ public class CartFragment extends Fragment {
 
     private RecyclerView cartRecyclerView;
     private Button continueBtn;
+    public static CartAdapter cartAdapter;
+    private Dialog loadingDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,19 +44,35 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
+        //loading dialog
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.setContentView(R.layout.loading_progressbar);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
         continueBtn = view.findViewById(R.id.continue_btn);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartRecyclerView.setLayoutManager(linearLayoutManager);
 
+        if (AllDBQuery.cartItemModels.size() == 0){
+            AllDBQuery.cartList.clear();
+            AllDBQuery.loadCart(getContext(),loadingDialog,true);
+        }else {
+            loadingDialog.dismiss();
+        }
+
         List<CartItemModel> cartItemModels = new ArrayList<>();
-        cartItemModels.add(new CartItemModel(0,R.drawable.phone,"Iphone 11",2,"$149","$169",1,0,2));
         cartItemModels.add(new CartItemModel(1,"2","$175","$0","2","$350"));
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModels);
+        cartAdapter = new CartAdapter(AllDBQuery.cartItemModels);
         cartRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
+
+
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

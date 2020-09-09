@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.atcampus.shopper.Model.CartItemModel;
 import com.atcampus.shopper.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.w3c.dom.Text;
 
@@ -59,13 +61,14 @@ public class CartAdapter extends RecyclerView.Adapter {
 
         switch (cartItemModelList.get(position).getType()) {
             case CartItemModel.CART_ITEM:
-                int resource = cartItemModelList.get(position).getProductImage();
+                String productId = cartItemModelList.get(position).getProductID();
+                String resource = cartItemModelList.get(position).getProductImage();
                 String title = cartItemModelList.get(position).getProductTitle();
-                int cuopenNo = cartItemModelList.get(position).getFreeCoupens();
+                Long cuopenNo = cartItemModelList.get(position).getFreeCoupens();
                 String pPrice = cartItemModelList.get(position).getProductPrice();
                 String cPrice = cartItemModelList.get(position).getCuttedPrice();
-                int offer = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewHolder)holder).setItemDetails(resource,title,cuopenNo,pPrice,cPrice,offer);
+                Long offer = cartItemModelList.get(position).getOffersApplied();
+                ((CartItemViewHolder)holder).setItemDetails(productId,resource,title,cuopenNo,pPrice,cPrice,offer);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItemText = cartItemModelList.get(position).getTotalItems();
@@ -112,8 +115,9 @@ public class CartAdapter extends RecyclerView.Adapter {
             productQuantity = itemView.findViewById(R.id.product_quantity);
         }
 
-        private void setItemDetails(int resource, String title, int cuopenNo, String pPrice, String cPrice, int offer) {
-            productImage.setImageResource(resource);
+        private void setItemDetails(String productID,String resource, String title, Long cuopenNo, String pPrice, String cPrice, Long offer) {
+//            productImage.setImageResource(resource);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.photo)).into(productImage);
             productTitle.setText(title);
             if (cuopenNo > 0) {
                 freeCoupens.setVisibility(View.VISIBLE);

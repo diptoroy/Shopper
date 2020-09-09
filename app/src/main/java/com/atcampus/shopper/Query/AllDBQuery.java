@@ -13,8 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
+import com.atcampus.shopper.Fragment.CartFragment;
 import com.atcampus.shopper.Fragment.HomeFragment;
 import com.atcampus.shopper.Fragment.WishlistFragment;
+import com.atcampus.shopper.Model.CartItemModel;
 import com.atcampus.shopper.Model.CategoryModel;
 import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
@@ -44,13 +46,15 @@ public class AllDBQuery {
     public static List<CategoryModel> categoryModels = new ArrayList<>();
     public static List<List<MultipleRecyclerviewModel>> allList = new ArrayList<>();
     public static List<String> categoryName = new ArrayList<>();
+
     public static List<String> wishList = new ArrayList<>();
     public static List<WishlistModel> wishlistModels = new ArrayList<>();
-//    public static List<String> ratedId = new ArrayList<>();
-//    public static List<Long> userRating = new ArrayList<>();
 
     public static List<String> myRatedIds = new ArrayList<>();
     public static List<Long> myRating = new ArrayList<>();
+
+    public static List<String> cartList = new ArrayList<>();
+    public static List<CartItemModel> cartItemModels = new ArrayList<>();
 
     public static void loadCategories(final RecyclerView categoryRecyclerView, final Context context) {
         categoryModels.clear();
@@ -271,6 +275,58 @@ public class AllDBQuery {
                 }
             });
         }
+    }
+
+    public static void loadCart(final Context context, final Dialog dialog,final boolean loadProductData){
+        cartList.clear();
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                        cartList.add((String) task.getResult().get("product_id_" + x));
+
+                        if (AllDBQuery.cartList.contains(ProductDetailsActivity.productID)) {
+                            ProductDetailsActivity.CHECK_CART_BTN = true;
+                        } else {
+                            ProductDetailsActivity.CHECK_CART_BTN = false;
+                        }
+
+                        if (loadProductData) {
+                            cartItemModels.clear();
+                            final String pId = (String) task.getResult().get("product_id_" + x);
+                            firebaseFirestore.collection("PRODUCTS").document(pId)
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        cartItemModels.add(new CartItemModel(CartItemModel.CART_ITEM,pId
+                                                ,(String) task.getResult().get("product_image_1")
+                                                , (String) task.getResult().get("product_title")
+                                                , (long) task.getResult().get("free_cuepon")
+                                                , (String) task.getResult().get("product_price")
+                                                , (String) task.getResult().get("cutted_price")
+                                                , (long) 1
+                                                , (long) 0
+                                                , (long) 0));
+
+                                        CartFragment.cartAdapter.notifyDataSetChanged();
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     public static void clearData() {
