@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.atcampus.shopper.Adapter.ProductImagesViewpagerAdapter;
 import com.atcampus.shopper.Adapter.ProductsDescriptionAdapter;
 import com.atcampus.shopper.Adapter.RewardAdapter;
+import com.atcampus.shopper.Fragment.BlankFragment;
 import com.atcampus.shopper.Fragment.CartFragment;
 import com.atcampus.shopper.Fragment.ProductSpeceficationFragment;
 import com.atcampus.shopper.Fragment.ProductsDescriptionFragment;
@@ -105,6 +106,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private Dialog userAlertDialog;
     private Dialog loadingDialog;
+
+    public static MenuItem cartItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -413,13 +416,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-//                                        Map<String, Object> updateProduct = new HashMap<>();
-//                                        updateProduct.put("list_size", (long) (AllDBQuery.cartList.size() + 1));
-//                                        firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_CART")
-//                                                .update(updateProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<Void> task) {
-//                                                if (task.isSuccessful()) {
                                         if (AllDBQuery.cartItemModels.size() != 0) {
                                             AllDBQuery.cartItemModels.add(new CartItemModel(CartItemModel.CART_ITEM, productID
                                                     , (String) documentSnapshot.get("product_image_1")
@@ -435,7 +431,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         CHECK_CART_BTN = true;
                                         AllDBQuery.cartList.add(productID);
                                         Toast.makeText(ProductDetailsActivity.this, "Added to cart successfully", Toast.LENGTH_SHORT).show();
-
+                                        invalidateOptionsMenu();
                                         running_cart_list = false;
                                     } else {
 //                                        favoriteBtn.setEnabled(true);
@@ -718,6 +714,27 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.products_details_toolbar, menu);
+
+//        cartItem = menu.findItem(R.id.navigation_cart);
+//        if (AllDBQuery.cartList.size() > 0){
+//            cartItem.setActionView(R.layout.badge_layout);
+//            ImageView icon = cartItem.getActionView().findViewById(R.id.badge_icon);
+//            icon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
+//            TextView text = cartItem.getActionView().findViewById(R.id.badge_count);
+//            text.setText(String.valueOf(AllDBQuery.cartList.size()));
+//
+//            cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (currentUser == null) {
+//                        userAlertDialog.show();
+//                    } else {
+//                        Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
+//                        startActivity(cartIntent);
+//                    }
+//                }
+//            });
+//        }
         return true;
     }
 
@@ -733,7 +750,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             if (currentUser == null) {
                 userAlertDialog.show();
             } else {
-                Intent cartIntent = new Intent(ProductDetailsActivity.this, RegisterActivity.class);
+                Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
                 startActivity(cartIntent);
                 return true;
             }

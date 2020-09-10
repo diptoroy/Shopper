@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.atcampus.shopper.Fragment.AccountFragment;
 import com.atcampus.shopper.Fragment.BlankFragment;
@@ -29,11 +30,14 @@ import com.atcampus.shopper.Fragment.RewardFragment;
 import com.atcampus.shopper.Fragment.SigninFragment;
 import com.atcampus.shopper.Fragment.SignupFragment;
 import com.atcampus.shopper.Fragment.WishlistFragment;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 import static com.atcampus.shopper.Activity.RegisterActivity.setSignUpFragment;
 import static com.atcampus.shopper.R.menu.menu;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     Dialog userAlertDialog;
     private FirebaseUser currentUser;
+    public static  Fragment selectedFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +110,40 @@ public class MainActivity extends AppCompatActivity {
         }else {
             bottomNavigationView.getMenu().getItem(bottomNavigationView.getMenu().size() - 1).setEnabled(true);
         }
+        invalidateOptionsMenu();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
+        if (selectedFragment == new HomeFragment()) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu, menu);
+//            MenuItem cartItem = menu.findItem(R.id.navigation_cart);
+//            if (AllDBQuery.cartList.size() > 0){
+//                cartItem.setActionView(R.layout.badge_layout);
+//                ImageView icon = cartItem.getActionView().findViewById(R.id.badge_icon);
+//                icon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
+//                TextView text = cartItem.getActionView().findViewById(R.id.badge_count);
+//                text.setText(String.valueOf(AllDBQuery.cartList.size()));
+//
+//                cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (currentUser == null) {
+//                            selectedFragment = new BlankFragment();
+//                            userAlertDialog.show();
+//                        } else {
+//                            getSupportActionBar().setTitle("My Cart");
+//                            invalidateOptionsMenu();
+//                            selectedFragment = new CartFragment();
+//                        }
+//                    }
+//                });
+//            }else {
+//                cartItem.setActionView(null);
+//            }
+        }
+
         return true;
     }
 
@@ -134,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+
 //                    switch (item.getItemId()){
 //                        case R.id.navigation_home:
 //                            getSupportActionBar().setTitle("Shopper");

@@ -4,15 +4,20 @@ import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Model.CartItemModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,6 +29,7 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
+    private int lastPosition = -1;
 
     public CartAdapter(List<CartItemModel> cartItemModelList) {
         this.cartItemModelList = cartItemModelList;
@@ -68,7 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String pPrice = cartItemModelList.get(position).getProductPrice();
                 String cPrice = cartItemModelList.get(position).getCuttedPrice();
                 Long offer = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewHolder)holder).setItemDetails(productId,resource,title,cuopenNo,pPrice,cPrice,offer);
+                ((CartItemViewHolder)holder).setItemDetails(productId,resource,title,cuopenNo,pPrice,cPrice,offer,position);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItemText = cartItemModelList.get(position).getTotalItems();
@@ -80,6 +86,12 @@ public class CartAdapter extends RecyclerView.Adapter {
                 break;
             default:
                 return;
+        }
+
+        if (lastPosition < position) {
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.fade_in);
+            holder.itemView.setAnimation(animation);
+            lastPosition = position;
         }
 
     }
@@ -100,6 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         private TextView offerApplied;
         private TextView cuopenApplied;
         private TextView productQuantity;
+        private LinearLayout removeItemCart;
 
         public CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,9 +126,10 @@ public class CartAdapter extends RecyclerView.Adapter {
             offerApplied = itemView.findViewById(R.id.ofers_applied);
             cuopenApplied = itemView.findViewById(R.id.cuopens_applied);
             productQuantity = itemView.findViewById(R.id.product_quantity);
+            removeItemCart = itemView.findViewById(R.id.remove_item_btn);
         }
 
-        private void setItemDetails(String productID,String resource, String title, Long cuopenNo, String pPrice, String cPrice, Long offer) {
+        private void setItemDetails(String productID, String resource, String title, Long cuopenNo, String pPrice, String cPrice, Long offer, final int position) {
 //            productImage.setImageResource(resource);
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.photo)).into(productImage);
             productTitle.setText(title);
@@ -167,6 +181,16 @@ public class CartAdapter extends RecyclerView.Adapter {
                         }
                     });
                     quantityDialog.show();
+                }
+            });
+
+            removeItemCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!ProductDetailsActivity.running_cart_list){
+                        ProductDetailsActivity.running_cart_list = true;
+                        AllDBQuery.removeCart(position,itemView.getContext());
+                    }
                 }
             });
         }
