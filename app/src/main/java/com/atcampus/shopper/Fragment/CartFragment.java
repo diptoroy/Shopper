@@ -66,7 +66,7 @@ public class CartFragment extends Fragment {
         }
 
         List<CartItemModel> cartItemModels = new ArrayList<>();
-        cartItemModels.add(new CartItemModel(1,"2","$175","$0","2","$350"));
+
 
         cartAdapter = new CartAdapter(AllDBQuery.cartItemModels);
         cartRecyclerView.setAdapter(cartAdapter);

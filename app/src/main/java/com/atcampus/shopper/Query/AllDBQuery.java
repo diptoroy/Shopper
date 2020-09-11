@@ -300,7 +300,11 @@ public class AllDBQuery {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        cartItemModels.add(new CartItemModel(CartItemModel.CART_ITEM,pId
+                                        int index = 0;
+                                        if (cartList.size() >= 2){
+                                            index = cartList.size() - 2;
+                                        }
+                                        cartItemModels.add(index,new CartItemModel(CartItemModel.CART_ITEM,pId
                                                 ,(String) task.getResult().get("product_image_1")
                                                 , (String) task.getResult().get("product_title")
                                                 , (long) task.getResult().get("free_cuepon")
@@ -310,6 +314,12 @@ public class AllDBQuery {
                                                 , (long) 0
                                                 , (long) 0));
 
+                                        if (cartList.size() == 1){
+                                            cartItemModels.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                                        }
+                                        if (cartList.size() == 0){
+                                            cartItemModels.clear();
+                                        }
                                         CartFragment.cartAdapter.notifyDataSetChanged();
                                     } else {
                                         String error = task.getException().getMessage();
@@ -347,8 +357,8 @@ public class AllDBQuery {
                         cartItemModels.remove(index);
                         CartFragment.cartAdapter.notifyDataSetChanged();
                     }
-                    if (ProductDetailsActivity.cartItem != null) {
-                        ProductDetailsActivity.cartItem.setActionView(null);
+                    if (cartList.size() == 0){
+                        cartItemModels.clear();
                     }
                     Toast.makeText(context, "Remove Successfully", Toast.LENGTH_SHORT).show();
                 } else {
@@ -367,5 +377,7 @@ public class AllDBQuery {
         allList.clear();
         wishList.clear();
         wishlistModels.clear();
+        cartList.clear();
+        cartItemModels.clear();
     }
 }
