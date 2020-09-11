@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CartAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
@@ -26,6 +27,7 @@ public class DeliveryActivity extends AppCompatActivity {
     private Button addAddressBtn;
 
     public static final int SELECT_ADDRESS = 0;
+    private TextView totalCartAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class DeliveryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Delivery");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
+        totalCartAmount = findViewById(R.id.totalAmount);
+
         deliveryRecyclerView = findViewById(R.id.delivery_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -46,7 +50,7 @@ public class DeliveryActivity extends AppCompatActivity {
         List<CartItemModel> cartItemModels = new ArrayList<>();
 
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModels);
+        CartAdapter cartAdapter = new CartAdapter(cartItemModels,totalCartAmount);
         deliveryRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         addAddressBtn = findViewById(R.id.address_button);

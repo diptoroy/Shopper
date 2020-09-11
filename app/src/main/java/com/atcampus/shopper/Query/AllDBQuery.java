@@ -2,6 +2,7 @@ package com.atcampus.shopper.Query;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.widget.Toast;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.atcampus.shopper.Activity.AddAddressActivity;
+import com.atcampus.shopper.Activity.DeliveryActivity;
 import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.CategoryAdapter;
 import com.atcampus.shopper.Adapter.MultipleRecyclerviewAdapter;
@@ -367,6 +370,28 @@ public class AllDBQuery {
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
                 ProductDetailsActivity.running_cart_list = false;
+            }
+        });
+    }
+
+    public static void loadAddress(final Context context, final Dialog dialog){
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_ADDRESS")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Intent delivery;
+                    if (task.getResult().get("list_size") == 0){
+                        delivery = new Intent(context, AddAddressActivity.class);
+                    }else {
+                        delivery = new Intent(context, DeliveryActivity.class);
+                    }
+                    context.startActivity(delivery);
+                }else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
             }
         });
     }

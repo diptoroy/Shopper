@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.atcampus.shopper.Activity.AddAddressActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
@@ -36,6 +37,7 @@ public class CartFragment extends Fragment {
     private Button continueBtn;
     public static CartAdapter cartAdapter;
     private Dialog loadingDialog;
+    private TextView totalCartAmount;
 
 
     @Override
@@ -43,6 +45,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        totalCartAmount = view.findViewById(R.id.total_cart_amount);
 
         //loading dialog
         loadingDialog = new Dialog(getContext());
@@ -68,7 +71,7 @@ public class CartFragment extends Fragment {
         List<CartItemModel> cartItemModels = new ArrayList<>();
 
 
-        cartAdapter = new CartAdapter(AllDBQuery.cartItemModels);
+        cartAdapter = new CartAdapter(AllDBQuery.cartItemModels,totalCartAmount);
         cartRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
@@ -77,8 +80,8 @@ public class CartFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent delivery = new Intent(getContext(), AddAddressActivity.class);
-                getContext().startActivity(delivery);
+                loadingDialog.show();
+                AllDBQuery.loadAddress(getContext(),loadingDialog);
             }
         });
         return view;
