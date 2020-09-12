@@ -389,6 +389,7 @@ public class AllDBQuery {
                     Intent delivery;
                     if ((long)task.getResult().get("list_size") == 0) {
                         delivery = new Intent(context, AddAddressActivity.class);
+                        delivery.putExtra("INTENT","deliveryIntent");
                     } else {
                         for (long x = 1; x < (long) task.getResult().get("list_size")+1; x++) {
                             addressModels.add(new AddressModel((String) task.getResult().get("name_")+x
@@ -396,7 +397,7 @@ public class AllDBQuery {
                                     , (String) task.getResult().get("pincode_"+x)
                                     , (boolean) task.getResult().get("selected_"+x)));
 
-                            if ((boolean) task.getResult().get("selected"+x)){
+                            if ((boolean) task.getResult().get("selected_"+x)){
                                 selectedAddress = Integer.parseInt(String.valueOf(x - 1));
                             }
                         }

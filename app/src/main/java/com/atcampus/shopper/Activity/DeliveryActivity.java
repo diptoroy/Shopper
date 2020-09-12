@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CartAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class DeliveryActivity extends AppCompatActivity {
     Toolbar toolbar;
     private RecyclerView deliveryRecyclerView;
     private Button addAddressBtn;
+    private TextView nameText,addressText,pincodeText;
 
     public static final int SELECT_ADDRESS = 0;
     private TextView totalCartAmount;
@@ -40,6 +42,10 @@ public class DeliveryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Delivery");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
+        nameText = findViewById(R.id.name_text);
+        addressText = findViewById(R.id.address_text);
+        pincodeText = findViewById(R.id.pincode_text);
+
         totalCartAmount = findViewById(R.id.totalAmount);
 
         deliveryRecyclerView = findViewById(R.id.delivery_recyclerview);
@@ -47,10 +53,7 @@ public class DeliveryActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<CartItemModel> cartItemModels = new ArrayList<>();
-
-
-        CartAdapter cartAdapter = new CartAdapter(cartItemModels,totalCartAmount);
+        CartAdapter cartAdapter = new CartAdapter(AllDBQuery.cartItemModels,totalCartAmount,false);
         deliveryRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         addAddressBtn = findViewById(R.id.address_button);
@@ -63,6 +66,10 @@ public class DeliveryActivity extends AppCompatActivity {
                 startActivity(delivery);
             }
         });
+
+        nameText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getName());
+        addressText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getAddress());
+        pincodeText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getPincode());
     }
 
     @Override

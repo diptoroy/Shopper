@@ -90,14 +90,18 @@ public class AddAddressActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(cityText.getText())){
                     if (!TextUtils.isEmpty(areaText.getText())){
                         if (!TextUtils.isEmpty(flatText.getText())){
-                            if (!TextUtils.isEmpty(picodeText.getText()) && picodeText.getText().length() == 6){
+                            if (!TextUtils.isEmpty(picodeText.getText()) && picodeText.getText().length() == 4){
                                 if (!TextUtils.isEmpty(nameText.getText())){
-                                    if (!TextUtils.isEmpty(mobileText.getText()) && mobileText.getText().length() == 10){
+                                    if (!TextUtils.isEmpty(mobileText.getText()) && mobileText.getText().length() == 11){
                                         loadingDialog.show();
-                                        final String fullAddress = cityText.getText().toString()+areaText.getText().toString()+flatText.getText().toString()+landMarkText.getText().toString();
+                                        final String fullAddress = flatText.getText().toString()+","+areaText.getText().toString()+","+landMarkText.getText().toString()+","+cityText.getText().toString()+","+selectedDivision;
                                         Map<String,Object> addAddress = new HashMap<>();
                                         addAddress.put("list_size", (long)AllDBQuery.addressModels.size()+1);
-                                        addAddress.put("name_"+ String.valueOf((long)AllDBQuery.addressModels.size()+1),nameText.getText().toString() + " - " +mobileText.getText().toString());
+                                        if (TextUtils.isEmpty(anotherMobileText.getText())) {
+                                            addAddress.put("name_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), nameText.getText().toString() + " - " + mobileText.getText().toString());
+                                        }else {
+                                            addAddress.put("name_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), nameText.getText().toString() + " - " + mobileText.getText().toString() + " or " +anotherMobileText.getText().toString());
+                                        }
                                         addAddress.put("address_"+ String.valueOf((long)AllDBQuery.addressModels.size()+1),fullAddress);
                                         addAddress.put("pincode_"+String.valueOf((long)AllDBQuery.addressModels.size()+1),picodeText.getText().toString());
                                         addAddress.put("selected_"+String.valueOf((long)AllDBQuery.addressModels.size()+1),true);
@@ -113,9 +117,17 @@ public class AddAddressActivity extends AppCompatActivity {
                                                     if (AllDBQuery.addressModels.size() > 0) {
                                                         AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).setSelected(false);
                                                     }
-                                                    AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " +mobileText.getText().toString(),fullAddress,picodeText.getText().toString(),true));
-                                                    Intent delivery = new Intent(AddAddressActivity.this, DeliveryActivity.class);
-                                                    startActivity(delivery);
+                                                    if (TextUtils.isEmpty(anotherMobileText.getText())) {
+                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " + mobileText.getText().toString(), fullAddress, picodeText.getText().toString(), true));
+                                                    }else {
+                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " + mobileText.getText().toString() + " or " + anotherMobileText.getText().toString(), fullAddress, picodeText.getText().toString(), true));
+                                                    }
+
+                                                    AllDBQuery.selectedAddress = AllDBQuery.addressModels.size() - 1;
+                                                    if (getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
+                                                        Intent delivery = new Intent(AddAddressActivity.this, DeliveryActivity.class);
+                                                        startActivity(delivery);
+                                                    }
                                                     finish();
                                                 }else {
                                                     String error = task.getException().getMessage();
@@ -125,24 +137,24 @@ public class AddAddressActivity extends AppCompatActivity {
                                             }
                                         });
                                     } else {
-                                        mobileText.setSelected(true);
+                                        mobileText.requestFocus();
                                         Toast.makeText(AddAddressActivity.this,"Provide a valid phone number",Toast.LENGTH_SHORT).show();
                                     }
                                 }else {
-                                    nameText.setSelected(true);
+                                    nameText.requestFocus();
                                 }
                             }else {
-                                picodeText.setSelected(true);
+                                picodeText.requestFocus();
                                 Toast.makeText(AddAddressActivity.this,"Provide a valid pincode",Toast.LENGTH_SHORT).show();
                             }
                         }else {
-                            flatText.setSelected(true);
+                            flatText.requestFocus();
                         }
                     }else {
-                        areaText.setSelected(true);
+                        areaText.requestFocus();
                     }
                 }else {
-                    cityText.setSelected(true);
+                    cityText.requestFocus();
                 }
             }
         });
