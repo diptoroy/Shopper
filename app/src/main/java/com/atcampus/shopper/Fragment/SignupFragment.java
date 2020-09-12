@@ -248,7 +248,7 @@ public class SignupFragment extends Fragment {
                                                         Map<String, Object> cartListMap = new HashMap<>();
                                                         cartListMap.put("list_size", (long) 0);
                                                         Map<String, Object> addressListMap = new HashMap<>();
-                                                        cartListMap.put("list_size", (long) 0);
+                                                        addressListMap.put("list_size", (long) 0);
 
                                                         final List<String> documentName = new ArrayList<>();
                                                         documentName.add("MY_WISHLIST");
