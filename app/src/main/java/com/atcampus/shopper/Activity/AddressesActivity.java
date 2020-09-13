@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class AddressesActivity extends AppCompatActivity {
     private Button activeBtn;
     private FloatingActionButton addBtn;
     private TextView addressCount;
+    private Dialog loadingDialog;
 
     private int preAddress;
 
@@ -58,6 +61,12 @@ public class AddressesActivity extends AppCompatActivity {
         activeBtn = findViewById(R.id.active_btn);
         addBtn = findViewById(R.id.add_btn);
         addressCount = findViewById(R.id.address_count);
+
+        loadingDialog = new Dialog(this);
+        loadingDialog.setContentView(R.layout.loading_progressbar);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(this.getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         preAddress = AllDBQuery.selectedAddress;
 
@@ -77,7 +86,7 @@ public class AddressesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (AllDBQuery.selectedAddress != preAddress){
                     final int preAddressIndex = preAddress;
-
+                    loadingDialog.show();
                     Map<String,Object> updateAddress = new HashMap<>();
                     updateAddress.put("selected_"+String.valueOf(preAddress+1),false);
                     updateAddress.put("selected_"+String.valueOf(AllDBQuery.selectedAddress+1),true);
@@ -95,8 +104,11 @@ public class AddressesActivity extends AppCompatActivity {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(AddressesActivity.this, error, Toast.LENGTH_SHORT).show();
                             }
+                            loadingDialog.dismiss();
                         }
                     });
+                }else {
+                    finish();
                 }
             }
         });
@@ -114,10 +126,16 @@ public class AddressesActivity extends AppCompatActivity {
                 startActivity(addAddress);
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         addressCount.setText(String.valueOf(AllDBQuery.addressModels.size())+" Saved addresses");
     }
 
-    public static void refreshItem(int deselect,int select){
+    public static void refreshItem(int deselect, int select){
         addressAdapter.notifyItemChanged(deselect);
         addressAdapter.notifyItemChanged(select);
     }
@@ -126,10 +144,26 @@ public class AddressesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
+            if (AllDBQuery.selectedAddress != preAddress){
+                AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).setSelected(false);
+                AllDBQuery.addressModels.get(preAddress).setSelected(true);
+                AllDBQuery.selectedAddress = preAddress;
+            }
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (AllDBQuery.selectedAddress != preAddress){
+            AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).setSelected(false);
+            AllDBQuery.addressModels.get(preAddress).setSelected(true);
+            AllDBQuery.selectedAddress = preAddress;
+        }
+        super.onBackPressed();
     }
 }

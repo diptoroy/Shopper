@@ -67,6 +67,12 @@ public class DeliveryActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         nameText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getName());
         addressText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getAddress());
         pincodeText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getPincode());

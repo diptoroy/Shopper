@@ -123,11 +123,14 @@ public class AddAddressActivity extends AppCompatActivity {
                                                         AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " + mobileText.getText().toString() + " or " + anotherMobileText.getText().toString(), fullAddress, picodeText.getText().toString(), true));
                                                     }
 
-                                                    AllDBQuery.selectedAddress = AllDBQuery.addressModels.size() - 1;
+
                                                     if (getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
                                                         Intent delivery = new Intent(AddAddressActivity.this, DeliveryActivity.class);
                                                         startActivity(delivery);
+                                                    }else {
+                                                        AddressesActivity.refreshItem(AllDBQuery.selectedAddress,AllDBQuery.addressModels.size() - 1);
                                                     }
+                                                    AllDBQuery.selectedAddress = AllDBQuery.addressModels.size() - 1;
                                                     finish();
                                                 }else {
                                                     String error = task.getException().getMessage();

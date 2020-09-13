@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.atcampus.shopper.Model.AddressModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 
 import java.util.List;
@@ -23,11 +24,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     private List<AddressModel> addressModels;
     private int MODE;
-    private int preSelected = -1;
+    private int preSelected;
 
     public AddressAdapter(List<AddressModel> addressModels, int MODE) {
         this.addressModels = addressModels;
         this.MODE = MODE;
+        preSelected = AllDBQuery.selectedAddress;
     }
 
     @NonNull
@@ -91,6 +93,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                             addressModels.get(preSelected).setSelected(false);
                             refreshItem(preSelected, position);
                             preSelected = position;
+                            AllDBQuery.selectedAddress = position;
                         }
                     }
                 });
