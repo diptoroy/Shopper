@@ -319,7 +319,8 @@ public class AllDBQuery {
                                                 , (String) task.getResult().get("cutted_price")
                                                 , (long) 1
                                                 , (long) 0
-                                                , (long) 0));
+                                                , (long) 0
+                                                , (boolean) task.getResult().get("stock")));
 
                                         if (cartList.size() == 1) {
                                             cartItemModels.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
@@ -387,17 +388,17 @@ public class AllDBQuery {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     Intent delivery;
-                    if ((long)task.getResult().get("list_size") == 0) {
+                    if ((long) task.getResult().get("list_size") == 0) {
                         delivery = new Intent(context, AddAddressActivity.class);
-                        delivery.putExtra("INTENT","deliveryIntent");
+                        delivery.putExtra("INTENT", "deliveryIntent");
                     } else {
-                        for (long x = 1; x < (long) task.getResult().get("list_size")+1; x++) {
-                            addressModels.add(new AddressModel((String) task.getResult().get("name_")+x
-                                    , (String) task.getResult().get("address_"+x)
-                                    , (String) task.getResult().get("pincode_"+x)
-                                    , (boolean) task.getResult().get("selected_"+x)));
+                        for (long x = 1; x < (long) task.getResult().get("list_size") + 1; x++) {
+                            addressModels.add(new AddressModel((String) task.getResult().get("name_") + x
+                                    , (String) task.getResult().get("address_" + x)
+                                    , (String) task.getResult().get("pincode_" + x)
+                                    , (boolean) task.getResult().get("selected_" + x)));
 
-                            if ((boolean) task.getResult().get("selected_"+x)){
+                            if ((boolean) task.getResult().get("selected_" + x)) {
                                 selectedAddress = Integer.parseInt(String.valueOf(x - 1));
                             }
                         }

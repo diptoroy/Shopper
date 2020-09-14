@@ -25,8 +25,9 @@ public class CartItemModel {
     private Long productQuantity;
     private Long offersApplied;
     private Long coupensApplied;
+    private boolean stock;
 
-    public CartItemModel(int type,String productID, String productImage, String productTitle, Long freeCoupens, String productPrice, String cuttedPrice, Long productQuantity, Long offersApplied, Long coupensApplied) {
+    public CartItemModel(int type,String productID, String productImage, String productTitle, Long freeCoupens, String productPrice, String cuttedPrice, Long productQuantity, Long offersApplied, Long coupensApplied,boolean stock) {
         this.type = type;
         this.productID = productID;
         this.productImage = productImage;
@@ -37,6 +38,7 @@ public class CartItemModel {
         this.productQuantity = productQuantity;
         this.offersApplied = offersApplied;
         this.coupensApplied = coupensApplied;
+        this.stock = stock;
     }
 
     public String getProductID() {
@@ -109,6 +111,14 @@ public class CartItemModel {
 
     public void setCoupensApplied(Long coupensApplied) {
         this.coupensApplied = coupensApplied;
+    }
+
+    public boolean isStock() {
+        return stock;
+    }
+
+    public void setStock(boolean stock) {
+        this.stock = stock;
     }
 
     //total amount
