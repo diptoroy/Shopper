@@ -29,6 +29,7 @@ public class DeliveryActivity extends AppCompatActivity {
     private TextView nameText,addressText,pincodeText;
 
     public static final int SELECT_ADDRESS = 0;
+    public static List<CartItemModel> cartItemModelList;
     private TextView totalCartAmount;
 
     @Override
@@ -53,7 +54,7 @@ public class DeliveryActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryRecyclerView.setLayoutManager(linearLayoutManager);
 
-        CartAdapter cartAdapter = new CartAdapter(AllDBQuery.cartItemModels,totalCartAmount,false);
+        CartAdapter cartAdapter = new CartAdapter(cartItemModelList,totalCartAmount,false);
         deliveryRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         addAddressBtn = findViewById(R.id.address_button);

@@ -27,6 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorAccent"
         android:elevation="8dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout

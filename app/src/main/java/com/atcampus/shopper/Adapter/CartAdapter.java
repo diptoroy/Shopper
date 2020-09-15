@@ -70,6 +70,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -237,7 +238,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (!ProductDetailsActivity.running_cart_list){
                         ProductDetailsActivity.running_cart_list = true;
-                        AllDBQuery.removeCart(position,itemView.getContext());
+                        AllDBQuery.removeCart(position,itemView.getContext(),cartTotalAmount);
                     }
                 }
             });
@@ -275,10 +276,12 @@ public class CartAdapter extends RecyclerView.Adapter {
             cartTotalAmount.setText("$"+totalAmountText+"");
             savedAmount.setText("You saved $("+savedItemText+" on this offer.)");
 
+            LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
             if (totalItemPriceText == 0){
                 AllDBQuery.cartItemModels.remove(AllDBQuery.cartItemModels.size() - 1);
-                LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
                 parent.setVisibility(View.GONE);
+            }else {
+                parent.setVisibility(View.VISIBLE);
             }
         }
     }

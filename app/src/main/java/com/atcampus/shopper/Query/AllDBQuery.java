@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -283,7 +286,7 @@ public class AllDBQuery {
         }
     }
 
-    public static void loadCart(final Context context, final Dialog dialog, final boolean loadProductData) {
+    public static void loadCart(final Context context, final Dialog dialog, final boolean loadProductData, final TextView cartTotalAmount) {
         cartList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -324,6 +327,8 @@ public class AllDBQuery {
 
                                         if (cartList.size() == 1) {
                                             cartItemModels.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                                            LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
+                                            parent.setVisibility(View.VISIBLE);
                                         }
                                         if (cartList.size() == 0) {
                                             cartItemModels.clear();
@@ -346,7 +351,7 @@ public class AllDBQuery {
         });
     }
 
-    public static void removeCart(final int index, final Context context) {
+    public static void removeCart(final int index, final Context context, final TextView cartTotalAmount) {
         final String removeProductId = cartList.get(index);
         cartList.remove(index);
         Map<String, Object> updatecartList = new HashMap<>();
@@ -366,6 +371,8 @@ public class AllDBQuery {
                         CartFragment.cartAdapter.notifyDataSetChanged();
                     }
                     if (cartList.size() == 0) {
+                        LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
+                        parent.setVisibility(View.GONE);
                         cartItemModels.clear();
                     }
                     Toast.makeText(context, "Remove Successfully", Toast.LENGTH_SHORT).show();

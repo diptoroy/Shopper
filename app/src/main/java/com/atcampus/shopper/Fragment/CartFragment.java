@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.atcampus.shopper.Activity.AddAddressActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
+import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.CartAdapter;
 import com.atcampus.shopper.Adapter.WishlistAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
@@ -63,8 +65,12 @@ public class CartFragment extends Fragment {
 
         if (AllDBQuery.cartItemModels.size() == 0){
             AllDBQuery.cartList.clear();
-            AllDBQuery.loadCart(getContext(),loadingDialog,true);
+            AllDBQuery.loadCart(getContext(),loadingDialog,true,totalCartAmount);
         }else {
+            if (AllDBQuery.cartItemModels.get(AllDBQuery.cartItemModels.size()-1).getType() == CartItemModel.TOTAL_AMOUNT){
+                LinearLayout parent = (LinearLayout) totalCartAmount.getParent().getParent();
+                parent.setVisibility(View.GONE);
+            }
             loadingDialog.dismiss();
         }
 
@@ -80,8 +86,23 @@ public class CartFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DeliveryActivity.cartItemModelList = new ArrayList<>();
+                for (int x = 0; x < AllDBQuery.cartItemModels.size(); x++){
+                    CartItemModel cartItemModel = AllDBQuery.cartItemModels.get(x);
+                    if (cartItemModel.isStock()){
+                        DeliveryActivity.cartItemModelList.add(cartItemModel);
+                    }
+                }
+                DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
                 loadingDialog.show();
-                AllDBQuery.loadAddress(getContext(),loadingDialog);
+                if (AllDBQuery.cartItemModels.size() == 0){
+                    AllDBQuery.loadAddress(getContext(),loadingDialog);
+                }else {
+                    loadingDialog.dismiss();
+                    Intent delivery = new Intent(getContext(), DeliveryActivity.class);
+                    startActivity(delivery);
+                }
+
             }
         });
         return view;

@@ -262,7 +262,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         }
 
                         if (AllDBQuery.cartList.size() == 0) {
-                            AllDBQuery.loadCart(ProductDetailsActivity.this, loadingDialog, false);
+                            AllDBQuery.loadCart(ProductDetailsActivity.this, loadingDialog, false,new TextView(ProductDetailsActivity.this));
                         }
 
                         if (AllDBQuery.wishList.size() == 0) {
@@ -319,7 +319,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         if (AllDBQuery.cartItemModels.size() != 0) {
-                                                            AllDBQuery.cartItemModels.add(new CartItemModel(CartItemModel.CART_ITEM, productID
+                                                            AllDBQuery.cartItemModels.add(0,new CartItemModel(CartItemModel.CART_ITEM, productID
                                                                     , (String) documentSnapshot.get("product_image_1")
                                                                     , (String) documentSnapshot.get("product_title")
                                                                     , (long) documentSnapshot.get("free_cuepon")
@@ -447,11 +447,30 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.show();
                 if (currentUser == null) {
                     userAlertDialog.show();
                 } else {
-                    Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
-                    startActivity(delivery);
+                    DeliveryActivity.cartItemModelList = new ArrayList<>();
+                    DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM, productID
+                            , (String) documentSnapshot.get("product_image_1")
+                            , (String) documentSnapshot.get("product_title")
+                            , (long) documentSnapshot.get("free_cuepon")
+                            , (String) documentSnapshot.get("product_price")
+                            , (String) documentSnapshot.get("cutted_price")
+                            , (long) 1
+                            , (long) 0
+                            , (long) 0
+                            ,(boolean) documentSnapshot.get("stock")));
+                    DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+
+                    if (AllDBQuery.cartItemModels.size() == 0){
+                        AllDBQuery.loadAddress(ProductDetailsActivity.this,loadingDialog);
+                    }else {
+                        loadingDialog.dismiss();
+                        Intent delivery = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
+                        startActivity(delivery);
+                    }
                 }
 
             }
@@ -644,7 +663,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
 
             if (AllDBQuery.cartList.size() == 0) {
-                AllDBQuery.loadCart(ProductDetailsActivity.this, loadingDialog, false);
+                AllDBQuery.loadCart(ProductDetailsActivity.this, loadingDialog, false,new TextView(ProductDetailsActivity.this));
             }
 
             if (AllDBQuery.wishList.size() == 0) {
