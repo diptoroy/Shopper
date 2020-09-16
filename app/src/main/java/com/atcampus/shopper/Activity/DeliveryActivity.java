@@ -6,10 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +33,9 @@ public class DeliveryActivity extends AppCompatActivity {
     public static final int SELECT_ADDRESS = 0;
     public static List<CartItemModel> cartItemModelList;
     private TextView totalCartAmount;
+    private Button continueBtn;
+    private Dialog loadingDialog;
+    private Dialog paymentDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +51,24 @@ public class DeliveryActivity extends AppCompatActivity {
         nameText = findViewById(R.id.name_text);
         addressText = findViewById(R.id.address_text);
         pincodeText = findViewById(R.id.pincode_text);
+        continueBtn = findViewById(R.id.continue_btn);
 
         totalCartAmount = findViewById(R.id.totalAmount);
+
+        //loading dialog
+        loadingDialog = new Dialog(DeliveryActivity.this);
+        loadingDialog.setContentView(R.layout.loading_progressbar);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Payment dialog
+        //loading dialog
+        paymentDialog = new Dialog(DeliveryActivity.this);
+        paymentDialog.setContentView(R.layout.payment_layout);
+        paymentDialog.setCancelable(true);
+        paymentDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
+        paymentDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         deliveryRecyclerView = findViewById(R.id.delivery_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -68,7 +89,12 @@ public class DeliveryActivity extends AppCompatActivity {
             }
         });
 
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     @Override
