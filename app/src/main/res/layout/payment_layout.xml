@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
     <ImageButton
-        android:id="@+id/bkash"
+        android:id="@+id/bkash_payment"
         android:layout_width="170dp"
         android:layout_height="69dp"
         android:layout_marginStart="8dp"

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -61,6 +62,7 @@ import static com.atcampus.shopper.Query.AllDBQuery.cartItemModels;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
+    public static Activity productDetailsActivity;
     private Toolbar toolbar;
     private List<Integer> productImages;
     public static FloatingActionButton favoriteBtn;
@@ -447,10 +449,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.show();
+
                 if (currentUser == null) {
                     userAlertDialog.show();
                 } else {
+                    loadingDialog.show();
+                    productDetailsActivity = ProductDetailsActivity.this;
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM, productID
                             , (String) documentSnapshot.get("product_image_1")

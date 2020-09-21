@@ -3,6 +3,7 @@ package com.atcampus.shopper.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.atcampus.shopper.Adapter.CartAdapter;
@@ -32,10 +34,13 @@ public class DeliveryActivity extends AppCompatActivity {
 
     public static final int SELECT_ADDRESS = 0;
     public static List<CartItemModel> cartItemModelList;
-    private TextView totalCartAmount;
+    private TextView totalCartAmount,orderidText;
     private Button continueBtn;
     private Dialog loadingDialog;
     private Dialog paymentDialog;
+    private ImageButton bkashPayment,codBtn;
+    private Button continueShopping;
+    private ConstraintLayout orderConfermation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,9 @@ public class DeliveryActivity extends AppCompatActivity {
         continueBtn = findViewById(R.id.continue_btn);
 
         totalCartAmount = findViewById(R.id.totalAmount);
+        orderConfermation = findViewById(R.id.order_confirmation);
+        orderidText = findViewById(R.id.order_id_text);
+        continueShopping = findViewById(R.id.continue_s_btn);
 
         //loading dialog
         loadingDialog = new Dialog(DeliveryActivity.this);
@@ -69,6 +77,8 @@ public class DeliveryActivity extends AppCompatActivity {
         paymentDialog.setCancelable(true);
         paymentDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
         paymentDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //                bkashPayment = paymentDialog.findViewById(R.id.bkash_payment);
+        codBtn = paymentDialog.findViewById(R.id.cod_btn);
 
         deliveryRecyclerView = findViewById(R.id.delivery_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -92,9 +102,27 @@ public class DeliveryActivity extends AppCompatActivity {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                paymentDialog.show();
 
             }
         });
+
+//        bkashPayment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                paymentDialog.dismiss();
+//                loadingDialog.show();
+//            }
+//        });
+
+        codBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo
+            }
+        });
+
+
     }
 
     @Override
@@ -113,6 +141,11 @@ public class DeliveryActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        loadingDialog.dismiss();
     }
 }
