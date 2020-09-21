@@ -3,8 +3,8 @@
     package="com.atcampus.shopper">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ViewAllActivity"></activity>
+        <activity android:name=".Activity.OtpVerificationActivity"></activity>
+        <activity android:name=".Activity.ViewAllActivity" />
         <activity android:name=".Activity.AddressesActivity" />
         <activity android:name=".Activity.AddAddressActivity" />
         <activity android:name=".Activity.DeliveryActivity" />

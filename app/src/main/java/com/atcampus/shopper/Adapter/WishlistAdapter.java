@@ -1,6 +1,7 @@
 package com.atcampus.shopper.Adapter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,8 +57,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         String price = wishlistModels.get(position).getProductPrice();
         String cuttedPrice = wishlistModels.get(position).getProductCuttedPrice();
         boolean deliSystem = wishlistModels.get(position).isCod();
+        boolean instock = wishlistModels.get(position).isInStock();
 
-        holder.setData(productId,resource,title,freeCueponNo,rating,totalRating,price,cuttedPrice,deliSystem,position);
+        holder.setData(productId,resource,title,freeCueponNo,rating,totalRating,price,cuttedPrice,deliSystem,position,instock);
 
         if (lastPosition < position) {
             Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.fade_in);
@@ -101,10 +104,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn = itemView.findViewById(R.id.delete_product);
         }
 
-        private void setData(final String pId, String resource, String title, long freeCueponNo, String rating, long totalRating, String price, String cuttedPrice, final boolean deliSystem, final int index) {
+        private void setData(final String pId, String resource, String title, long freeCueponNo, String rating, long totalRating, String price, String cuttedPrice, final boolean deliSystem, final int index,boolean inStock) {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.photo)).into(productImage);
             productName.setText(title);
-            if (freeCueponNo != 0) {
+            if (freeCueponNo != 0 && inStock) {
                 productCueponIcon.setVisibility(View.VISIBLE);
                 if (freeCueponNo == 1) {
                     productCuepon.setText("Free " + freeCueponNo + " coupen");
@@ -115,16 +118,33 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 productCueponIcon.setVisibility(View.INVISIBLE);
                 productCuepon.setVisibility(View.INVISIBLE);
             }
-            productRating.setText(rating);
-            productTotalRating.setText("("+totalRating+") ratings");
-            productPrice.setText("$"+price+"");
-            productCuttedPrice.setText("$"+cuttedPrice+"");
-            if (deliSystem){
-                productDeliverySystem.setVisibility(View.VISIBLE);
+            LinearLayout linearLayout = (LinearLayout) productRating.getParent();
+            if (inStock){
+                productRating.setVisibility(View.VISIBLE);
+                productTotalRating.setVisibility(View.VISIBLE);
+                productPrice.setTextColor(Color.parseColor("#000000"));
+                productCuttedPrice.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
+
+                productRating.setText(rating);
+                productTotalRating.setText("("+totalRating+") ratings");
+                productPrice.setText("$"+price+"");
+                productCuttedPrice.setText("$"+cuttedPrice+"");
+
+                if (deliSystem){
+                    productDeliverySystem.setVisibility(View.VISIBLE);
+                }else {
+                    productDeliverySystem.setVisibility(View.INVISIBLE);
+                }
             }else {
+                linearLayout.setVisibility(View.INVISIBLE);
+                productRating.setVisibility(View.INVISIBLE);
+                productTotalRating.setVisibility(View.INVISIBLE);
+                productPrice.setText("Out of Stock");
+                productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.colorPrimary));
+                productCuttedPrice.setVisibility(View.INVISIBLE);
                 productDeliverySystem.setVisibility(View.INVISIBLE);
             }
-
 
             if (wishList){
                 deleteBtn.setVisibility(View.VISIBLE);

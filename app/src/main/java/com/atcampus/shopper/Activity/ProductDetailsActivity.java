@@ -424,7 +424,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                                                 , (long) documentSnapshot.get("total_rating")
                                                                 , (String) documentSnapshot.get("product_price")
                                                                 , (String) documentSnapshot.get("cutted_price")
-                                                                , (boolean) documentSnapshot.get("cod")));
+                                                                , (boolean) documentSnapshot.get("cod")
+                                                        ,(boolean) documentSnapshot.get("stock")));
                                                     }
                                                     CHECK_FAVORITE_BTN = true;
                                                     favoriteBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#D10000")));
@@ -776,6 +777,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            productDetailsActivity = null;
             finish();
             return true;
         } else if (id == R.id.main_search) {
@@ -790,6 +792,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public void onBackPressed() {
+        productDetailsActivity = null;
+        super.onBackPressed();
     }
 }

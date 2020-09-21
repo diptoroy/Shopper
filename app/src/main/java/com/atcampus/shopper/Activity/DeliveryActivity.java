@@ -42,6 +42,8 @@ public class DeliveryActivity extends AppCompatActivity {
     private Button continueShopping;
     private ConstraintLayout orderConfermation;
 
+    private String name,mobileno;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +120,9 @@ public class DeliveryActivity extends AppCompatActivity {
         codBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo
+                Intent otpIntent = new Intent(DeliveryActivity.this,OtpVerificationActivity.class);
+                otpIntent.putExtra("mobileNo",mobileno.substring(0,11));
+                startActivity(otpIntent);
             }
         });
 
@@ -128,7 +132,9 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        nameText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getName());
+        name = AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getName();
+        mobileno = AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getMobileNo();
+        nameText.setText(name+" - "+mobileno);
         addressText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getAddress());
         pincodeText.setText(AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).getPincode());
     }

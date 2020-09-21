@@ -128,7 +128,8 @@ public class AllDBQuery {
                                                 , (long) documentSnapshot.get("total_rating_" + i)
                                                 , (String) documentSnapshot.get("product_price_" + i)
                                                 , (String) documentSnapshot.get("cutted_price_" + i)
-                                                , (boolean) documentSnapshot.get("cod_" + i)));
+                                                , (boolean) documentSnapshot.get("cod_" + i)
+                                        ,(boolean) documentSnapshot.get("in_stock_"+i)));
 
 
                                     }
@@ -196,7 +197,8 @@ public class AllDBQuery {
                                                 , (long) task.getResult().get("total_rating")
                                                 , (String) task.getResult().get("product_price")
                                                 , (String) task.getResult().get("cutted_price")
-                                                , (boolean) task.getResult().get("cod")));
+                                                , (boolean) task.getResult().get("cod")
+                                        ,(boolean)task.getResult().get("stock")));
 
                                         WishlistFragment.wishlistAdapter.notifyDataSetChanged();
                                     } else {
@@ -403,7 +405,8 @@ public class AllDBQuery {
                             addressModels.add(new AddressModel((String) task.getResult().get("name_") + x
                                     , (String) task.getResult().get("address_" + x)
                                     , (String) task.getResult().get("pincode_" + x)
-                                    , (boolean) task.getResult().get("selected_" + x)));
+                                    , (boolean) task.getResult().get("selected_" + x)
+                            ,(String) task.getResult().get("mobile_no_")+x));
 
                             if ((boolean) task.getResult().get("selected_" + x)) {
                                 selectedAddress = Integer.parseInt(String.valueOf(x - 1));
@@ -429,5 +432,8 @@ public class AllDBQuery {
         wishlistModels.clear();
         cartList.clear();
         cartItemModels.clear();
+        myRatedIds.clear();
+        myRating.clear();
+        addressModels.clear();
     }
 }

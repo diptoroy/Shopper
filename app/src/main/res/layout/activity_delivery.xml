@@ -135,7 +135,7 @@
             android:padding="3dp"
             android:textSize="22sp"
             android:background="@drawable/slider_background"
-            android:backgroundTint="@color/"
+            android:backgroundTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_id_text" />

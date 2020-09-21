@@ -98,10 +98,12 @@ public class AddAddressActivity extends AppCompatActivity {
                                         Map<String,Object> addAddress = new HashMap<>();
                                         addAddress.put("list_size", (long)AllDBQuery.addressModels.size()+1);
                                         if (TextUtils.isEmpty(anotherMobileText.getText())) {
-                                            addAddress.put("name_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), nameText.getText().toString() + " - " + mobileText.getText().toString());
+                                            addAddress.put("mobile_no_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1),  mobileText.getText().toString());
+
                                         }else {
-                                            addAddress.put("name_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), nameText.getText().toString() + " - " + mobileText.getText().toString() + " or " +anotherMobileText.getText().toString());
+                                            addAddress.put("mobile_no_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), mobileText.getText().toString() + " or " +anotherMobileText.getText().toString());
                                         }
+                                        addAddress.put("name_" + String.valueOf((long) AllDBQuery.addressModels.size() + 1), nameText.getText().toString());
                                         addAddress.put("address_"+ String.valueOf((long)AllDBQuery.addressModels.size()+1),fullAddress);
                                         addAddress.put("pincode_"+String.valueOf((long)AllDBQuery.addressModels.size()+1),picodeText.getText().toString());
                                         addAddress.put("selected_"+String.valueOf((long)AllDBQuery.addressModels.size()+1),true);
@@ -118,9 +120,9 @@ public class AddAddressActivity extends AppCompatActivity {
                                                         AllDBQuery.addressModels.get(AllDBQuery.selectedAddress).setSelected(false);
                                                     }
                                                     if (TextUtils.isEmpty(anotherMobileText.getText())) {
-                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " + mobileText.getText().toString(), fullAddress, picodeText.getText().toString(), true));
+                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() , fullAddress, picodeText.getText().toString(), true,mobileText.getText().toString()));
                                                     }else {
-                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() + " - " + mobileText.getText().toString() + " or " + anotherMobileText.getText().toString(), fullAddress, picodeText.getText().toString(), true));
+                                                        AllDBQuery.addressModels.add(new AddressModel(nameText.getText().toString() , fullAddress, picodeText.getText().toString(), true,mobileText.getText().toString() + " or " + anotherMobileText.getText().toString()));
                                                     }
 
 

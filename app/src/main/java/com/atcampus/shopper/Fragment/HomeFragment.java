@@ -23,6 +23,7 @@ import com.atcampus.shopper.Model.DealsModel;
 import com.atcampus.shopper.Model.MultipleRecyclerviewModel;
 import com.atcampus.shopper.Model.SliderModel;
 import com.atcampus.shopper.Model.WishlistModel;
+import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;
 import com.bumptech.glide.Glide;
 
@@ -168,9 +169,10 @@ public class HomeFragment extends Fragment {
 
     private void reloadPage(){
         networkInfo = connectivityManager.getActiveNetworkInfo();
-        categoryModels.clear();
-        allList.clear();
-        categoryName.clear();
+//        categoryModels.clear();
+//        allList.clear();
+//        categoryName.clear();
+        AllDBQuery.clearData();
 
         if (networkInfo != null && networkInfo.isConnected() == true) {
             categoryRecyclerView.setVisibility(View.VISIBLE);
