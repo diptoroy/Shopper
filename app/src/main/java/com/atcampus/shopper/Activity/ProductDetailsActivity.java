@@ -62,7 +62,7 @@ import static com.atcampus.shopper.Query.AllDBQuery.cartItemModels;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
-    public static Activity productDetailsActivity;
+
     private Toolbar toolbar;
     private List<Integer> productImages;
     public static FloatingActionButton favoriteBtn;
@@ -455,7 +455,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     userAlertDialog.show();
                 } else {
                     loadingDialog.show();
-                    productDetailsActivity = ProductDetailsActivity.this;
+                    //productDetailsActivity = ProductDetailsActivity.this;
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM, productID
                             , (String) documentSnapshot.get("product_image_1")
@@ -777,7 +777,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            productDetailsActivity = null;
             finish();
             return true;
         } else if (id == R.id.main_search) {
@@ -794,9 +793,5 @@ public class ProductDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        productDetailsActivity = null;
-        super.onBackPressed();
-    }
+
 }

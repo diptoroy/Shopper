@@ -17,11 +17,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.atcampus.shopper.Activity.AddAddressActivity;
 import com.atcampus.shopper.Activity.DeliveryActivity;
-import com.atcampus.shopper.Activity.ProductDetailsActivity;
 import com.atcampus.shopper.Adapter.CartAdapter;
-import com.atcampus.shopper.Adapter.WishlistAdapter;
 import com.atcampus.shopper.Model.CartItemModel;
 import com.atcampus.shopper.Query.AllDBQuery;
 import com.atcampus.shopper.R;

@@ -17,10 +17,10 @@
         <activity android:name=".Activity.ViewAllActivity" />
         <activity android:name=".Activity.AddressesActivity" />
         <activity android:name=".Activity.AddAddressActivity" />
-        <activity android:name=".Activity.DeliveryActivity" />
         <activity android:name=".Activity.OrderDetailsActivity" />
         <activity android:name=".Activity.ProductDetailsActivity" />
         <activity android:name=".Activity.CategoryActivity" />
+        <activity android:name=".Activity.DeliveryActivity" />
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"

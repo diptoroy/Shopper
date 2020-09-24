@@ -24,6 +24,8 @@ import com.atcampus.shopper.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class DeliveryActivity extends AppCompatActivity {
 
@@ -39,10 +41,16 @@ public class DeliveryActivity extends AppCompatActivity {
     private Dialog loadingDialog;
     private Dialog paymentDialog;
     private ImageButton bkashPayment,codBtn;
+
     private Button continueShopping;
     private ConstraintLayout orderConfermation;
 
     private String name,mobileno;
+
+    Random random = new Random();
+    final int orderId = random.nextInt(999999 - 111111)+111111;
+
+    //String passw = UUID.randomUUID().toString().substring(0,9);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +128,20 @@ public class DeliveryActivity extends AppCompatActivity {
         codBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent otpIntent = new Intent(DeliveryActivity.this,OtpVerificationActivity.class);
-                otpIntent.putExtra("mobileNo",mobileno.substring(0,11));
-                startActivity(otpIntent);
+//                Intent otpIntent = new Intent(DeliveryActivity.this,OtpVerificationActivity.class);
+//                otpIntent.putExtra("mobileNo",mobileno.substring(0,11));
+//                startActivity(otpIntent);
+                orderConfermation.setVisibility(View.VISIBLE);
+                orderidText.setText(String.valueOf("Your order id : " +orderId));
+                continueShopping.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent mainIntent = new Intent(DeliveryActivity.this,MainActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    }
+                });
+                paymentDialog.dismiss();
             }
         });
 
